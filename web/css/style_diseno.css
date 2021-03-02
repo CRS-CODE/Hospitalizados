@@ -1,0 +1,150 @@
+/* 
+    Document   : style_diseno
+    Created on : 14-may-2012, 15:42:42
+    Author     : EseGamboa
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+/*  visita enfermeria */
+TD.DEPENDENCIA{
+PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-SIZE: 9px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px; BACKGROUND-COLOR: #0000BB; text-align: center; COLOR: #FFF;
+}
+TD.RIESGO{
+PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-SIZE: 9px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px; BACKGROUND-COLOR: #660000; text-align: center; COLOR: #FFF;
+}
+TD.CRD_TOTAL{
+PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-SIZE: 9px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px; BACKGROUND-COLOR: #AAAAAA; text-align: center; COLOR: #000;
+}
+/*  fin visita enfermeria */
+
+TH.ESTADISTICA {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; FONT-SIZE: 11px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px; FONT-WEIGHT: bold; BACKGROUND-COLOR: #ccc; text-align: left;
+}
+
+.FIELDSET_SALA {
+	BORDER-RIGHT: #ccc 3px solid; PADDING-RIGHT: 3px; BORDER-TOP: #ccc 3px solid; PADDING-LEFT: 3px; MARGIN-BOTTOM: 8px; PADDING-BOTTOM: 8px; BORDER-LEFT: #ccc 3px solid; PADDING-TOP: 3px; BORDER-BOTTOM: #ccc 3px solid; BACKGROUND-COLOR: #fff;
+}
+TD.CAMA_ACTIVA {
+    background-image: url('../Imagenes/cama_2chica.gif');
+    background-repeat: no-repeat;
+    height: 40px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #7F9DB9;
+    width: 55px;
+    text-transform: capitalize;
+    cursor :  url('../iconos/Busy.cur'), help;
+}
+
+TD.CAMA_DESACTIVA {
+    background-image: url('../Imagenes/cama_1chica.gif');
+    background-repeat: no-repeat;
+    height: 40px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #7F9DB9;
+    width: 55px;
+    text-transform: capitalize;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+
+}
+
+TD.CAMA_HUAP {
+    background-image: url('../Imagenes/cama_chica_huap.png');
+    background-repeat: no-repeat;
+    height: 40px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #7F9DB9;
+    width: 55px;
+    text-transform: capitalize;
+    cursor :  url('../iconos/Busy.cur'), help;
+}
+
+
+/* CATEGORIZACION 00-02 */
+TD.CAMA_CONCAT {
+    background-image: url('../Imagenes/box_green.png');
+    background-repeat: no-repeat;
+    height: 40px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #7F9DB9;
+    width: 55px;
+    text-transform: capitalize;
+    cursor :  url('../iconos/Busy.cur'), help;
+}
+
+TD.CAMA_SINCAT {
+    background-image: url('../Imagenes/box_yellow.png');
+    background-repeat: no-repeat;
+    height: 40px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #7F9DB9;
+    width: 55px;
+    text-transform: capitalize;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+
+}
+/* 00-02 */
+
+.CRD_P {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	color: black;
+        BACKGROUND-COLOR: #AAAAAA;
+}
+
+.CRD_D {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	color: black;
+        BACKGROUND-COLOR: #FFFF00;
+}
+.CRD_C {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	color: black;
+        BACKGROUND-COLOR: #FF99CC;
+}
+.CRD_B {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	color: black;
+        BACKGROUND-COLOR: #3366CC;
+}
+.CRD_A {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	color: black;
+        BACKGROUND-COLOR: #FF0000;
+}
