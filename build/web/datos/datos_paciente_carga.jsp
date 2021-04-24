@@ -138,8 +138,8 @@
                 <td <%=titulo%> >Nación</td>
                 <td colspan="3" <%=datos%> ><% out.write("" + duo.getNacion_descripcion());%></td>
 
-                <td <%=titulo%> ></td>
-                <td <%=datos%> ></td>
+                <td <%=titulo%> >Comuna</td>
+                <td <%=datos%> ><% out.write("" + duo.getComuna_descri());%></td>
             </tr>
         </tbody>
     </table>
