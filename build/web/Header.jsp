@@ -58,10 +58,9 @@
         see_visita.add(13);
         see_visita.add(14);
         see_visita.add(15);
-         see_visita.add(16);
-          see_visita.add(17);
-
-       
+        see_visita.add(16);
+        see_visita.add(17);
+        see_visita.add(18);
 
         ArrayList see_informe = new ArrayList();
         see_informe.add(10);
@@ -73,7 +72,7 @@
         see_mantencion.add(11);
         see_mantencion.add(12);
 
-       
+
 %>
 <html>
     <head>
@@ -90,7 +89,7 @@
         <script src="<%=neg.getLocal()%>js/jquery/jquery.js"></script>
         <script src="<%=neg.getLocal()%>js/jquery/jquery-ui.js"></script>
         <%            // <script src="<%=neg.getLocal() ajax.js"></script>
-           %>
+%>
 
         <jsp:include page="css/boton_html.jsp" />
 
@@ -119,7 +118,7 @@
                     <ul class="menu">
                         <li><a href="<%=neg.getLocal()%>inicio.jsp" class="parent"><span>INICIO</span></a>
                         </li>
-                          <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>CAMAS HOSPITALARIAS</span></a>
+                        <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>CAMAS HOSPITALARIAS</span></a>
                         </li>
 
                         <%    if (see_admision_urgencia.contains(obtiene_perfil) || see_duo_x_ingresar.add(obtiene_perfil) || see_admision_suam.contains(obtiene_perfil)) {
@@ -162,11 +161,11 @@
                         </li>
                         <li><a href="<%=neg.getLocal()%>index_barthel/registers_index_barthel.jsp"><span>INDICE BARTHEL</span></a>
                         </li>
-                          
+
                         <%
                             if (see_visita.contains(obtiene_perfil)) {
                         %>
-                       
+
                         <li><a><span>EVOLUCIÓN </span></a>
                             <ul>
                                 <li><a href="<%=neg.getLocal()%>visita_medica.jsp"><span>Medica</span></a>  
@@ -174,6 +173,7 @@
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Nutrición</span></a> 
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Kinesiologia</span></a> 
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Terapeuta Ocupacional</span></a> 
+                                <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Psicólogo/a</span></a>
                                 <li> <a href="<%=neg.getLocal()%>asistencia_social/social_ingreso.jsp"><span>Trabajadora Social</span></a>
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Fonoaudiologa</span></a> 
 
@@ -182,11 +182,11 @@
                         </li>
                         <%  }
                         %>
-                        
+
 
                         <li><a href="<%=neg.getLocal()%>receta.jsp"><span>INDICACIONES</span></a>
                         </li>
-                      
+
                         <li><a href="<%=neg.getLocal()%>uh_paciente.jsp"><span>HISTORIAL</span></a>
                         </li>
 
@@ -229,6 +229,6 @@
                 <fieldset style=" height:50">
                     <br>
 
-             <%  }%>
+                    <%  }%>
 
 

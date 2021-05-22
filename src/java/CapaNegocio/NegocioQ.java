@@ -818,7 +818,7 @@ public class NegocioQ extends Negocio {
                 + "     (SELECT to_char(LL.fecha_hora_ing_enfermeria,'DD/MM/YYYY HH24:MI:SS') as fecha_hora_ing_enfermeria FROM schema_uo.ing_enfermeria LL    where LL.id_duo_ing_enfermeria=AA.id_duo limit 1) as fecha_hora_ing_enf,   \n"
                 + "     (SELECT     nombre_usuario||' '||apellidop_usuario||' '||apellidom_usuario as nombre_completo    FROM  schema_uo.usuario VV JOIN schema_uo.ing_enfermeria RR ON    (VV.rut_usuario=RR.rut_usuario_ing_enfermeria)     where RR.id_duo_ing_enfermeria=AA.id_duo limit 1) as nombre_enf,\n"
                 + "        (SELECT    nombre_usuario||' '||apellidop_usuario||' '||apellidom_usuario as nombre_completo   FROM  schema_uo.usuario where rut_usuario= rut_usuario_ing_med) as nombre_med,    to_char(fecha_hora_ing_med,'DD/MM/YYYY HH24:MI:SS')as fecha_hora_ing_med,    ip_ing_enf,ip_ing_med,    ( SELECT BB.cat_visita_categorizacion   \n"
-                + "     FROM schema_uo.visita AA     JOIN schema_uo.visita_categorizacion BB ON       (AA.id_visita_categorizacion=BB.id_visita_categorizacion)        where id_duo=AA.id_duo order by AA.fecha_hora_visita DESC limit 1 ) as ultima_cat,      ( SELECT BB.cat_visita_categorizacion     FROM schema_uo.visita AA      JOIN schema_uo.visita_categorizacion BB ON     (AA.id_visita_categorizacion=BB.id_visita_categorizacion)      where id_duo=AA.id_duo order by AA.fecha_hora_visita ASC limit 1 ) as primera_cat,    BB.paciente_nombres,BB.paciente_apellidop, BB.paciente_apellidom,   BB.paciente_telefono1, BB.paciente_telefono2,    to_char( BB.paciente_fecha_nac,'DD/MM/YYYY')as paciente_fecha_nac,    age(AA.fecha_duo,BB.paciente_fecha_nac) AS paciente_edad,    BB.paciente_direccion,BB.paciente_sexo,    BB.paciente_pueblo,BB.paciente_consultorio,BB.paciente_nacionalidad, (SELECT nac_descripcion FROM  schemaoirs.nacion where nac_id=BB.paciente_nacionalidad limit 1)as paciente_nacionalidad_descripcion,    (SELECT PP.con_descripcion from schemaoirs.consultorio_pertenencia PP WHERE   PP.con_id=BB.paciente_consultorio)as consultorio_pertenencia,   (SELECT QQ.pue_descripcion from schemaoirs.pueblo_originario QQ WHERE    QQ.pue_id=BB.paciente_pueblo limit 1) as pueblo_originario,    codigo_fonasa_descripcion,tramo_prevision_paciente,    prais_prevision_paciente,verificado_fonasa, EXTRACT(DAY FROM (fecha_hora_alta_med_duo)-(fecha_duo+hora_duo)) as dias_cama,paciente_mail,   EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(fecha_duo+hora_duo)) as dias_cama2   FROM schema_uo.duo AA   JOIN schema_urgencia.paciente BB ON    (AA.rut_paciente=BB.paciente_rut)      JOIN schema_urgencia.prevision_paciente  ON    (BB.paciente_rut=prevision_paciente.id_paciente_prevision_paciente)     JOIN schema_urgencia.codigo_fonasa ON    (prevision_paciente.codigo_fonasa_prevision_paciente=codigo_fonasa.codigo_fonasa_id)    JOIN schema_uo.cama ON (AA.id_cama=cama.id_cama)   JOIN schema_uo.derivador ON (AA.id_derivador=derivador.id_derivador)   JOIN schema_uo.categorizacion ON (AA.id_categorizacion=categorizacion.id_categorizacion) join schemaoirs.comuna comu on comu.comuna_codigo =  BB.comuna_codigo  where id_duo='" + id_duo + "' and   prevision_paciente.estado_prevision_paciente='1'");
+                + "     FROM schema_uo.visita AA     JOIN schema_uo.visita_categorizacion BB ON       (AA.id_visita_categorizacion=BB.id_visita_categorizacion)        where id_duo=AA.id_duo order by AA.fecha_hora_visita DESC limit 1 ) as ultima_cat,      ( SELECT BB.cat_visita_categorizacion     FROM schema_uo.visita AA      JOIN schema_uo.visita_categorizacion BB ON     (AA.id_visita_categorizacion=BB.id_visita_categorizacion)      where id_duo=AA.id_duo order by AA.fecha_hora_visita ASC limit 1 ) as primera_cat,    BB.paciente_nombres,BB.paciente_apellidop, BB.paciente_apellidom,   BB.paciente_telefono1, BB.paciente_telefono2,    to_char( BB.paciente_fecha_nac,'DD/MM/YYYY')as paciente_fecha_nac,    age(AA.fecha_duo,BB.paciente_fecha_nac) AS paciente_edad,    BB.paciente_direccion,BB.paciente_sexo,    BB.paciente_pueblo,BB.paciente_consultorio,BB.paciente_nacionalidad, (SELECT nac_descripcion FROM  schemaoirs.nacion where nac_id=BB.paciente_nacionalidad limit 1)as paciente_nacionalidad_descripcion,    (SELECT PP.con_descripcion from schemaoirs.consultorio_pertenencia PP WHERE   PP.con_id=BB.paciente_consultorio)as consultorio_pertenencia,   (SELECT QQ.pue_descripcion from schemaoirs.pueblo_originario QQ WHERE    QQ.pue_id=BB.paciente_pueblo limit 1) as pueblo_originario,    codigo_fonasa_descripcion,tramo_prevision_paciente,    prais_prevision_paciente,verificado_fonasa, EXTRACT(DAY FROM (fecha_hora_alta_med_duo)-(fecha_duo+hora_duo)) as dias_cama,paciente_mail,   EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(fecha_duo+hora_duo)) as dias_cama2   FROM schema_uo.duo AA   JOIN schema_urgencia.paciente BB ON    (AA.rut_paciente=BB.paciente_rut)      JOIN schema_urgencia.prevision_paciente  ON    (BB.paciente_rut=prevision_paciente.id_paciente_prevision_paciente)     JOIN schema_urgencia.codigo_fonasa ON    (prevision_paciente.codigo_fonasa_prevision_paciente=codigo_fonasa.codigo_fonasa_id)    JOIN schema_uo.cama ON (AA.id_cama=cama.id_cama)   JOIN schema_uo.derivador ON (AA.id_derivador=derivador.id_derivador)   JOIN schema_uo.categorizacion ON (AA.id_categorizacion=categorizacion.id_categorizacion) join schemaoirs.comuna comu on cast(comu.comuna_codigo as int)=  BB.comuna_codigo  where id_duo='" + id_duo + "' and   prevision_paciente.estado_prevision_paciente='1'");
         this.cnn.conectar();
 
         try {
@@ -3381,6 +3381,46 @@ public class NegocioQ extends Negocio {
         return lista;
     }
 
+    /*new code */
+    
+     public ArrayList lista_sesion_psicolo(int id_duo) {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT  ses_id, ses_estado, ses_usuario, \n TO_CHAR(ses_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_ingreso, TO_CHAR(ses_fecha_hora,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_hora, \n TO_CHAR(ses_fecha_hora,'DD/MM/YYYY')as ses_fecha,\n TO_CHAR(ses_fecha_hora,'HH24:MI:SS')as ses_hora,\n ses_detalle, ses_duo,\n USU.nombre_usuario,USU.apellidop_usuario,USU.apellidom_usuario\n FROM  schema_uo.psicolo_sesion\n SES INNER JOIN schema_uo.usuario USU ON(SES.ses_usuario=USU.rut_usuario)\n WHERE  ses_duo='" + id_duo + "' and ses_estado='1'  order by ses_fecha_hora  ;");
+        this.cnn.conectar();
+
+        cSesionKine ses;
+        try {
+            for (; this.cnn.getRst().next(); lista.add(ses)) {
+                ses = new cSesionKine();
+                ses.setId_sesion_kine(this.cnn.getRst().getInt("ses_id"));
+                ses.setId_duo(this.cnn.getRst().getInt("ses_duo"));
+                ses.setFecha_ingreso_sesion(this.cnn.getRst().getString("ses_fecha_ingreso"));
+                ses.setFecha_hora(this.cnn.getRst().getString("ses_fecha_hora"));
+                ses.setFecha(this.cnn.getRst().getString("ses_fecha"));
+                ses.setHora(this.cnn.getRst().getString("ses_hora"));
+                ses.setDetalle(this.cnn.getRst().getString("ses_detalle"));
+                ses.setRut_usuario(this.cnn.getRst().getString("ses_usuario"));
+                ses.setNombre_usuario(this.cnn.getRst().getString("nombre_usuario"));
+                ses.setApellidop_usuario(this.cnn.getRst().getString("apellidop_usuario"));
+                ses.setApellidom_usuario(this.cnn.getRst().getString("apellidom_usuario"));
+                ses.setEstado_sesion(this.cnn.getRst().getInt("ses_estado"));
+                if (ses.getEstado_sesion() == 0) {
+                    ses.setEstado_desc_sesion("Anulado");
+                } else {
+                    ses.setEstado_desc_sesion("Activo");
+                }
+            }
+        } catch (SQLException var4) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
+        }
+
+        return lista;
+    }
+     
+     
+     /***/
     public ArrayList lista_sesion_terapeuta(int id_duo) {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");

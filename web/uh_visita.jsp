@@ -52,7 +52,7 @@
     salas.add("11");
     salas.add("12");
     salas.add("25");
-    
+
     String nombre_sala[] = new String[9];
 
     String fecha_hora = neg.obtiene_fecha_hora();
@@ -61,7 +61,7 @@
     String año = fecha_hora.substring(6, 10);
     String fecha_mda = mes + "-" + dia + "-" + año;
     String hora_duo = fecha_hora.substring(fecha_hora.length() - 8, fecha_hora.length());
-  
+
     boolean sw_cat = false;
     Date fecha_del_dia = new Date();
     Locale hora_local = new Locale("es", "CHL");
@@ -90,17 +90,13 @@
     Iterator it_res = lista_camas.iterator();
     while (it_res.hasNext()) {
         cDuo aux = (cDuo) it_res.next();
-
-        
         if (aux.getSala() == 11) {
             nombre_sala[0] = "" + aux.getSala_descripcion();
         } else if (aux.getSala() == 12) {
             nombre_sala[1] = "" + aux.getSala_descripcion();
-        }
-        else if (aux.getSala() == 25) {
+        } else if (aux.getSala() == 25) {
             nombre_sala[2] = "" + aux.getSala_descripcion();
         }
-       
 
     }
 
@@ -110,7 +106,7 @@
     int PacientesIngresadosHoy = 0;
     int AltaMedica = 0;
     int PacientesEgresados = 0;
-  
+
     Iterator it_con = lista_camas.iterator();
     while (it_con.hasNext()) {
         cDuo aux = (cDuo) it_con.next();
@@ -196,30 +192,30 @@
                                     if (sala_actual.equalsIgnoreCase(salas.get(indice_sala).toString())) {
                                         cantidad_camas_x_sala++;
 
-                                     if (aux.getSala() == 11 && (cantidad_camas_x_sala == 2 || cantidad_camas_x_sala == 5 || cantidad_camas_x_sala == 7 || cantidad_camas_x_sala == 13 )) {
+                                        if (aux.getSala() == 11 && (cantidad_camas_x_sala == 2 || cantidad_camas_x_sala == 5 || cantidad_camas_x_sala == 7 || cantidad_camas_x_sala == 13)) {
                                             out.write("<tr>");
-                                      }
-                                     if (aux.getSala() == 12 && (cantidad_camas_x_sala == 5 || cantidad_camas_x_sala == 9 || cantidad_camas_x_sala == 13)) {
+                                        }
+                                        if (aux.getSala() == 12 && (cantidad_camas_x_sala == 5 || cantidad_camas_x_sala == 9 || cantidad_camas_x_sala == 13)) {
                                             out.write("<tr>");
-                                      }
-                                     if (aux.getSala() == 25 && (cantidad_camas_x_sala == 2 || cantidad_camas_x_sala == 3 || cantidad_camas_x_sala == 5 || cantidad_camas_x_sala == 9|| cantidad_camas_x_sala == 13)) {
+                                        }
+                                        if (aux.getSala() == 25 && (cantidad_camas_x_sala == 2 || cantidad_camas_x_sala == 3 || cantidad_camas_x_sala == 5 || cantidad_camas_x_sala == 9 || cantidad_camas_x_sala == 13)) {
                                             out.write("<tr>");
-                                      }
+                                        }
                                         if (aux.getId_duo() == 0) { // si la cama esta vacia
 
                             %>
-                       
+
                             <td align="right" valign="top">
                                 <table width="85px" dragableBox="false" border="0" style="FONT-FAMILY: Arial, Helvetica, sans-serif; FONT-SIZE: 12px;" >
                                     <tr>
                                         <td bgcolor="#33CC33" colspan="2" >
-                                           <b style="color:#fff"><% out.write(" " + aux.getCama_descripcion());%>
+                                            <b style="color:#fff"><% out.write(" " + aux.getCama_descripcion());%>
                                             </b>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td valign="top" class="CAMA_DESACTIVA" colspan="2" >
-                                           <b style="font-family: Verdana;font-size:10px">Disponible</b>
+                                            <b style="font-family: Verdana;font-size:10px">Disponible</b>
                                         </td>
                                     </tr>
                                     <tr>
@@ -241,13 +237,13 @@
                                     </tr>
                                 </table>
                             </td>
-                            
+
                             <%                         } else {
                                 // si la cama esta ocupada
                                 clas = "CRD_" + aux.getUltima_clasificacion().substring(0, 1);
 
                             %>
-                                   
+
                             <td align="right" valign="top" dragableBox="false" >
                                 <table border="0" width="85px" style="FONT-FAMILY: Arial, Helvetica, sans-serif; FONT-SIZE: 12px;" >
                                     <tr>
@@ -329,13 +325,11 @@
                                                                 out.write(" <img src='Imagenes/Medic_edit.png' onclick='document.forms[\"form_med" + aux.getId_duo() + "\"].submit();' title='Visita Medica' style='cursor:pointer'>");
                                                                 out.write("</form></td>");
                                                             }
-                                                        } else {
-                                                            if (see_medico.contains(obtiene_perfil)) {
-                                                                out.write("<td><form name='form_med" + aux.getId_duo() + "' id='form_med" + aux.getId_duo() + "' action='" + neg.getLocal() + "ingreso/ingreso_medico.jsp' method='POST' >");
-                                                                out.write("<input type='hidden' name='txt_manda_duo' value='" + aux.getId_duo() + "' >");
-                                                                out.write(" <img src='Imagenes/Medic_add.png' onclick='document.forms[\"form_med" + aux.getId_duo() + "\"].submit();' title='Ingreso Medico' style='cursor:pointer'>");
-                                                                out.write("</form></td>");
-                                                            }
+                                                        } else if (see_medico.contains(obtiene_perfil)) {
+                                                            out.write("<td><form name='form_med" + aux.getId_duo() + "' id='form_med" + aux.getId_duo() + "' action='" + neg.getLocal() + "ingreso/ingreso_medico.jsp' method='POST' >");
+                                                            out.write("<input type='hidden' name='txt_manda_duo' value='" + aux.getId_duo() + "' >");
+                                                            out.write(" <img src='Imagenes/Medic_add.png' onclick='document.forms[\"form_med" + aux.getId_duo() + "\"].submit();' title='Ingreso Medico' style='cursor:pointer'>");
+                                                            out.write("</form></td>");
                                                         }
 
                                                         if (aux.getEstado_duo() == 3) {
