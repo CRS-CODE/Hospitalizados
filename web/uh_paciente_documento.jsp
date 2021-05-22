@@ -70,8 +70,6 @@
             out.write("<td><center>" + not.getId_duo() + "</center><br>");
             out.write("<a href='" + neg.getLocal() + "PDF_DUO?id_duo=" + not.getId_duo() + "' target='_blank'><img src='Imagenes/doctorImp.png' width='35' height='36' alt='Ingreso Médico' title='Ingreso Médico' /></a>");
             out.write("<a href='" + neg.getLocal() + "PDF_ingreso_enfermeria?txt_duo=" + not.getId_duo() + "' target='_blank'><img src='Imagenes/enfermeraImp.png' width='35' height='36' alt='Ingreso Enfermería' title='Ingreso Enfermería' /></a>");
-            //out.write("<a href='http://10.8.4.9:9090/modulo_uo/Ingreso/IngEnfPDF.jsp?id_duo=" + not.getId_duo() + "' target='_blank'><img src='Imagenes/enfermeraImp.png' width='35' height='36' alt='Ingreso Enfermeria'/></a>");
-
             out.write("</td>");
             out.write("<td>" + not.getFecha_duo() + " </td>");
             if (not.getId_epicrisis() != 0) {

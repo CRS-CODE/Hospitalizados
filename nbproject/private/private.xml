@@ -3,6 +3,25 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/web/index_barthel/registers_index_barthel.jsp</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/web/zzz.jsp</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/src/java/CapaNegocio/Negocio.java</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/web/Alert/css/modal-message.css</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/web/ingreso/visita_medico.jsp</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/src/java/CapaServlet/ingresa_visita.java</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/web/visita_medica.jsp</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/web/ingreso/ingreso_medico.jsp</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/web/admision_ugu_carga.jsp</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/src/java/CapaServlet/ingreso_uh.java</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/web/ingreso/ingreso_medico_carga.jsp</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/web/admision_ugu.jsp</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/web/visita_medica_carga.jsp</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/web/uh_visita.jsp</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/src/java/CapaNegocio/NegocioQ.java</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/web/datos/datos_paciente_carga.jsp</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/web/ingreso/visita_medico_carga.jsp</file>
+            <file>file:/C:/Users/Kairin/Documents/Desktop/CRS/VERSIONES%20USADAS%20PARA%20SUBIR%20EN%20GIT/modulo_uhce/src/java/CapaServlet/ingresa_visita_medica.java</file>
+        </group>
     </open-files>
 </project-private>

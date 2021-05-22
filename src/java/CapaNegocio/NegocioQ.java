@@ -42,7 +42,12 @@ import CapaDato.cUnidadMedida;
 import CapaDato.cUsuario;
 import CapaDato.cVisita;
 import CapaDato.cVistaUoce;
+import CapaDato.prevision;
+import Datos.AmbitoCRD;
+import Datos.GradoCRD;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -336,34 +341,90 @@ public class NegocioQ extends Negocio {
         return count;
     }
 
-    /**/
+    /*new code*/
+    public ArrayList buscarComuna() {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT id_comuna, nombre FROM agenda.comuna where estatus = 1  order by nombre;");
+        this.cnn.conectar();
+        try {
+            while (this.cnn.getRst().next()) {
+                cComuna aux = new cComuna();
+                aux.setId_comuna(this.cnn.getRst().getInt("id_comuna"));
+                aux.setComuna_descripcion(this.cnn.getRst().getString("nombre"));
+                lista.add(aux);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            this.cnn.cerrarConexion();
+        }
+        return lista;
+    }
+
+    /*new code */
     public ArrayList lista_camas_actuales() {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT duo.id_duo,   p.paciente_rut, p.paciente_nombres, p.paciente_apellidop, p.paciente_apellidom,  p.paciente_fecha_nac, age(duo.fecha_duo, p.paciente_fecha_naagec) AS paciente_edad,   cf.codigo_fonasa_descripcion, pp.tramo_prevision_paciente, de.descripcion_derivador,   CASE   WHEN duo.estado_duo = 1 THEN 'Ingresado Adm.'    WHEN duo.estado_duo = 2 THEN 'En Cama con Ingreso Enf. '    WHEN duo.estado_duo = 21 THEN 'En Cama con Ingreso Med.'    WHEN duo.estado_duo = 3 THEN 'En Cama con Alta Medica'    WHEN duo.estado_duo = 4 THEN 'Alta Administrativa'    ELSE NULL   END AS estado, duo.estado_duo,  duo.fecha_duo + duo.hora_duo AS fecha_duo,   e.fecha_epicrisis + e.hora_epicrisis AS fecha_epicrisis,   age(e.fecha_epicrisis + e.hora_epicrisis, duo.fecha_duo + duo.hora_duo)   AS qdias_epi_duo,   age(timenow() , datetime_pl(duo.fecha_duo,   duo.hora_duo)) AS hasta_hoy,   duo.id_cama, duo.duo_tiene_enfermeria   FROM schema_urgencia.paciente p,   schema_uo.derivador de,   schema_urgencia.prevision_paciente pp,   schema_urgencia.codigo_fonasa cf,   schema_uo.duo duo   LEFT JOIN schema_uo.epicrisis e ON e.id_duo = duo.id_duo   WHERE p.paciente_rut = duo.rut_paciente AND    duo.id_derivador = de.id_derivador AND    duo.id_prevision = pp.id_prevision_paciente AND    pp.codigo_fonasa_prevision_paciente = cf.codigo_fonasa_id AND    (duo.estado_duo = ANY (ARRAY [ 1, 2, 21, 3 ]))  ORDER BY duo.id_duo  ;");
+        this.cnn.setSentenciaSQL("SELECT duo.id_duo, \n"
+                + "                  p.rut, p.nombre, p.apellido_paterno, p.apellido_moderno,\n"
+                + "                to_char( p.fecha_nacimiento, 'dd/mm/yyyy') as paciente_fecha_nac, age(duo.fecha_duo, p.fecha_nacimiento) AS paciente_edad, \n"
+                + "                  pp.nombre, cf.nombre, de.descripcion_derivador, \n"
+                + "                  CASE \n"
+                + "                  WHEN duo.estado_duo = 1 THEN 'Ingresado Adm.'  \n"
+                + "                  WHEN duo.estado_duo = 2 THEN 'En Cama con Ingreso Enf. '  \n"
+                + "                  WHEN duo.estado_duo = 21 THEN 'En Cama con Ingreso Med.'  \n"
+                + "                  WHEN duo.estado_duo = 3 THEN 'En Cama con Alta Medica'  \n"
+                + "                  WHEN duo.estado_duo = 4 THEN 'Alta Administrativa'  \n"
+                + "                  ELSE NULL \n"
+                + "                 END AS estado, duo.estado_duo,  duo.fecha_duo + duo.hora_duo AS fecha_duo, \n"
+                + "                  e.fecha_epicrisis + e.hora_epicrisis AS fecha_epicrisis, \n"
+                + "                  age(e.fecha_epicrisis + e.hora_epicrisis, duo.fecha_duo + duo.hora_duo) \n"
+                + "                  AS qdias_epi_duo, \n"
+                + "                  age(timenow() , datetime_pl(duo.fecha_duo, \n"
+                + "                  duo.hora_duo)) AS hasta_hoy, \n"
+                + "                 duo.id_cama, duo.duo_tiene_enfermeria \n"
+                + "                  FROM agenda.paciente p, \n"
+                + "                  schema_uo.derivador de, \n"
+                + "                  agenda.prevision pp, \n"
+                + "                 agenda.tramo cf, \n"
+                + "                 schema_uo.duo duo \n"
+                + "                  LEFT JOIN schema_uo.epicrisis e ON e.id_duo = duo.id_duo \n"
+                + "                  WHERE p.rut = duo.rut_paciente AND \n"
+                + "                 duo.id_derivador = de.id_derivador AND \n"
+                + "                   p.provision = pp.id_prevision AND \n"
+                + "                   cf.id= p.tramo and\n"
+                + "                  (duo.estado_duo = ANY (ARRAY [ 1, 2, 21, 3 ])) \n"
+                + "                ORDER BY duo.id_duo ;");
         this.cnn.conectar();
-
         try {
-            while (this.cnn.getRst().next()) {
+            while (cnn.getRst().next()) {
                 cDuo duo = new cDuo();
-                duo.setCama(this.cnn.getRst().getInt("id_cama"));
-                duo.setId_duo(this.cnn.getRst().getInt("id_duo"));
-                duo.setFecha_duo(this.cnn.getRst().getString("fecha_duo"));
-                String hasta_hoy = this.cnn.getRst().getString("hasta_hoy");
+                duo.setCama(cnn.getRst().getInt("id_cama"));
+
+                duo.setId_duo(cnn.getRst().getInt("id_duo"));
+                duo.setFecha_duo(cnn.getRst().getString("fecha_duo"));
+
+                String hasta_hoy = cnn.getRst().getString("hasta_hoy");
                 hasta_hoy = hasta_hoy.replace("days", "dias");
                 hasta_hoy = hasta_hoy.replace("mons", "meses");
                 hasta_hoy = hasta_hoy.replace("years", "años");
                 hasta_hoy = hasta_hoy.replace("day", "dia");
                 hasta_hoy = hasta_hoy.replace("mon", "mes");
                 hasta_hoy = hasta_hoy.replace("year", "año");
+
                 duo.setDias_hasta_hoy(hasta_hoy);
-                duo.setRut_paciente(this.cnn.getRst().getString("paciente_rut"));
-                duo.setNombres_paciente(this.cnn.getRst().getString("paciente_nombres"));
-                duo.setApellidop_paciente(this.cnn.getRst().getString("paciente_apellidop"));
-                duo.setApellidom_paciente(this.cnn.getRst().getString("paciente_apellidom"));
-                duo.setFecha_nac(this.cnn.getRst().getString("paciente_fecha_nac"));
-                String edad = this.cnn.getRst().getString("paciente_edad");
+                // hasta_hoy
+                duo.setRut_paciente(cnn.getRst().getString("rut"));
+                duo.setNombres_paciente(cnn.getRst().getString("nombres"));
+                duo.setApellidop_paciente(cnn.getRst().getString("apellido_paterno"));
+                duo.setApellidom_paciente(cnn.getRst().getString("apellido_moderno"));
+                duo.setFecha_nac(cnn.getRst().getString("paciente_fecha_nac"));
+
+                String edad = cnn.getRst().getString("paciente_edad");
                 edad = edad.replace("days", "dias.z");
                 edad = edad.replace("mons", "meses");
                 edad = edad.replace("years", "años");
@@ -375,16 +436,19 @@ public class NegocioQ extends Negocio {
                 try {
                     edad = edad.substring(0, edad.indexOf("z") - 1);
                     duo.setEdad(edad);
-                } catch (Exception var6) {
+                } catch (Exception exx) {
                 }
 
-                duo.setDerivador_descripcion(this.cnn.getRst().getString("descripcion_derivador"));
-                duo.setEstado_duo(this.cnn.getRst().getInt("estado_duo"));
-                duo.setEstado_duo_descripcion(this.cnn.getRst().getString("estado"));
-                duo.setTramo_prevision(this.cnn.getRst().getString("tramo_prevision_paciente"));
-                duo.setCodigo_fonasa_descripcion(this.cnn.getRst().getString("codigo_fonasa_descripcion"));
-                duo.setFecha_hora_alta_med_duo(this.cnn.getRst().getString("fecha_epicrisis"));
-                String qdias_epi_duo = this.cnn.getRst().getString("qdias_epi_duo");
+                duo.setDerivador_descripcion(cnn.getRst().getString("descripcion_derivador"));
+                duo.setEstado_duo(cnn.getRst().getInt("estado_duo"));
+                duo.setEstado_duo_descripcion(cnn.getRst().getString("estado"));
+
+                duo.setTramo_prevision(cnn.getRst().getString("tramo"));
+                duo.setCodigo_fonasa_descripcion(cnn.getRst().getString("prevision"));
+
+                duo.setFecha_hora_alta_med_duo(cnn.getRst().getString("fecha_epicrisis"));
+
+                String qdias_epi_duo = cnn.getRst().getString("qdias_epi_duo");
                 qdias_epi_duo = qdias_epi_duo.replace("days", "dias");
                 qdias_epi_duo = qdias_epi_duo.replace("mons", "meses");
                 qdias_epi_duo = qdias_epi_duo.replace("years", "años");
@@ -392,12 +456,12 @@ public class NegocioQ extends Negocio {
                 qdias_epi_duo = qdias_epi_duo.replace("mon", "mes");
                 qdias_epi_duo = qdias_epi_duo.replace("year", "año");
                 duo.setDias_epi_duo(qdias_epi_duo);
+
                 lista.add(duo);
             }
-        } catch (SQLException var7) {
-            Logger.getLogger(NegocioQ.class.getName()).log(Level.SEVERE, (String) null, var7);
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioQ.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         this.cnn.cerrarConexion();
         return lista;
     }
@@ -682,7 +746,7 @@ public class NegocioQ extends Negocio {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT \n  vis_id, vis_usuario,vis_duo,   nombre_usuario, apellidop_usuario,apellidom_usuario, TO_CHAR( vis_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS') as vis_fecha_ingreso,  TO_CHAR(  vis_fecha,'DD/MM HH24:MI') as vis_fecha1,  TO_CHAR(  vis_fecha,'DD/MM') as vis_dia,   TO_CHAR(  vis_fecha,'HH24:MI') as vis_hora,    vis_evolucion, vis_estado, vis_usuario_anula, vis_motivo_anula  FROM  schema_uo.visita_medica   VIS INNER JOIN schema_uo.usuario USU ON (VIS.vis_usuario= USU.rut_usuario) WHERE vis_duo='" + id_duo + "' order by vis_fecha DESC ;");
+        this.cnn.setSentenciaSQL("SELECT vis_id, vis_usuario,vis_duo,   nombre_usuario, apellidop_usuario,apellidom_usuario, TO_CHAR( vis_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS') as vis_fecha_ingreso,  TO_CHAR(  vis_fecha,'DD/MM HH24:MI') as vis_fecha1,  TO_CHAR(  vis_fecha,'DD/MM') as vis_dia,   TO_CHAR(  vis_fecha,'HH24:MI') as vis_hora,    vis_evolucion, vis_estado, vis_usuario_anula, vis_motivo_anula  FROM  schema_uo.visita_medica   VIS INNER JOIN schema_uo.usuario USU ON (VIS.vis_usuario= USU.rut_usuario) WHERE vis_duo='" + id_duo + "' order by vis_fecha DESC ;");
         this.cnn.conectar();
 
         try {
@@ -804,30 +868,103 @@ public class NegocioQ extends Negocio {
         return duo;
     }
 
+    /*change duo*/
     public cDuo obtiene_duo(int id_duo) {
         cDuo duo = new cDuo();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT   comu.comuna_descripcion,  AA.id_duo,to_char(fecha_duo,'DD/MM/YYYY')as fecha_duo,hora_duo,estado_duo,   AA.id_cama, descripcion_cama,id_prevision,  \n"
-                + "  to_char(fecha_hora_ing_duo,'DD/MM/YYYY HH24:MI:SS')as fecha_hora_ing_duo,   rut_usuario,AA.programa_duo,   EXTRACT(SECOND FROM CURRENT_TIMESTAMP-fecha_hora_ing_med) as dif_ss,  \n"
-                + "  EXTRACT(MINUTE FROM CURRENT_TIMESTAMP-fecha_hora_ing_med) as dif_mm, \n"
-                + "     EXTRACT(HOUR FROM CURRENT_TIMESTAMP-fecha_hora_ing_med)as dif_hh,   \n"
-                + "   EXTRACT(DAY FROM CURRENT_TIMESTAMP-fecha_hora_ing_med)as dif_dd,  (SELECT nombre_usuario||' '||apellidop_usuario||' '||apellidom_usuario as   nombre_completo     FROM  schema_uo.usuario \n"
-                + "   where rut_usuario=AA.rut_usuario) as nombre_admisor,      rut_paciente,anamnesis_duo,  AA.id_derivador,descripcion_derivador,     AA.id_categorizacion,descripcion_categorizacion,tipo_duo_id,   to_char(fecha_hora_alta_med_duo,'DD/MM/YYYY HH24:MI:SS')as fecha_hora_alta_med_duo ,\n"
-                + "     to_char(fecha_hora_alta_adm_duo ,'DD/MM/YYYY HH24:MI:SS')as fecha_hora_alta_adm_duo,  duo_tiene_enfermeria,  rut_usuario_ing_med,  \n"
-                + "     (SELECT to_char(LL.fecha_hora_ing_enfermeria,'DD/MM/YYYY HH24:MI:SS') as fecha_hora_ing_enfermeria FROM schema_uo.ing_enfermeria LL    where LL.id_duo_ing_enfermeria=AA.id_duo limit 1) as fecha_hora_ing_enf,   \n"
-                + "     (SELECT     nombre_usuario||' '||apellidop_usuario||' '||apellidom_usuario as nombre_completo    FROM  schema_uo.usuario VV JOIN schema_uo.ing_enfermeria RR ON    (VV.rut_usuario=RR.rut_usuario_ing_enfermeria)     where RR.id_duo_ing_enfermeria=AA.id_duo limit 1) as nombre_enf,\n"
-                + "        (SELECT    nombre_usuario||' '||apellidop_usuario||' '||apellidom_usuario as nombre_completo   FROM  schema_uo.usuario where rut_usuario= rut_usuario_ing_med) as nombre_med,    to_char(fecha_hora_ing_med,'DD/MM/YYYY HH24:MI:SS')as fecha_hora_ing_med,    ip_ing_enf,ip_ing_med,    ( SELECT BB.cat_visita_categorizacion   \n"
-                + "     FROM schema_uo.visita AA     JOIN schema_uo.visita_categorizacion BB ON       (AA.id_visita_categorizacion=BB.id_visita_categorizacion)        where id_duo=AA.id_duo order by AA.fecha_hora_visita DESC limit 1 ) as ultima_cat,      ( SELECT BB.cat_visita_categorizacion     FROM schema_uo.visita AA      JOIN schema_uo.visita_categorizacion BB ON     (AA.id_visita_categorizacion=BB.id_visita_categorizacion)      where id_duo=AA.id_duo order by AA.fecha_hora_visita ASC limit 1 ) as primera_cat,    BB.paciente_nombres,BB.paciente_apellidop, BB.paciente_apellidom,   BB.paciente_telefono1, BB.paciente_telefono2,    to_char( BB.paciente_fecha_nac,'DD/MM/YYYY')as paciente_fecha_nac,    age(AA.fecha_duo,BB.paciente_fecha_nac) AS paciente_edad,    BB.paciente_direccion,BB.paciente_sexo,    BB.paciente_pueblo,BB.paciente_consultorio,BB.paciente_nacionalidad, (SELECT nac_descripcion FROM  schemaoirs.nacion where nac_id=BB.paciente_nacionalidad limit 1)as paciente_nacionalidad_descripcion,    (SELECT PP.con_descripcion from schemaoirs.consultorio_pertenencia PP WHERE   PP.con_id=BB.paciente_consultorio)as consultorio_pertenencia,   (SELECT QQ.pue_descripcion from schemaoirs.pueblo_originario QQ WHERE    QQ.pue_id=BB.paciente_pueblo limit 1) as pueblo_originario,    codigo_fonasa_descripcion,tramo_prevision_paciente,    prais_prevision_paciente,verificado_fonasa, EXTRACT(DAY FROM (fecha_hora_alta_med_duo)-(fecha_duo+hora_duo)) as dias_cama,paciente_mail,   EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(fecha_duo+hora_duo)) as dias_cama2   FROM schema_uo.duo AA   JOIN schema_urgencia.paciente BB ON    (AA.rut_paciente=BB.paciente_rut)      JOIN schema_urgencia.prevision_paciente  ON    (BB.paciente_rut=prevision_paciente.id_paciente_prevision_paciente)     JOIN schema_urgencia.codigo_fonasa ON    (prevision_paciente.codigo_fonasa_prevision_paciente=codigo_fonasa.codigo_fonasa_id)    JOIN schema_uo.cama ON (AA.id_cama=cama.id_cama)   JOIN schema_uo.derivador ON (AA.id_derivador=derivador.id_derivador)   JOIN schema_uo.categorizacion ON (AA.id_categorizacion=categorizacion.id_categorizacion) join schemaoirs.comuna comu on comu.comuna_codigo =  BB.comuna_codigo  where id_duo='" + id_duo + "' and   prevision_paciente.estado_prevision_paciente='1'");
-        this.cnn.conectar();
 
+        this.cnn.setSentenciaSQL("SELECT  \n"
+                + "AA.id_duo, \n"
+                + "fecha_duo as fecha ,\n"
+                + " to_char(fecha_duo,'DD/MM/YYYY')as fecha_duo,hora_duo,\n"
+                + " estado_duo,  \n"
+                + " AA.id_cama,\n"
+                + "  descripcion_cama,\n"
+                + "  prevision.id_prevision,  \n"
+                + " to_char(fecha_hora_ing_duo,'DD/MM/YYYY HH24:MI:SS')as fecha_hora_ing_duo,  \n"
+                + " rut_usuario,\n"
+                + " AA.programa_duo,"
+                + "c.nombre as comuna_descripcion,  \n"
+                + " EXTRACT(SECOND FROM CURRENT_TIMESTAMP-fecha_hora_ing_med) as dif_ss,  \n"
+                + " EXTRACT(MINUTE FROM CURRENT_TIMESTAMP-fecha_hora_ing_med) as dif_mm,   \n"
+                + " EXTRACT(HOUR FROM CURRENT_TIMESTAMP-fecha_hora_ing_med)as dif_hh,   \n"
+                + " EXTRACT(DAY FROM CURRENT_TIMESTAMP-fecha_hora_ing_med)as dif_dd, \n"
+                + "(SELECT nombre_usuario||' '||apellidop_usuario||' '||apellidom_usuario as \n"
+                + " nombre_completo  \n"
+                + " FROM  schema_uo.usuario where rut_usuario=AA.rut_usuario) as nombre_admisor,  \n"
+                + " rut_paciente,anamnesis_duo, \n"
+                + "  AA.id_derivador,descripcion_derivador,  \n"
+                + "AA.id_categorizacion,\n"
+                + "descripcion_categorizacion,\n"
+                + "tipo_duo_id,  \n"
+                + "to_char(fecha_hora_alta_med_duo,'DD/MM/YYYY HH24:MI:SS')as fecha_hora_alta_med_duo ,\n"
+                + "to_char(fecha_hora_alta_adm_duo ,'DD/MM/YYYY HH24:MI:SS')as fecha_hora_alta_adm_duo, \n"
+                + "duo_tiene_enfermeria,\n"
+                + "  rut_usuario_ing_med, \n"
+                + "(SELECT to_char(LL.fecha_hora_ing_enfermeria,'DD/MM/YYYY HH24:MI:SS') as fecha_hora_ing_enfermeria FROM schema_uo.ing_enfermeria LL   \n"
+                + "where LL.id_duo_ing_enfermeria=AA.id_duo limit 1) as fecha_hora_ing_enf,  \n"
+                + "(SELECT   \n"
+                + " nombre_usuario||' '||apellidop_usuario||' '||apellidom_usuario as nombre_completo  \n"
+                + " FROM  schema_uo.usuario VV JOIN schema_uo.ing_enfermeria RR ON  \n"
+                + "(VV.rut_usuario=RR.rut_usuario_ing_enfermeria)   \n"
+                + "where RR.id_duo_ing_enfermeria=AA.id_duo limit 1) as nombre_enf,  \n"
+                + "(SELECT   \n"
+                + "nombre_usuario||' '||apellidop_usuario||' '||apellidom_usuario as nombre_completo  \n"
+                + "FROM  schema_uo.usuario where rut_usuario= rut_usuario_ing_med) as nombre_med,  \n"
+                + " to_char(fecha_hora_ing_med,'DD/MM/YYYY HH24:MI:SS')as fecha_hora_ing_med, \n"
+                + " ip_ing_enf,ip_ing_med,  \n"
+                + " ( SELECT BB.cat_visita_categorizacion   \n"
+                + " FROM schema_uo.visita AA    \n"
+                + " JOIN schema_uo.visita_categorizacion BB ON    \n"
+                + " (AA.id_visita_categorizacion=BB.id_visita_categorizacion)    \n"
+                + "  where id_duo=AA.id_duo order by AA.fecha_hora_visita DESC limit 1 ) as ultima_cat,  \n"
+                + "   ( SELECT BB.cat_visita_categorizacion   \n"
+                + "  FROM schema_uo.visita AA    \n"
+                + " JOIN schema_uo.visita_categorizacion BB ON    \n"
+                + " (AA.id_visita_categorizacion=BB.id_visita_categorizacion)    \n"
+                + "  where id_duo=AA.id_duo order by AA.fecha_hora_visita ASC limit 1 ) as primera_cat, \n"
+                + "  BB.nombre as paciente_nombres,\n"
+                + "  BB.apellido_paterno as paciente_apellidop,\n"
+                + "   BB.apellido_moderno as paciente_apellidom,  \n"
+                + " BB.contacto1 as paciente_telefono1, \n"
+                + " BB.contacto2 as paciente_telefono2,  \n"
+                + " to_char( BB.fecha_nacimiento,'DD/MM/YYYY')as paciente_fecha_nac,  \n"
+                + "age(CURRENT_DATE,BB.fecha_nacimiento) AS paciente_edad,  \n"
+                + " BB.direccion as paciente_direccion,BB.genero as paciente_sexo, \n"
+                + " BB.procedencia as paciente_consultorio,\n"
+                + " BB.id_nacionalidad as paciente_nacionalidad,\n"
+                + " (SELECT nac_descripcion FROM  schemaoirs.nacion where nac_id=BB.id_nacionalidad limit 1)as paciente_nacionalidad_descripcion,  \n"
+                + "(SELECT PP.con_descripcion from schemaoirs.consultorio_pertenencia PP WHERE  \n"
+                + " PP.con_id=BB.procedencia)as consultorio_pertenencia,  \n"
+                + "prevision.nombre as codigo_fonasa_descripcion,\n"
+                + "tramo.nombre as tramo_prevision_paciente,  \n"
+                + "\n"
+                + "EXTRACT(DAY FROM (fecha_hora_alta_med_duo)-(fecha_duo+hora_duo)) as dias_cama, BB.email as paciente_mail,  \n"
+                + " EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(fecha_duo+hora_duo)) as dias_cama2  \n"
+                + "  FROM schema_uo.duo AA  \n"
+                + " JOIN agenda.paciente BB ON  \n"
+                + " (AA.rut_paciente=BB.rut )  \n"
+                + " JOIN agenda.prevision  ON   \n"
+                + "(BB.provision=prevision.id_prevision)  \n"
+                + "JOIN agenda.tramo ON   \n"
+                + "(tramo.id=BB.tramo)  \n"
+                + " JOIN schema_uo.cama ON (AA.id_cama=cama.id_cama)"
+                + " join agenda.comuna c on  (bb.id_comuna = c.id_comuna)   \n"
+                + "\n"
+                + " JOIN schema_uo.derivador ON (AA.id_derivador=derivador.id_derivador)  \n"
+                + " JOIN schema_uo.categorizacion ON (AA.id_categorizacion=categorizacion.id_categorizacion) \n"
+                + " where id_duo='" + id_duo + "' ");
+        this.cnn.conectar();
         try {
-            if (this.cnn.getRst().next()) {
-                duo.setId_duo(this.cnn.getRst().getInt("id_duo"));
-                duo.setFecha_duo(this.cnn.getRst().getString("fecha_duo"));
-                duo.setHora_duo(this.cnn.getRst().getString("hora_duo"));
-                duo.setEstado_duo(this.cnn.getRst().getInt("estado_duo"));
-                duo.setDias_reales_cama(this.cnn.getRst().getInt("dias_cama"));
+            if (cnn.getRst().next()) {
+                duo.setId_duo(cnn.getRst().getInt("id_duo"));
+                duo.setFecha_duo(cnn.getRst().getString("fecha_duo"));
+                duo.setHora_duo(cnn.getRst().getString("hora_duo"));
+                duo.setEstado_duo(cnn.getRst().getInt("estado_duo"));
+                duo.setFecha(cnn.getRst().getDate("fecha"));
+                duo.setDias_cama(cnn.getRst().getInt("dias_cama2"));
+
                 if (duo.getEstado_duo() == 1) {
                     duo.setEstado_duo_descripcion("INGRESADO ADM.");
                 } else if (duo.getEstado_duo() == 2) {
@@ -842,21 +979,23 @@ public class NegocioQ extends Negocio {
                     duo.setEstado_duo_descripcion("ANULADO");
                 }
 
-                duo.setCama(this.cnn.getRst().getInt("id_cama"));
-                duo.setCama_descripcion(this.cnn.getRst().getString("descripcion_cama"));
-                duo.setId_prevision(this.cnn.getRst().getInt("id_prevision"));
-                duo.setFecha_hora_ing_duo(this.cnn.getRst().getString("fecha_hora_ing_duo"));
-                duo.setRut_usuario(this.cnn.getRst().getString("rut_usuario"));
-                duo.setNombre_usuario_admision(this.cnn.getRst().getString("nombre_admisor"));
-                duo.setRut_paciente(this.cnn.getRst().getString("rut_paciente"));
-                duo.setAnamnesis_duo(this.cnn.getRst().getString("anamnesis_duo"));
-                duo.setDerivador_id(this.cnn.getRst().getInt("id_derivador"));
-                duo.setDerivador_descripcion(this.cnn.getRst().getString("descripcion_derivador"));
-                duo.setCategorizacion_id(this.cnn.getRst().getInt("id_categorizacion"));
-                duo.setCategorizacion_descripcion(this.cnn.getRst().getString("descripcion_categorizacion"));
-                duo.setTipo_duo_id(this.cnn.getRst().getInt("tipo_duo_id"));
-                duo.setFecha_hora_alta_adm_duo(this.cnn.getRst().getString("fecha_hora_alta_adm_duo"));
-                duo.setFecha_hora_alta_med_duo(this.cnn.getRst().getString("fecha_hora_alta_med_duo"));
+                duo.setCama(cnn.getRst().getInt("id_cama"));
+                duo.setCama_descripcion(cnn.getRst().getString("descripcion_cama"));
+                duo.setId_prevision(cnn.getRst().getInt("id_prevision"));
+                duo.setFecha_hora_ing_duo(cnn.getRst().getString("fecha_hora_ing_duo"));
+                duo.setRut_usuario(cnn.getRst().getString("rut_usuario"));
+                duo.setNombre_usuario_admision(cnn.getRst().getString("nombre_admisor"));
+                duo.setRut_paciente(cnn.getRst().getString("rut_paciente"));
+                duo.setAnamnesis_duo(cnn.getRst().getString("anamnesis_duo"));
+                duo.setDerivador_id(cnn.getRst().getInt("id_derivador"));
+                duo.setDerivador_descripcion(cnn.getRst().getString("descripcion_derivador"));
+                duo.setCategorizacion_id(cnn.getRst().getInt("id_categorizacion"));
+                duo.setCategorizacion_descripcion(cnn.getRst().getString("descripcion_categorizacion"));
+                duo.setTipo_duo_id(cnn.getRst().getInt("tipo_duo_id"));
+
+                duo.setFecha_hora_alta_adm_duo(cnn.getRst().getString("fecha_hora_alta_adm_duo"));
+                duo.setFecha_hora_alta_med_duo(cnn.getRst().getString("fecha_hora_alta_med_duo"));
+
                 if (duo.getFecha_hora_alta_adm_duo() == null) {
                     duo.setFecha_hora_alta_adm_duo("---");
                 }
@@ -865,73 +1004,72 @@ public class NegocioQ extends Negocio {
                     duo.setFecha_hora_alta_med_duo("---");
                 }
 
-                duo.setTiene_enfermeria(this.cnn.getRst().getInt("duo_tiene_enfermeria"));
-                duo.setRut_usuario_ing_med(this.cnn.getRst().getString("rut_usuario_ing_med"));
-                duo.setNombre_usuario_ing_enf(this.cnn.getRst().getString("nombre_enf"));
-                duo.setNombre_usuario_ing_med(this.cnn.getRst().getString("nombre_med"));
+                duo.setTiene_enfermeria(cnn.getRst().getInt("duo_tiene_enfermeria"));
+                duo.setRut_usuario_ing_med(cnn.getRst().getString("rut_usuario_ing_med"));
+                duo.setNombre_usuario_ing_enf(cnn.getRst().getString("nombre_enf"));
+                duo.setNombre_usuario_ing_med(cnn.getRst().getString("nombre_med"));
                 if (duo.getNombre_usuario_ing_med().contains("PRUEBA")) {
                     duo.setNombre_usuario_ing_med("--");
                 }
-
-                duo.setFecha_hora_ing_med(this.cnn.getRst().getString("fecha_hora_ing_med"));
+                duo.setFecha_hora_ing_med(cnn.getRst().getString("fecha_hora_ing_med"));
                 if (duo.getFecha_hora_ing_med() == null) {
                     duo.setFecha_hora_ing_med("---");
                 }
-
-                duo.setFecha_hora_ing_enf(this.cnn.getRst().getString("fecha_hora_ing_enf"));
+                duo.setFecha_hora_ing_enf(cnn.getRst().getString("fecha_hora_ing_enf"));
                 if (duo.getFecha_hora_ing_med() == null) {
                     duo.setFecha_hora_ing_enf("---");
                 }
+                duo.setIp_ing_enf(cnn.getRst().getString("ip_ing_enf"));
+                duo.setIp_ing_med(cnn.getRst().getString("ip_ing_med"));
 
-                duo.setIp_ing_enf(this.cnn.getRst().getString("ip_ing_enf"));
-                duo.setIp_ing_med(this.cnn.getRst().getString("ip_ing_med"));
-                duo.setPrimera_clasificacion(this.cnn.getRst().getString("primera_cat"));
-                duo.setUltima_clasificacion(this.cnn.getRst().getString("ultima_cat"));
-                duo.setNombres_paciente(this.cnn.getRst().getString("paciente_nombres"));
-                duo.setApellidop_paciente(this.cnn.getRst().getString("paciente_apellidop"));
-                duo.setApellidom_paciente(this.cnn.getRst().getString("paciente_apellidom"));
-                duo.setTelefono1(this.cnn.getRst().getString("paciente_telefono1"));
-                duo.setTelefono2(this.cnn.getRst().getString("paciente_telefono2"));
-                duo.setFecha_nac(this.cnn.getRst().getString("paciente_fecha_nac"));
-                String edad = this.cnn.getRst().getString("paciente_edad");
+                duo.setPrimera_clasificacion(cnn.getRst().getString("primera_cat"));
+                duo.setUltima_clasificacion(cnn.getRst().getString("ultima_cat"));
+                duo.setNombres_paciente(cnn.getRst().getString("paciente_nombres"));
+                duo.setApellidop_paciente(cnn.getRst().getString("paciente_apellidop"));
+                duo.setApellidom_paciente(cnn.getRst().getString("paciente_apellidom"));
+                duo.setTelefono1(cnn.getRst().getString("paciente_telefono1"));
+                duo.setTelefono2(cnn.getRst().getString("paciente_telefono2"));
+                duo.setFecha_nac(cnn.getRst().getString("paciente_fecha_nac"));
+
+                String edad = cnn.getRst().getString("paciente_edad");
                 edad = edad.replace("years", "años");
                 edad = edad.replace("year", "año");
                 edad = edad.replace("mons", "meses");
                 edad = edad.replace("mon", "mes");
                 edad = edad.replace("days", "dias.z");
                 edad = edad.replace("day", "dia.z");
+
                 duo.setEdad(edad);
 
                 try {
                     edad = edad.substring(0, edad.indexOf("z") - 1);
                     duo.setEdad(edad);
-                } catch (Exception var5) {
+                } catch (Exception exx) {
                 }
 
-                duo.setDireccion(this.cnn.getRst().getString("paciente_direccion"));
-
-                duo.setSexo(this.cnn.getRst().getInt("paciente_sexo"));
-                if (duo.getSexo() == 0) {
+                duo.setDireccion(cnn.getRst().getString("paciente_direccion"));
+                duo.setComuna_descri(cnn.getRst().getString("comuna_descripcion"));
+                duo.setSexo(cnn.getRst().getInt("paciente_sexo"));
+                if (duo.getSexo() == 2) {
                     duo.setSexo_descri("Masculino");
                 } else if (duo.getSexo() == 1) {
                     duo.setSexo_descri("Femenino");
                 } else {
                     duo.setSexo_descri("---");
                 }
+                duo.setPueblo(0);
+                duo.setConsultorio(cnn.getRst().getInt("paciente_consultorio"));
+                duo.setPueblo_descri("Sin Pueblo");
+                duo.setConsultorio_descri(cnn.getRst().getString("consultorio_pertenencia"));
 
-                duo.setPueblo(this.cnn.getRst().getInt("paciente_pueblo"));
-                duo.setConsultorio(this.cnn.getRst().getInt("paciente_consultorio"));
-                duo.setPueblo_descri(this.cnn.getRst().getString("pueblo_originario"));
-                duo.setConsultorio_descri(this.cnn.getRst().getString("consultorio_pertenencia"));
                 if (duo.getPueblo_descri() == null) {
                     duo.setPueblo_descri("");
                 }
-
                 if (duo.getConsultorio_descri() == null) {
                     duo.setConsultorio_descri("");
                 }
 
-                duo.setPrograma(this.cnn.getRst().getInt("programa_duo"));
+                duo.setPrograma(cnn.getRst().getInt("programa_duo"));
                 if (duo.getPrograma() == 0) {
                     duo.setPrograma_descripcion("Sin Información");
                 } else if (duo.getPrograma() == 1) {
@@ -940,29 +1078,30 @@ public class NegocioQ extends Negocio {
                     duo.setPrograma_descripcion("Ges No");
                 }
 
-                duo.setCodigo_fonasa_descripcion(this.cnn.getRst().getString("codigo_fonasa_descripcion"));
-                duo.setTramo_prevision(this.cnn.getRst().getString("tramo_prevision_paciente"));
-                duo.setPrais(this.cnn.getRst().getInt("prais_prevision_paciente"));
-                duo.setVerificado_fonasa(this.cnn.getRst().getInt("verificado_fonasa"));
-                duo.setNacion(this.cnn.getRst().getInt("paciente_nacionalidad"));
-                duo.setNacion_descripcion(this.cnn.getRst().getString("paciente_nacionalidad_descripcion"));
+                duo.setCodigo_fonasa_descripcion(cnn.getRst().getString("codigo_fonasa_descripcion"));
+                duo.setTramo_prevision(cnn.getRst().getString("tramo_prevision_paciente"));
+
+                duo.setNacion(cnn.getRst().getInt("paciente_nacionalidad"));
+
+                duo.setNacion_descripcion(cnn.getRst().getString("paciente_nacionalidad_descripcion"));
+
                 if (duo.getNacion_descripcion() == null) {
                     duo.setNacion_descripcion("");
                 }
 
-                duo.setDif_dd(this.cnn.getRst().getInt("dif_dd"));
-                duo.setDif_hh(this.cnn.getRst().getInt("dif_hh"));
-                duo.setDif_mm(this.cnn.getRst().getInt("dif_mm"));
-                duo.setDif_ss(this.cnn.getRst().getInt("dif_ss"));
-                duo.setMail(this.cnn.getRst().getString("paciente_mail"));
-                /*dias transcurridos*/
-                duo.setDias_cama(this.cnn.getRst().getInt("dias_cama2"));
-                duo.setComuna_descri(this.cnn.getRst().getString("comuna_descripcion"));
-            }
-        } catch (SQLException var6) {
-            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var6);
-        }
+                duo.setDif_dd(cnn.getRst().getInt("dif_dd"));
+                duo.setDif_hh(cnn.getRst().getInt("dif_hh"));
+                duo.setDif_mm(cnn.getRst().getInt("dif_mm"));
+                duo.setDif_ss(cnn.getRst().getInt("dif_ss"));
 
+                duo.setMail(cnn.getRst().getString("paciente_mail"));
+
+                duo.setDias_cama(cnn.getRst().getInt("dias_cama2"));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.cnn.cerrarConexion();
         return duo;
     }
@@ -1060,73 +1199,139 @@ public class NegocioQ extends Negocio {
         return lista;
     }
 
+    /*new code */
     public cPaciente obtiene_paciente(String rut_paciente) {
         cPaciente pac = new cPaciente();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT  paciente_rut,paciente_nombres,paciente_apellidop,   paciente_apellidom,paciente_sexo,to_char(paciente_fecha_nac,'DD/MM/YYYY')as paciente_fecha_nac,   paciente_direccion,paciente_telefono1,paciente_telefono2,   comuna_codigo,to_char(paciente_fecha_creacion,'DD/MM/YYYY HH24:MI:SS') as paciente_fecha_creacion,paciente_procedencia,   paciente_consultorio,paciente_pueblo,   BB.codigo_fonasa_prevision_paciente,id_prevision_paciente,   BB.tramo_prevision_paciente,   BB.prais_prevision_paciente,   codigo_fonasa.codigo_fonasa_descripcion,paciente_mail   FROM  schema_urgencia.paciente AA   JOIN schema_urgencia.prevision_paciente BB    ON (AA.paciente_rut=BB.id_paciente_prevision_paciente)   JOIN schema_urgencia.codigo_fonasa ON    (BB.codigo_fonasa_prevision_paciente=codigo_fonasa.codigo_fonasa_id)   where  paciente_rut='" + rut_paciente + "' and  BB.estado_prevision_paciente='1'   limit 1 ");
+        this.cnn.setSentenciaSQL("SELECT \n"
+                + "AA.rut as paciente_rut, AA.nombre AS  paciente_nombres,\n"
+                + "AA.apellido_paterno AS paciente_apellidop, \n"
+                + " AA.apellido_moderno AS paciente_apellidom,\n"
+                + " AA.genero AS paciente_sexo,to_char(AA.fecha_nacimiento,'DD/MM/YYYY')as paciente_fecha_nac, \n"
+                + " AA.direccion AS  paciente_direccion,\n"
+                + " AA.contacto1 AS paciente_telefono1,AA.contacto2 AS  paciente_telefono2, \n"
+                + " AA.id_comuna AS comuna_codigo,to_char(AA.fecha_registro ,'DD/MM/YYYY HH24:MI:SS') as paciente_fecha_creacion,\n"
+                + " AA.procedencia as paciente_procedencia, \n"
+                + " aa.id_puebloorigen as  paciente_pueblo, \n"
+                + "BB.nombre as codigo_fonasa_prevision_paciente ,AA.provision as id_prevision_paciente, \n"
+                + "AA.nombre as tramo_prevision_paciente, \n"
+                + " \n"
+                + "   bb.nombre as codigo_fonasa_descripcion, aa.email as paciente_mail \n"
+                + "  FROM  agenda.paciente AA \n"
+                + "    JOIN agenda.prevision BB  \n"
+                + " ON (AA.provision =BB.id_prevision) \n"
+                + "  JOIN agenda.tramo ON  \n"
+                + " (AA.tramo=tramo.id) \n"
+                + "  where  rut='" + rut_paciente + "' ");
         this.cnn.conectar();
 
         try {
-            if (this.cnn.getRst().next()) {
-                pac.setRut_paciente(this.cnn.getRst().getString("paciente_rut"));
-                pac.setNombres_paciente(this.cnn.getRst().getString("paciente_nombres"));
-                pac.setApellidom_paciente(this.cnn.getRst().getString("paciente_apellidom"));
-                pac.setApellidop_paciente(this.cnn.getRst().getString("paciente_apellidop"));
-                pac.setDireccion(this.cnn.getRst().getString("paciente_direccion"));
-                pac.setTelefono1(this.cnn.getRst().getString("paciente_telefono1"));
-                pac.setTelefono2(this.cnn.getRst().getString("paciente_telefono2"));
-                pac.setFecha_nac(this.cnn.getRst().getString("paciente_fecha_nac"));
-                pac.setSexo(this.cnn.getRst().getInt("paciente_sexo"));
-                if (pac.getSexo() == 0) {
+            if (cnn.getRst().next()) {
+                pac.setRut_paciente(cnn.getRst().getString("paciente_rut"));
+                pac.setNombres_paciente(cnn.getRst().getString("paciente_nombres"));
+                pac.setApellidom_paciente(cnn.getRst().getString("paciente_apellidom"));
+                pac.setApellidop_paciente(cnn.getRst().getString("paciente_apellidop"));
+                pac.setDireccion(cnn.getRst().getString("paciente_direccion"));
+                pac.setTelefono1(cnn.getRst().getString("paciente_telefono1"));
+                pac.setTelefono2(cnn.getRst().getString("paciente_telefono2"));
+                pac.setFecha_nac(cnn.getRst().getString("paciente_fecha_nac"));
+                //pac.setDv(cnn.getRst().getString("paciente_rut").substring(pac.getRut_paciente().length() - 1, pac.getRut_paciente().length()));
+                pac.setSexo(cnn.getRst().getInt("paciente_sexo"));
+                if (pac.getSexo() == 2) {
                     pac.setSexo_descri("MASCULINO");
                 } else if (pac.getSexo() == 1) {
                     pac.setSexo_descri("FEMENINO");
                 }
+                pac.setComuna_codigo(cnn.getRst().getInt("comuna_codigo"));
+                pac.setPueblo(cnn.getRst().getInt("paciente_pueblo"));
 
-                pac.setComuna_codigo(this.cnn.getRst().getInt("comuna_codigo"));
-                pac.setPueblo(this.cnn.getRst().getInt("paciente_pueblo"));
-                pac.setConsultorio(this.cnn.getRst().getInt("paciente_consultorio"));
-                pac.setId_prevision(this.cnn.getRst().getInt("id_prevision_paciente"));
-                pac.setTramo_prevision(this.cnn.getRst().getString("tramo_prevision_paciente"));
-                pac.setCodigo_fonasa(this.cnn.getRst().getString("codigo_fonasa_prevision_paciente"));
-                pac.setCodigo_fonasa_descripcion(this.cnn.getRst().getString("codigo_fonasa_descripcion"));
-                pac.setPrais(this.cnn.getRst().getInt("prais_prevision_paciente"));
-                pac.setMail(this.cnn.getRst().getString("paciente_mail"));
+                pac.setId_prevision(cnn.getRst().getInt("id_prevision_paciente"));
+                pac.setTramo_prevision(cnn.getRst().getString("tramo_prevision_paciente"));
+                pac.setCodigo_fonasa(cnn.getRst().getString("codigo_fonasa_prevision_paciente"));
+                pac.setCodigo_fonasa_descripcion(cnn.getRst().getString("codigo_fonasa_descripcion"));
+                pac.setProcedencia(cnn.getRst().getInt("paciente_procedencia"));
+                pac.setMail(cnn.getRst().getString("paciente_mail"));
                 if (pac.getMail() == null) {
                     pac.setMail("");
                 }
             }
-        } catch (SQLException var4) {
-            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         this.cnn.cerrarConexion();
         return pac;
     }
 
+    public GradoCRD getGradoCRD(int id_ambito_crd, int valor) {
+        GradoCRD gra = null;
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("select descripcion_grado_crd from schema_uo.grado_crd  where id_ambito_crd=" + id_ambito_crd + " and puntaje_grado_crd=" + valor);
+        this.cnn.conectar();
+        try {
+            while (cnn.getRst().next()) {
+                gra = new GradoCRD();
+                gra.setDescripcion_grado_crd(cnn.getRst().getString("descripcion_grado_crd"));
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.cnn.cerrarConexion();
+        return (gra);
+
+    }
+
+    public AmbitoCRD getAmbitoCRD(int id_ambito_crd) {
+        AmbitoCRD amb = null;
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("select * from schema_uo.ambito_crd A where A.id_ambito_crd=" + id_ambito_crd);
+        this.cnn.conectar();
+        try {
+            while (cnn.getRst().next()) {
+                amb = new AmbitoCRD();
+                amb.setDescripcion_ambito_crd(cnn.getRst().getString("descripcion_ambito_crd"));
+                amb.setAbre_ambito_crd(cnn.getRst().getString("abre_ambito_crd"));
+                amb.setTipo_ambito_crd(cnn.getRst().getInt("tipo_ambito_crd"));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.cnn.cerrarConexion();
+
+        return (amb);
+
+    }
+
+    /*new code*/
     public ArrayList lista_grilla_camas() {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL(" SELECT to_char(D.fecha_duo,'DD/MM/YYYY') as fecha_duo ,D.hora_duo, "
-                + " C.id_cama,C.id_sala,schema_uo.sala.descripcion_sala ,C.descripcion_cama, "
-                + " D.id_duo,D.rut_paciente,D.id_categorizacion,D.estado_duo,   "
-                + " paciente_nombres,paciente_apellidop,paciente_apellidom , "
-                + " fecha_hora_alta_adm_duo,fecha_hora_alta_med_duo, "
-                + " D.duo_tiene_enfermeria, (SELECT BB.cat_visita_categorizacion "
-                + " FROM schema_uo.visita AA  "
-                + " JOIN schema_uo.visita_categorizacion BB ON "
-                + " (AA.id_visita_categorizacion=BB.id_visita_categorizacion) "
-                + " where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1) as ultima_cat, "
-                + " EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo)) as dias_cama "
-                + " FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama "
-                + " and (D.estado_duo=2 or D.estado_duo=1 or D.estado_duo=3 or D.estado_duo=21) "
-                + " left JOIN schema_uo.sala   "
-                + " ON (schema_uo.sala.id_sala=C.id_sala) "
-                + " left JOIN schema_urgencia.paciente   "
-                + " ON (schema_urgencia.paciente.paciente_rut=D.rut_paciente) "
-                + " where C.id_sala in (11,12,25) and C.estado_cama=1 order by schema_uo.sala.posicion , C.\"posicionCama\"  ");
+        this.cnn.setSentenciaSQL(" SELECT to_char(D.fecha_duo,'DD/MM/YYYY') as fecha_duo ,D.hora_duo, \n"
+                + "                 C.id_cama,C.id_sala,schema_uo.sala.descripcion_sala ,C.descripcion_cama, \n"
+                + "                D.id_duo,D.rut_paciente,D.id_categorizacion,D.estado_duo,   \n"
+                + "                p.nombre as paciente_nombres,p.apellido_paterno as paciente_apellidop,\n"
+                + "                p.apellido_moderno as paciente_apellidom , \n"
+                + "                fecha_hora_alta_adm_duo,fecha_hora_alta_med_duo, \n"
+                + "                D.duo_tiene_enfermeria, (SELECT BB.cat_visita_categorizacion \n"
+                + "                FROM schema_uo.visita AA  \n"
+                + "                 JOIN schema_uo.visita_categorizacion BB ON \n"
+                + "                 (AA.id_visita_categorizacion=BB.id_visita_categorizacion) \n"
+                + "                where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1) as ultima_cat, \n"
+                + "                EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo)) as dias_cama \n"
+                + "                FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama \n"
+                + "                and (D.estado_duo=2 or D.estado_duo=1 or D.estado_duo=3 or D.estado_duo=21) \n"
+                + "                 left JOIN schema_uo.sala   \n"
+                + "                 ON (schema_uo.sala.id_sala=C.id_sala) \n"
+                + "                left JOIN agenda.paciente p  \n"
+                + "                ON (p.rut =D.rut_paciente) \n"
+                + "                 where C.id_sala in (11,12,25) and C.estado_cama=1 order by schema_uo.sala.posicion");
         this.cnn.conectar();
         try {
             while (cnn.getRst().next()) {
@@ -1172,37 +1377,57 @@ public class NegocioQ extends Negocio {
         return lista;
     }
 
+    /*new code*/
     public ArrayList lista_documentos_paciente(String rut_paciente) {
+        // este metodo sirve para ver si un paciente tiene un duo activo en la unidad y si esta registradoen sistema
+        /*DUDA CON ESTE METODO; PIENSO QUE DEBERIA FILTRAR POR EL NUMERO DE DUO 25-05-2012 */
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT D.id_duo,D.estado_duo,to_char(D.fecha_duo,'DD/MM/YYYY')as fecha_duo ,E.id_epicrisis,  to_char(E.fecha_epicrisis,'DD/MM/YYYY')as fecha_epicrisis ,E.hora_epicrisis ,  D.id_prevision,PRE.tramo_prevision_paciente,PRE.prais_prevision_paciente,  COD.codigo_fonasa_descripcion  FROM schema_uo.duo D  JOIN schema_urgencia.prevision_paciente PRE ON (D.id_prevision=PRE.id_prevision_paciente)  JOIN schema_urgencia.codigo_fonasa COD ON (PRE.codigo_fonasa_prevision_paciente=COD.codigo_fonasa_id)  LEFT JOIN schema_uo.epicrisis E ON D.id_duo=E.id_duo   WHERE D.rut_paciente='" + rut_paciente + "'   and estado_duo NOT IN (99) ORDER BY D.id_duo desc");
-        this.cnn.conectar();
+        /*  FIN 23082013
+         this.cnn.setSentenciaSQL("SELECT D.id_duo,D.estado_duo,to_char(D.fecha_duo,'DD/MM/YYYY')as fecha_duo ,E.id_epicrisis,"
+         + " to_char(E.fecha_epicrisis,'DD/MM/YYYY')as fecha_epicrisis ,E.hora_epicrisis "
+         + " FROM schema_uo.duo D LEFT JOIN schema_uo.epicrisis E "
+         + " ON D.id_duo=E.id_duo where D.rut_paciente='" + rut_paciente + "' and estado_duo NOT IN (99) ORDER BY D.id_duo desc");
+         23082013 */
+        this.cnn.setSentenciaSQL("SELECT D.id_duo,D.estado_duo,to_char(D.fecha_duo,'DD/MM/YYYY')as fecha_duo ,E.id_epicrisis, \n"
+                + "                 to_char(E.fecha_epicrisis,'DD/MM/YYYY')as fecha_epicrisis ,E.hora_epicrisis , \n"
+                + "                 p.provision as id_prevision,t.nombre as tramo_prevision_paciente, \n"
+                + "                 p2.nombre as codigo_fonasa_descripcion \n"
+                + "                 FROM schema_uo.duo D  \n"
+                + "                 JOIN agenda.paciente p on d.rut_paciente = p.rut\n"
+                + "                 join agenda.prevision p2 on p2.id_prevision = p.provision\n"
+                + "                 join agenda.tramo t on t.id = p.tramo"
+                + "                 LEFT JOIN schema_uo.epicrisis E ON D.id_duo=E.id_duo \n"
+                + "                 \n"
+                + "                WHERE D.rut_paciente='" + rut_paciente + "'  \n"
+                + "                 and estado_duo NOT IN (99) ORDER BY D.id_duo desc");
 
+        this.cnn.conectar();
         try {
-            while (this.cnn.getRst().next()) {
+            while (cnn.getRst().next()) {
                 cEpicrisis epi = new cEpicrisis();
-                epi.setId_duo(this.cnn.getRst().getInt("id_duo"));
-                epi.setEstado_duo(this.cnn.getRst().getInt("estado_duo"));
-                epi.setId_epicrisis(this.cnn.getRst().getInt("id_epicrisis"));
-                epi.setFecha_epicrisis(this.cnn.getRst().getString("fecha_epicrisis"));
-                epi.setFecha_duo(this.cnn.getRst().getString("fecha_duo"));
-                epi.setPrevision(this.cnn.getRst().getInt("id_prevision"));
-                epi.setPrevision_descri(this.cnn.getRst().getString("codigo_fonasa_descripcion"));
-                epi.setPrais(this.cnn.getRst().getInt("prais_prevision_paciente"));
+                epi.setId_duo(cnn.getRst().getInt("id_duo"));
+                epi.setEstado_duo(cnn.getRst().getInt("estado_duo"));
+                epi.setId_epicrisis(cnn.getRst().getInt("id_epicrisis"));
+                epi.setFecha_epicrisis(cnn.getRst().getString("fecha_epicrisis"));
+                epi.setFecha_duo(cnn.getRst().getString("fecha_duo"));
+
+                epi.setPrevision(cnn.getRst().getInt("id_prevision"));
+                epi.setPrevision_descri(cnn.getRst().getString("codigo_fonasa_descripcion"));
+
                 if (epi.getPrais() == 1) {
                     epi.setPrais_descri("PRAIS");
                 } else {
                     epi.setPrais_descri("");
                 }
 
-                epi.setTramo(this.cnn.getRst().getString("tramo_prevision_paciente"));
+                epi.setTramo(cnn.getRst().getString("tramo_prevision_paciente"));
                 lista.add(epi);
             }
-        } catch (SQLException var4) {
-            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         this.cnn.cerrarConexion();
         return lista;
     }
@@ -1632,21 +1857,23 @@ public class NegocioQ extends Negocio {
         return hora;
     }
 
+    /*new code*/
     public ArrayList listadelDia() {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("  SELECT c.descripcion_cama, D.rut_paciente,paciente_apellidop,paciente_apellidom, paciente_nombres,\n"
-                + "         to_char(D.fecha_duo,'DD/MM/YYYY') as fecha_duo ,D.hora_duo, \n"
-                + "               \n"
-                + "                EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo))+1 as dias_cama \n"
-                + "                FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama \n"
-                + "                 and D.estado_duo in (2,1, 3, 21) \n"
-                + "                left JOIN schema_uo.sala   \n"
-                + "                ON (schema_uo.sala.id_sala=C.id_sala) \n"
-                + "                 left JOIN schema_urgencia.paciente   \n"
-                + "               ON (schema_urgencia.paciente.paciente_rut=D.rut_paciente) \n"
-                + "                 where C.id_sala in (11,12) and C.estado_cama=1 order by schema_uo.sala.posicion\n"
+        this.cnn.setSentenciaSQL("SELECT c.descripcion_cama, COALESCE( D.rut_paciente, '') as rut_paciente,COALESCE(initcap(p.apellido_paterno),'') as  paciente_apellidop ,\n"
+                + "               COALESCE(initcap(p.apellido_moderno),'')as paciente_apellidom,COALESCE( initcap(p.nombre),'') as paciente_nombres,\n"
+                + "                                     COALESCE(to_char(D.fecha_duo,'DD/MM/YYYY'),'') as fecha_duo ,COALESCE(D.hora_duo,'00:00 ') as hora_duo, \n"
+                + "                                           \n"
+                + "                                              EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo))+1 as dias_cama \n"
+                + "                                          FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama \n"
+                + "                                           and D.estado_duo in (2,1, 3, 21)\n"
+                + "                                             left JOIN schema_uo.sala  \n"
+                + "                                           ON (schema_uo.sala.id_sala=C.id_sala) \n"
+                + "                                              left JOIN agenda.paciente  p  \n"
+                + "                                          ON (p.rut=D.rut_paciente) \n"
+                + "                                               where C.id_sala in (11,12) and C.estado_cama=1 order by schema_uo.sala.posicion\n"
                 + "  \n"
                 + "   ");
         this.cnn.conectar();
@@ -1726,6 +1953,156 @@ public class NegocioQ extends Negocio {
         this.cnn.cerrarConexion();
 
         return r;
+    }
+
+    /*new code*/
+    public Vector<prevision> buscarPrevicion() {
+        Vector<prevision> p = new Vector();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT \n"
+                + "  id_prevision,\n"
+                + "  nombre\n"
+                + "  FROM \n"
+                + "  agenda.prevision where estatus = 1 ;");
+        this.cnn.conectar();
+        try {
+            while (this.cnn.getRst().next()) {
+                prevision pre = new prevision();
+                pre.setId_prevision(this.cnn.getRst().getInt("id_prevision"));
+                pre.setNombre(this.cnn.getRst().getString("nombre"));
+                p.add(pre);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            this.cnn.cerrarConexion();
+        }
+        return p;
+    }
+
+    /*new code */
+    public Vector<prevision> buscarTramo() {
+        Vector<prevision> p = new Vector();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT id,nombre FROM agenda.tramo  where status = 1 order by nombre");
+        this.cnn.conectar();
+        try {
+            while (this.cnn.getRst().next()) {
+                prevision pre = new prevision();
+                pre.setId_prevision(this.cnn.getRst().getInt("id"));
+                pre.setNombre(this.cnn.getRst().getString("nombre"));
+                p.add(pre);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            this.cnn.cerrarConexion();
+        }
+        return p;
+    }
+
+    /*new code */
+    public boolean buscarpaciente(String rut) {
+        boolean tengo = false;
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT * "
+                + "  FROM  agenda.paciente AA "
+                + "  where  rut='" + rut + "'  ");
+
+        this.cnn.conectar();
+        try {
+            if (cnn.getRst().next()) {
+                tengo = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.cnn.cerrarConexion();
+
+        return tengo;
+    }
+
+    /*new code*/
+    public cPaciente buscarpacienteporrut(String rut) {
+        cPaciente p = new cPaciente();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT  to_char(fecha_nacimiento,'DD/MM/YYYY') as nacimiento ,\n"
+                + " case when  provision= 1 then 'FONASA'||' '|| t.nombre  else case when provision = 2 then 'Isapre' else case when provision = 3 then 'Prais' else 'Sin Prevision' end  end end as prevension ,\n"
+                + "  rut,\n"
+                + "  p.nombre,\n"
+                + "  apellido_paterno,\n"
+                + "  apellido_moderno,\n"
+                + "  fecha_nacimiento,\n"
+                + "  COALESCE(direccion,'') as direccion,\n"
+                + "  COALESCE (email,'') as email,\n"
+                + "  COALESCE (contacto1,'') as contacto1,\n"
+                + "  COALESCE(contacto2,'') as contacto2 ,\n"
+                + "  estatus,\n"
+                + "  genero,\n"
+                + "  fecha_registro,\n"
+                + "  id_comuna,\n"
+                + "  provision,\n"
+                + "  tramo,\n"
+                + "  procedencia,\n"
+                + "  ipusuario,\n"
+                + "  usuario,\n"
+                + "  id_region,\n"
+                + "  id_provincia, id_nacionalidad, COALESCE(nombresocial,' ') AS nombresocial FROM  agenda.paciente p\n"
+                + "  inner join agenda.tramo t on t.id = p.tramo \n"
+                + "  where upper(rut)=upper('" + rut + "') and estatus = 1;  ");
+        this.cnn.conectar();
+
+        try {
+            if (this.cnn.getRst().next()) {
+                p.setRut_paciente(this.cnn.getRst().getString("rut"));
+                p.setNombres_paciente(this.cnn.getRst().getString("nombre"));
+                p.setApellidop_paciente(this.cnn.getRst().getString("apellido_paterno"));
+                p.setApellidom_paciente(this.cnn.getRst().getString("apellido_moderno"));
+                String fecha = this.cnn.getRst().getString("nacimiento");
+                Date fecha1 = null;
+                try {
+                    fecha1 = DeStringADate(fecha);
+                } catch (ParseException ex) {
+                    Logger.getLogger(NegocioQ.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                p.setFechanacimiento(fecha1);
+                p.setDireccion(this.cnn.getRst().getString("direccion"));
+                p.setMail(this.cnn.getRst().getString("email"));
+                p.setTelefono1(this.cnn.getRst().getString("contacto1"));
+                p.setTelefono2(this.cnn.getRst().getString("contacto2"));
+                p.setEstado_usuario(this.cnn.getRst().getInt("estatus"));
+                p.setSexo(this.cnn.getRst().getInt("genero"));
+                p.setFechacreacion(this.cnn.getRst().getDate("fecha_registro"));
+                p.setComuna_codigo(this.cnn.getRst().getInt("id_comuna"));
+                p.setId_prevision(this.cnn.getRst().getInt("provision"));
+                p.setTramo(this.cnn.getRst().getInt("tramo"));
+                p.setProcedencia(this.cnn.getRst().getInt("procedencia"));
+
+                p.setVariable(this.cnn.getRst().getString("prevension"));
+                p.setNacion(this.cnn.getRst().getInt("id_nacionalidad"));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            this.cnn.cerrarConexion();
+        }
+        return p;
+    }
+
+    /*new code*/
+    public Date DeStringADate(String fecha) throws java.text.ParseException {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        String strFecha = fecha;
+        Date fechaDate = null;
+        fechaDate = formato.parse(strFecha);
+        return fechaDate;
     }
 
     public Vector<String> buscarRecetadeIndicaciones(int indicaciones) {
@@ -2166,130 +2543,213 @@ public class NegocioQ extends Negocio {
         return lista;
     }
 
+    /*new code */
     public cPaciente obtiene_paciente_prevision(String rut) {
         cPaciente pac = new cPaciente();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("select * from schema_urgencia.paciente P,schema_urgencia.prevision_paciente PP  where P.paciente_rut='" + rut + "' and PP.id_paciente_prevision_paciente=P.paciente_rut and PP.estado_prevision_paciente=1");
+
+        this.cnn.setSentenciaSQL("select p.rut as paciente_rut,\n"
+                + "p.provision as id_prevision_paciente,\n"
+                + "t.id as prais_prevision_paciente,\n"
+                + "t.nombre as tramo_prevision_paciente\n"
+                + "\n"
+                + "   from agenda.paciente P inner join agenda.prevision pre\n"
+                + "   on p.provision = pre.id_prevision\n"
+                + "    join agenda.tramo t on t.id= p.tramo\n"
+                + "                  where \n"
+                + "                P.rut='" + rut + "' ");
         this.cnn.conectar();
 
         try {
-            if (this.cnn.getRst().next()) {
-                pac.setId_prevision(this.cnn.getRst().getInt("id_prevision_paciente"));
-                pac.setRut_paciente(this.cnn.getRst().getString("paciente_rut"));
-                pac.setPrais(this.cnn.getRst().getInt("prais_prevision_paciente"));
-                pac.setTramo_prevision(this.cnn.getRst().getString("tramo_prevision_paciente"));
+            if (cnn.getRst().next()) {
+                pac.setId_prevision(cnn.getRst().getInt("id_prevision_paciente"));
+                pac.setRut_paciente(cnn.getRst().getString("paciente_rut"));
+                /*26012015*/
+                pac.setPrais(cnn.getRst().getInt("prais_prevision_paciente"));
+                pac.setTramo_prevision(cnn.getRst().getString("tramo_prevision_paciente"));
+
+            } else {
             }
-        } catch (SQLException var4) {
-            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         this.cnn.cerrarConexion();
         return pac;
     }
 
+    /*change code*/
     public ArrayList lista_vista_duo(String campo_fecha, String fecha1, String fecha2, String resto_sql) {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT duo.id_duo,e.id_epicrisis,duo.estado_duo, p.paciente_rut,  p.paciente_nombres, p.paciente_apellidop,p.paciente_apellidom,     (CASE   WHEN p.paciente_sexo = 1 THEN 'FEMENINO'    WHEN p.paciente_sexo = 0 THEN 'MASCULINO'     END) AS paciente_sexo, to_char(p.paciente_fecha_nac,'DD/MM/YYYY')as paciente_fecha_nac,   age(duo.fecha_duo, p.paciente_fecha_nac) AS paciente_edad,   (Select con.con_descripcion from schemaoirs.consultorio_pertenencia con   where con.con_id=p.paciente_consultorio) as con_descripcion,   cf.codigo_fonasa_descripcion,   pp.tramo_prevision_paciente,   to_char(fecha_hora_ing_enfermeria,'DD/MM/YYYY HH24:MI:SS') AS fecha_hora_ing_enfermeria ,e.resumen_epicrisis,   e.diagnostico_epicrisis, e.examen_epicrisis,e.indicacion_epicrisis,   de.descripcion_derivador, d.descripcion_destino,   to_char(duo.fecha_duo + duo.hora_duo,'DD/MM/YYYY HH24:MI:SS') AS fecha_duo,   to_char(e.fecha_epicrisis + e.hora_epicrisis,'DD/MM/YYYY HH24:MI:SS') AS fecha_epicrisis,    to_char( a.fecha_hora_alta_adm, 'DD/MM/YYYY HH24:MI:SS') AS fecha_hora_alta_adm,   age(e.fecha_epicrisis + e.hora_epicrisis, duo.fecha_duo + duo.hora_duo)    AS qdias_epi_duo,   age(a.fecha_hora_alta_adm, duo.fecha_duo + duo.hora_duo)    AS qdias_altaadm_duo, fecha_hora_alta_med_duo ,  EXTRACT(DAY FROM (fecha_hora_alta_med_duo)-(fecha_duo+hora_duo)) as fecha_dias,   e.rut_usuario, gg.nombre_usuario, gg.apellidop_usuario, gg.apellidom_usuario    FROM schema_urgencia.paciente p,   schema_uo.destino d, schema_uo.duo duo, schema_uo.epicrisis e,   schema_uo.alta_adm a,schema_uo.derivador de,   schema_urgencia.prevision_paciente pp,schema_urgencia.codigo_fonasa cf,   schema_uo.ing_enfermeria ie,schema_uo.usuario gg     WHERE p.paciente_rut = duo.rut_paciente AND    e.id_duo = duo.id_duo AND  a.id_destino = d.id_destino AND    a.id_duo = duo.id_duo AND  duo.id_derivador = de.id_derivador AND    duo.id_prevision = pp.id_prevision_paciente AND    pp.codigo_fonasa_prevision_paciente = cf.codigo_fonasa_id AND    ie.id_duo_ing_enfermeria = duo.id_duo AND gg.rut_usuario = e.rut_usuario    AND " + campo_fecha + " BETWEEN '" + fecha1 + " 00:00:00' AND '" + fecha2 + " 23:59:59' " + resto_sql + "   ORDER BY duo.id_duo ");
+
+        this.cnn.setSentenciaSQL("SELECT duo.id_duo,e.id_epicrisis,duo.estado_duo, p.rut as paciente_rut, \n"
+                + "                 p.nombre as paciente_nombres, p.apellido_paterno as paciente_apellidop,p.apellido_moderno as paciente_apellidom, \n"
+                + "                 (CASE \n"
+                + "              WHEN p.genero = 1 THEN 'FEMENINO'  \n"
+                + "            WHEN p.genero = 0 THEN 'MASCULINO'   \n"
+                + "         END) AS paciente_sexo, to_char(p.fecha_nacimiento,'DD/MM/YYYY')as paciente_fecha_nac, \n"
+                + "             age(current_date, p.fecha_nacimiento) AS paciente_edad, \n"
+                + "              (Select con.con_descripcion from schemaoirs.consultorio_pertenencia con \n"
+                + "             where con.con_id=p.procedencia) as con_descripcion, \n"
+                + "             cf.codigo_fonasa_descripcion,   pp.nombre as tramo_prevision_paciente, \n"
+                + "             to_char(fecha_hora_ing_enfermeria,'DD/MM/YYYY HH24:MI:SS') AS fecha_hora_ing_enfermeria ,e.resumen_epicrisis, \n"
+                + "                e.diagnostico_epicrisis, e.examen_epicrisis,e.indicacion_epicrisis, \n"
+                + "                 de.descripcion_derivador, d.descripcion_destino, \n"
+                + "                to_char(duo.fecha_duo + duo.hora_duo,'DD/MM/YYYY HH24:MI:SS') AS fecha_duo, \n"
+                + "               to_char(e.fecha_epicrisis + e.hora_epicrisis,'DD/MM/YYYY HH24:MI:SS') AS fecha_epicrisis,  \n"
+                + "                 to_char( a.fecha_hora_alta_adm, 'DD/MM/YYYY HH24:MI:SS') AS fecha_hora_alta_adm, \n"
+                + "                age(e.fecha_epicrisis + e.hora_epicrisis, duo.fecha_duo + duo.hora_duo) \n"
+                + "               AS qdias_epi_duo, \n"
+                + "                 age(a.fecha_hora_alta_adm, duo.fecha_duo + duo.hora_duo) \n"
+                + "                  AS qdias_altaadm_duo, fecha_hora_alta_med_duo ,\n"
+                + "                 EXTRACT(DAY FROM (fecha_hora_alta_med_duo)-(fecha_duo+hora_duo)) as fecha_dias, \n"
+                + "                  e.rut_usuario, gg.nombre_usuario, gg.apellidop_usuario, gg.apellidom_usuario \n"
+                + "                  FROM agenda.paciente p, \n"
+                + "                 schema_uo.destino d, schema_uo.duo duo, schema_uo.epicrisis e, \n"
+                + "                 schema_uo.alta_adm a,schema_uo.derivador de, \n"
+                + "                agenda.prevision pp,schema_urgencia.codigo_fonasa cf, \n"
+                + "               schema_uo.ing_enfermeria ie,schema_uo.usuario gg ,\n"
+                + "               agenda.tramo t\n"
+                + "                 WHERE p.rut = duo.rut_paciente AND \n"
+                + "                 e.id_duo = duo.id_duo AND  a.id_destino = d.id_destino AND \n"
+                + "                 a.id_duo = duo.id_duo AND  duo.id_derivador = de.id_derivador AND \n"
+                + "                \n"
+                + "                 pp.id_prevision = p.provision AND \n"
+                + "                 t.id= p.tramo and\n"
+                + "              ie.id_duo_ing_enfermeria = duo.id_duo AND gg.rut_usuario = e.rut_usuario "
+                + "   AND " + campo_fecha + " BETWEEN '" + fecha1 + " 00:00:00' AND '" + fecha2 + " 23:59:59' " + resto_sql + " "
+                + "  ORDER BY duo.id_duo ");
+
         this.cnn.conectar();
 
         try {
-            while (this.cnn.getRst().next()) {
+            while (cnn.getRst().next()) {
                 cVistaUoce vis = new cVistaUoce();
-                vis.setApellidom_usuario(this.cnn.getRst().getString("apellidom_usuario"));
-                vis.setApellidop_usuario(this.cnn.getRst().getString("apellidop_usuario"));
-                vis.setCodigo_fonasa_descripcion(this.cnn.getRst().getString("codigo_fonasa_descripcion"));
-                vis.setDescripcion_derivador(this.cnn.getRst().getString("descripcion_derivador"));
-                vis.setDescripcion_destino(this.cnn.getRst().getString("descripcion_destino"));
-                vis.setDiagnostico_epicrisis(this.cnn.getRst().getString("diagnostico_epicrisis"));
-                vis.setEstado_duo(this.cnn.getRst().getInt("estado_duo"));
-                vis.setExamen_epicrisis(this.cnn.getRst().getString("examen_epicrisis"));
-                vis.setFecha_dias(this.cnn.getRst().getInt("fecha_dias") + 1);
-                vis.setFecha_duo(this.cnn.getRst().getString("fecha_duo"));
-                vis.setFecha_epicrisis(this.cnn.getRst().getString("fecha_epicrisis"));
-                vis.setFecha_hora_alta_adm(this.cnn.getRst().getString("fecha_hora_alta_adm"));
-                vis.setFecha_hora_alta_med(this.cnn.getRst().getString("fecha_hora_alta_med_duo") + "ww");
-                vis.setId_duo(this.cnn.getRst().getInt("id_duo"));
-                vis.setId_epicrisis(this.cnn.getRst().getInt("id_epicrisis"));
-                vis.setIndicacion_epicrisis(this.cnn.getRst().getString("indicacion_epicrisis"));
-                vis.setNombre_usuario(this.cnn.getRst().getString("nombre_usuario"));
-                vis.setPaciente_apellidom(this.cnn.getRst().getString("paciente_apellidom"));
-                vis.setPaciente_apellidop(this.cnn.getRst().getString("paciente_apellidop"));
-                vis.setPaciente_consultorio_pertenencia(this.cnn.getRst().getString("con_descripcion"));
-                vis.setPaciente_fecha_nac(this.cnn.getRst().getString("paciente_fecha_nac"));
-                vis.setPaciente_nombres(this.cnn.getRst().getString("paciente_nombres"));
-                vis.setPaciente_rut(this.cnn.getRst().getString("paciente_rut"));
-                vis.setPaciente_sexo(this.cnn.getRst().getString("paciente_sexo"));
-                vis.setFecha_ingreso_enfermeria(this.cnn.getRst().getString("fecha_hora_ing_enfermeria"));
-                String edad = this.cnn.getRst().getString("paciente_edad");
+
+                vis.setApellidom_usuario(cnn.getRst().getString("apellidom_usuario"));
+                vis.setApellidop_usuario(cnn.getRst().getString("apellidop_usuario"));
+                vis.setCodigo_fonasa_descripcion(cnn.getRst().getString("codigo_fonasa_descripcion"));
+                vis.setDescripcion_derivador(cnn.getRst().getString("descripcion_derivador"));
+                vis.setDescripcion_destino(cnn.getRst().getString("descripcion_destino"));
+                vis.setDiagnostico_epicrisis(cnn.getRst().getString("diagnostico_epicrisis"));
+                vis.setEstado_duo(cnn.getRst().getInt("estado_duo"));
+                vis.setExamen_epicrisis(cnn.getRst().getString("examen_epicrisis"));
+                vis.setFecha_dias(cnn.getRst().getInt("fecha_dias") + 1);
+                vis.setFecha_duo(cnn.getRst().getString("fecha_duo"));
+                vis.setFecha_epicrisis(cnn.getRst().getString("fecha_epicrisis"));
+                vis.setFecha_hora_alta_adm(cnn.getRst().getString("fecha_hora_alta_adm"));
+                vis.setFecha_hora_alta_med(cnn.getRst().getString("fecha_hora_alta_med_duo") + "ww");
+
+                vis.setId_duo(cnn.getRst().getInt("id_duo"));
+                vis.setId_epicrisis(cnn.getRst().getInt("id_epicrisis"));
+                vis.setIndicacion_epicrisis(cnn.getRst().getString("indicacion_epicrisis"));
+                vis.setNombre_usuario(cnn.getRst().getString("nombre_usuario"));
+                vis.setPaciente_apellidom(cnn.getRst().getString("paciente_apellidom"));
+                vis.setPaciente_apellidop(cnn.getRst().getString("paciente_apellidop"));
+                vis.setPaciente_consultorio_pertenencia(cnn.getRst().getString("con_descripcion"));
+
+                vis.setPaciente_fecha_nac(cnn.getRst().getString("paciente_fecha_nac"));
+                vis.setPaciente_nombres(cnn.getRst().getString("paciente_nombres"));
+                vis.setPaciente_rut(cnn.getRst().getString("paciente_rut"));
+                vis.setPaciente_sexo(cnn.getRst().getString("paciente_sexo"));
+
+                vis.setFecha_ingreso_enfermeria(cnn.getRst().getString("fecha_hora_ing_enfermeria"));
+
+                /**
+                 * ******************************
+                 */
+                String edad = cnn.getRst().getString("paciente_edad");
                 edad = edad.replace("days", "dias");
                 edad = edad.replace("mons", "meses");
                 edad = edad.replace("years", "años");
                 edad = edad.replace("day", "dia");
                 edad = edad.replace("mon", "mes");
                 edad = edad.replace("year", "año");
-                String qdias_epi_duo = this.cnn.getRst().getString("qdias_epi_duo");
+
+                String qdias_epi_duo = cnn.getRst().getString("qdias_epi_duo");
                 qdias_epi_duo = qdias_epi_duo.replace("days", "dias");
                 qdias_epi_duo = qdias_epi_duo.replace("mons", "meses");
                 qdias_epi_duo = qdias_epi_duo.replace("years", "años");
                 qdias_epi_duo = qdias_epi_duo.replace("day", "dia");
                 qdias_epi_duo = qdias_epi_duo.replace("mon", "mes");
                 qdias_epi_duo = qdias_epi_duo.replace("year", "año");
-                String qdias_altaadm_duo = this.cnn.getRst().getString("qdias_altaadm_duo");
+
+                String qdias_altaadm_duo = cnn.getRst().getString("qdias_altaadm_duo");
                 qdias_altaadm_duo = qdias_altaadm_duo.replace("days", "dias");
                 qdias_altaadm_duo = qdias_altaadm_duo.replace("mons", "meses");
                 qdias_altaadm_duo = qdias_altaadm_duo.replace("years", "años");
                 qdias_altaadm_duo = qdias_altaadm_duo.replace("day", "dia");
                 qdias_altaadm_duo = qdias_altaadm_duo.replace("mon", "mes");
                 qdias_altaadm_duo = qdias_altaadm_duo.replace("year", "año");
+                /**
+                 * ******************************
+                 */
                 vis.setPaciente_edad(edad);
                 vis.setQdias_altaadm_duo(qdias_altaadm_duo);
                 vis.setQdias_epi_duo(qdias_epi_duo);
-                vis.setResumen_epicrisis(this.cnn.getRst().getString("resumen_epicrisis"));
-                vis.setRut_usuario(this.cnn.getRst().getString("rut_usuario"));
-                vis.setTramo_prevision_paciente(this.cnn.getRst().getString("tramo_prevision_paciente"));
+
+                vis.setResumen_epicrisis(cnn.getRst().getString("resumen_epicrisis"));
+                vis.setRut_usuario(cnn.getRst().getString("rut_usuario"));
+                vis.setTramo_prevision_paciente(cnn.getRst().getString("tramo_prevision_paciente"));
+
                 lista.add(vis);
             }
-        } catch (SQLException var10) {
-            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var10);
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         this.cnn.cerrarConexion();
         return lista;
     }
 
+    /*new code*/
     public ArrayList lista_hitos(String rut_paciente) {
+
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("  SELECT  AA.hit_id,hit_tipo, hit_descripcion,to_char( hit_fecha,'DD/MM/YYYY HH24:MI:SS') AS hit_fecha,hit_paciente_rut,  hit_detalle,AA.hit_estado,hit_usuario,hit_ip,  paciente_nombres,paciente_apellidop,paciente_apellidom,  rut_usuario,nombre_usuario,apellidop_usuario,apellidom_usuario  FROM  schema_uo.hito_paciente AA  JOIN schema_uo.hito_tipo BB ON (AA.hit_tipo=BB.hit_id)   JOIN schema_urgencia.paciente CC ON (AA.hit_paciente_rut=CC.paciente_rut)  JOIN schema_uo.usuario DD ON (AA.hit_usuario=DD.rut_usuario)   where hit_paciente_rut='" + rut_paciente + "' and AA.hit_estado='1'  order by hit_fecha desc ;");
-        this.cnn.conectar();
+        this.cnn.setSentenciaSQL("SELECT \n"
+                + " AA.hit_id,hit_tipo, hit_descripcion,to_char( hit_fecha,'DD/MM/YYYY HH24:MI:SS') AS hit_fecha,\n"
+                + " hit_paciente_rut, \n"
+                + "  hit_detalle,AA.hit_estado,hit_usuario,hit_ip, \n"
+                + " cc.nombre as paciente_nombres, cc.apellido_paterno as paciente_apellidop,cc.apellido_moderno as paciente_apellidom, \n"
+                + "  rut_usuario,nombre_usuario,apellidop_usuario,apellidom_usuario \n"
+                + " FROM  schema_uo.hito_paciente AA \n"
+                + "JOIN schema_uo.hito_tipo BB ON (AA.hit_tipo=BB.hit_id)  \n"
+                + "  JOIN agenda.paciente CC ON (AA.hit_paciente_rut=CC.rut) \n"
+                + "  JOIN schema_uo.usuario DD ON (AA.hit_usuario=DD.rut_usuario)  \n"
+                + "   where hit_paciente_rut='" + rut_paciente + "' and AA.hit_estado='1' \n"
+                + "   order by hit_fecha desc ;");
 
+        this.cnn.conectar();
         try {
-            while (this.cnn.getRst().next()) {
+            while (cnn.getRst().next()) {
                 cHito aux = new cHito();
-                aux.setId(this.cnn.getRst().getInt("hit_id"));
-                aux.setTipo(this.cnn.getRst().getInt("hit_tipo"));
-                aux.setFecha(this.cnn.getRst().getString("hit_fecha"));
-                aux.setDetalle(this.cnn.getRst().getString("hit_detalle"));
-                aux.setEstado(this.cnn.getRst().getInt("hit_estado"));
-                aux.setIp(this.cnn.getRst().getString("hit_ip"));
-                aux.setUsuario_rut(this.cnn.getRst().getString("rut_usuario"));
-                aux.setUsuario_nombre(this.cnn.getRst().getString("nombre_usuario"));
-                aux.setUsuario_apellidop(this.cnn.getRst().getString("apellidop_usuario"));
-                aux.setUsuario_apellidom(this.cnn.getRst().getString("apellidom_usuario"));
+                aux.setId(cnn.getRst().getInt("hit_id"));
+                aux.setTipo(cnn.getRst().getInt("hit_tipo"));
+                aux.setFecha(cnn.getRst().getString("hit_fecha"));
+                aux.setDetalle(cnn.getRst().getString("hit_detalle"));
+                aux.setEstado(cnn.getRst().getInt("hit_estado"));
+                aux.setIp(cnn.getRst().getString("hit_ip"));
+                aux.setUsuario_rut(cnn.getRst().getString("rut_usuario"));
+                aux.setUsuario_nombre(cnn.getRst().getString("nombre_usuario"));
+                aux.setUsuario_apellidop(cnn.getRst().getString("apellidop_usuario"));
+                aux.setUsuario_apellidom(cnn.getRst().getString("apellidom_usuario"));
+
                 aux.setEstado_descripcion("---");
-                aux.setTipo_descripcion(this.cnn.getRst().getString("hit_descripcion"));
+                aux.setTipo_descripcion(cnn.getRst().getString("hit_descripcion"));
+
                 lista.add(aux);
             }
-        } catch (SQLException var4) {
-            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         this.cnn.cerrarConexion();
         return lista;
+
     }
 
     public ArrayList lista_tipo_hito() {
@@ -2963,36 +3423,63 @@ public class NegocioQ extends Negocio {
         return var;
     }
 
+    /*new code*/
     public ArrayList listada_categorizaciones(String fecha_inicial, String fecha_final) {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL(" SELECT  id_visita,obs_visita,to_char(fecha_visita,'DD/MM/YYYY' )as fecha_visita,hora_visita,  to_char(fecha_hora_visita,'DD/MM/YYYY HH24:MI:SS' )as fecha_hora_visita ,AA.rut_usuario,  nombre_usuario,apellidop_usuario,  AA.id_duo, descripcion_cama,BB.cat_visita_categorizacion,DD.rut_paciente,  paciente_nombres,paciente_apellidop,paciente_apellidom  FROM   schema_uo.visita AA JOIN schema_uo.visita_categorizacion BB ON   (AA.id_visita_categorizacion=BB.id_visita_categorizacion)  JOIN schema_uo.usuario CC ON (CC.rut_usuario=AA.rut_usuario)  JOIN schema_uo.duo DD ON (DD.id_duo=AA.id_duo)  JOIN schema_uo.cama EE ON (AA.id_cama=EE.id_cama)  JOIN schema_urgencia.paciente FF ON (DD.rut_paciente=FF.paciente_rut)  where fecha_visita BETWEEN '" + fecha_inicial + " 00:00:00' AND '" + fecha_final + " 23:59:59'  order by AA.id_cama");
-        this.cnn.conectar();
+        this.cnn.setSentenciaSQL(" SELECT \n"
+                + "                 id_visita,obs_visita,to_char(fecha_visita,'DD/MM/YYYY' )as fecha_visita,hora_visita, \n"
+                + "                 to_char(fecha_hora_visita,'DD/MM/YYYY HH24:MI:SS' )as fecha_hora_visita ,AA.rut_usuario, \n"
+                + "                 nombre_usuario,apellidop_usuario, \n"
+                + "                 AA.id_duo, descripcion_cama,BB.cat_visita_categorizacion,DD.rut_paciente, \n"
+                + "               ff.nombre as  paciente_nombres,ff.apellido_paterno as paciente_apellidop,ff.apellido_moderno as paciente_apellidom \n"
+                + "                 FROM  \n"
+                + "                 schema_uo.visita AA JOIN schema_uo.visita_categorizacion BB ON  \n"
+                + "                 (AA.id_visita_categorizacion=BB.id_visita_categorizacion)\n"
+                + "                 JOIN schema_uo.usuario CC ON (CC.rut_usuario=AA.rut_usuario) \n"
+                + "                 JOIN schema_uo.duo DD ON (DD.id_duo=AA.id_duo) \n"
+                + "                 JOIN schema_uo.cama EE ON (AA.id_cama=EE.id_cama) \n"
+                + "                 JOIN agenda.paciente FF ON (DD.rut_paciente=FF.rut) "
+                + " where fecha_visita BETWEEN '" + fecha_inicial + " 00:00:00' AND '" + fecha_final + " 23:59:59' "
+                + " order by AA.id_cama");
 
+        this.cnn.conectar();
         try {
-            while (this.cnn.getRst().next()) {
+            while (cnn.getRst().next()) {
                 cDuo duo = new cDuo();
-                duo.setId_duo(this.cnn.getRst().getInt("id_duo"));
-                duo.setFecha_duo(this.cnn.getRst().getString("fecha_visita"));
-                duo.setHora_duo(this.cnn.getRst().getString("hora_visita"));
-                duo.setFecha_creacion(this.cnn.getRst().getString("fecha_hora_visita"));
-                duo.setDerivador_descripcion(this.cnn.getRst().getString("obs_visita"));
-                duo.setCama_descripcion(this.cnn.getRst().getString("descripcion_cama"));
-                duo.setCategorizacion_id(this.cnn.getRst().getInt("id_visita"));
-                duo.setCategorizacion_descripcion(this.cnn.getRst().getString("cat_visita_categorizacion"));
-                duo.setRut_paciente(this.cnn.getRst().getString("rut_paciente"));
-                duo.setNombres_paciente(this.cnn.getRst().getString("paciente_nombres"));
-                duo.setApellidop_paciente(this.cnn.getRst().getString("paciente_apellidop"));
-                duo.setApellidom_paciente(this.cnn.getRst().getString("paciente_apellidom"));
-                duo.setRut_usuario(this.cnn.getRst().getString("rut_usuario"));
-                duo.setNombre_usuario_admision(this.cnn.getRst().getString("nombre_usuario") + " " + this.cnn.getRst().getString("apellidop_usuario"));
+                duo.setId_duo(cnn.getRst().getInt("id_duo"));
+                duo.setFecha_duo(cnn.getRst().getString("fecha_visita"));
+                duo.setHora_duo(cnn.getRst().getString("hora_visita"));
+                duo.setFecha_creacion(cnn.getRst().getString("fecha_hora_visita"));
+// utilizo esta clase y mutadores por falta de tiempo para acomodar la cVisita 30-08-2012 18:14
+                duo.setDerivador_descripcion(cnn.getRst().getString("obs_visita"));
+
+                // duo.setFecha_duo(cnn.getRst().getString("fecha_duo"));
+                // duo.setHora_duo(cnn.getRst().getString("hora_duo"));
+                //duo.setCama(cnn.getRst().getInt("id_cama"));
+                duo.setCama_descripcion(cnn.getRst().getString("descripcion_cama"));
+
+                // duo.setFecha_hora_ing_duo(cnn.getRst().getString("fecha_hora_ing_duo"));
+                duo.setCategorizacion_id(cnn.getRst().getInt("id_visita"));
+                duo.setCategorizacion_descripcion(cnn.getRst().getString("cat_visita_categorizacion"));
+
+                duo.setRut_paciente(cnn.getRst().getString("rut_paciente"));
+                duo.setNombres_paciente(cnn.getRst().getString("paciente_nombres"));
+                duo.setApellidop_paciente(cnn.getRst().getString("paciente_apellidop"));
+                duo.setApellidom_paciente(cnn.getRst().getString("paciente_apellidom"));
+
+                duo.setRut_usuario(cnn.getRst().getString("rut_usuario"));
+                duo.setNombre_usuario_admision(cnn.getRst().getString("nombre_usuario") + " " + cnn.getRst().getString("apellidop_usuario"));
+//                duo.setTelefono1(cnn.getRst().getString("paciente_telefono1"));
+//                duo.setTelefono2(cnn.getRst().getString("paciente_telefono2"));
+//                duo.setFecha_nac(cnn.getRst().getString("paciente_fecha_nac"));
+
                 lista.add(duo);
             }
-        } catch (SQLException var5) {
-            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var5);
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         this.cnn.cerrarConexion();
         return lista;
     }
@@ -3197,28 +3684,41 @@ public class NegocioQ extends Negocio {
         return lista;
     }
 
+    /*change*/
     public ArrayList obtiene_duo_liviano_x_fecha() {
         ArrayList lista = new ArrayList();
+
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT   id_duo,  to_char((fecha_duo+hora_duo),'DD/MM/YYYY HH24:MI:SS')as fecha_hora_ing_duo,  rut_paciente,  BB.paciente_nombres,  BB.paciente_apellidop,  BB.paciente_apellidom  FROM  schema_uo.duo AA JOIN schema_urgencia.paciente BB ON  (AA.rut_paciente=BB.paciente_rut)  WHERE id_derivador=2 and estado_duo NOT IN (99) AND  (fecha_duo+hora_duo) BETWEEN '01-01-2012 00:00:00' AND '12-31-2012 23:59:59' order by id_duo  ;");
+        this.cnn.setSentenciaSQL("SELECT  \n"
+                + "                 id_duo, \n"
+                + "                 to_char((fecha_duo+hora_duo),'DD/MM/YYYY HH24:MI:SS')as fecha_hora_ing_duo, \n"
+                + "                 rut_paciente, \n"
+                + "                BB.nombre as  paciente_nombres, \n"
+                + "                 BB.apellido_paterno as  paciente_apellidop, \n"
+                + "                 BB.apellido_moderno as paciente_apellidom \n"
+                + "                FROM  schema_uo.duo AA JOIN agenda.paciente BB ON \n"
+                + "               (AA.rut_paciente=BB.rut) \n"
+                + "                WHERE id_derivador=2 and estado_duo NOT IN (99) AND \n"
+                + "                (fecha_duo+hora_duo) BETWEEN '01-01-2012 00:00:00' AND '12-31-2012 23:59:59' order by id_duo;");
         this.cnn.conectar();
-
         try {
-            while (this.cnn.getRst().next()) {
+            while (cnn.getRst().next()) {
                 cDuo duo = new cDuo();
-                duo.setId_duo(this.cnn.getRst().getInt("id_duo"));
-                duo.setFecha_hora_ing_duo(this.cnn.getRst().getString("fecha_hora_ing_duo"));
-                duo.setRut_paciente(this.cnn.getRst().getString("rut_paciente"));
-                duo.setNombres_paciente(this.cnn.getRst().getString("paciente_nombres"));
-                duo.setApellidop_paciente(this.cnn.getRst().getString("paciente_apellidop"));
-                duo.setApellidom_paciente(this.cnn.getRst().getString("paciente_apellidom"));
+                duo.setId_duo(cnn.getRst().getInt("id_duo"));
+                // duo.setFecha_duo(cnn.getRst().getString("fecha_duo"));
+                // duo.setHora_duo(cnn.getRst().getString("hora_duo"));
+                // duo.setEstado_duo(cnn.getRst().getInt("estado_duo"));
+                duo.setFecha_hora_ing_duo(cnn.getRst().getString("fecha_hora_ing_duo"));
+                duo.setRut_paciente(cnn.getRst().getString("rut_paciente"));
+                duo.setNombres_paciente(cnn.getRst().getString("paciente_nombres"));
+                duo.setApellidop_paciente(cnn.getRst().getString("paciente_apellidop"));
+                duo.setApellidom_paciente(cnn.getRst().getString("paciente_apellidom"));
                 lista.add(duo);
             }
-        } catch (SQLException var3) {
-            Logger.getLogger(NegocioQ.class.getName()).log(Level.SEVERE, (String) null, var3);
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioQ.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         this.cnn.cerrarConexion();
         return lista;
     }
@@ -3252,7 +3752,7 @@ public class NegocioQ extends Negocio {
             DD = fecha.substring(0, 2);
             MM = fecha.substring(3, 5);
             YYYY = fecha.substring(6, 10);
-            cadena = MM + "/" + DD + "/" + YYYY;
+            cadena = DD + "/" + MM + "/" + YYYY;
         } else {
             DD = fecha.substring(0, 4);
             MM = fecha.substring(5, 7);

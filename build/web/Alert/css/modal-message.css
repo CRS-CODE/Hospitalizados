@@ -22,7 +22,8 @@
 	padding:2px;
 	z-index:100;/* Always needed	*/
 	position:absolute;	/* Always needed	*/
-	background-color:#EEE8CD	/* White background color for the message */
+	background-color:#EEE8CD;	/* White background color for the message */
+        width: 100%
 }
 .modalDialog_contentDiv_shadow{
 	z-index:90;/* Always needed	- to make it appear below the message */

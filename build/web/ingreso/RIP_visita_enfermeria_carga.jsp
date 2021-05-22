@@ -100,12 +100,12 @@
 
                             %>
                             <td>
-                                <a href="http://10.8.4.9:9090/modulo_uo/Visita/CategorizacionPDF.jsp?id_visita=<%=vis.getId_visita_categorizacion()%>" target="_blank"  >
+                                <a href="/modulo_uhce/visitas/CategorizacionPDF.jsp?id_visita=<%=vis.getId_visita_categorizacion()%>" target="_blank"  >
                                     <img src="../Iconos/pdf-ico-small.gif" style="cursor: pointer">
                                 </a>
                             </td>
                             <td class="" style="text-transform: uppercase;cursor:pointer" onclick="" ><%=vis.getFecha_visita()%></td>
-                            <td onclick="window.open('http://10.8.4.9:9090/modulo_uo/Visita/CategorizacionPDF.jsp?id_visita='+<%=vis.getId_visita_categorizacion()%>, 'Categorizacion', 'height=800,width=800,left=100, top=100,resizable=yes,scrollbars=yes,toolbar=yes,status=yes')" class="<%=clas%>"><%=vis.getCat_visita_categorizacion()%></td>
+                            <td onclick="window.open('/modulo_uhce/visitas/CategorizacionPDF.jsp?id_visita='+<%=vis.getId_visita_categorizacion()%>, 'Categorizacion', 'height=800,width=800,left=100, top=100,resizable=yes,scrollbars=yes,toolbar=yes,status=yes')" class="<%=clas%>"><%=vis.getCat_visita_categorizacion()%></td>
 
                             <%
                                             contador++;

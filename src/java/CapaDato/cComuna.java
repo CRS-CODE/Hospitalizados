@@ -10,6 +10,7 @@ package CapaDato;
  */
 public class cComuna {
 
+    private int id_comuna;
     private String comuna_codigo;
     private String provincia_codigo;
     private String comuna_descripcion;
@@ -39,6 +40,16 @@ public class cComuna {
     public void setComuna_codigo(String comuna_codigo) {
         this.comuna_codigo = comuna_codigo;
     }
+
+    public int getId_comuna() {
+        return id_comuna;
+    }
+
+    public void setId_comuna(int id_comuna) {
+        this.id_comuna = id_comuna;
+    }
+    
+    
 
     /**
      * @return the provincia_codigo

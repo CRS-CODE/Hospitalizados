@@ -13,8 +13,6 @@
 <jsp:include page="Header.jsp" />
 <script type="text/javascript" src="js/valida_1.js"></script>
 
-
-
 <script>
     function Enviar() {
         if (!validaRut12(document.getElementById('id_txt_user').value, 1))

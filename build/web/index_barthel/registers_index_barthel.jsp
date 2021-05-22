@@ -22,7 +22,7 @@
         padding-left: 35px;
         margin-bottom: 12px;
         cursor: pointer;
-        font-size: 22px;
+        font-size: 20px;
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
@@ -122,7 +122,17 @@
         margin-right: 10px;
         overflow: hidden;
         text-align: center;
-        width: 300px;
+        max-width: 800px;
+        width: 25%;
+        height: 70%;
+        padding-top: -2px 
+    }
+
+    .paciente {
+        padding: 20px;
+        float: left;
+        width: 10%; 
+        padding-top: -2px
     }
 </style>
 
@@ -134,62 +144,54 @@
                 + " window.location = '" + neg.getLocal() + "index.jsp?timeout=1' </script> ");
         response.sendRedirect("index.jsp?timeout=1");
     } else {
-       
-    Negocio controller = new Negocio();
-    List<DetailIndexBarthel> listDetailIndexBarthel = controller.searchDetailIndexBarthel();
 
-    String obtiene_usuario = session1.getAttribute("usuario_rut").toString();
-    int obtiene_duo = 0;
-    if (request.getParameter("txt_duo") != null) {
-        obtiene_duo = Integer.parseInt(request.getParameter("txt_duo"));
-    }
-     if (request.getParameter("id") != null) {%>
-            <script language="javascript">
-                window.open('<%=controller.getLocal()%>PDF_indexBarthel?id='+<%=request.getParameter("id")%>, '', 'titlebar=no,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1400,height=1050');        
-            </script>
-           <%}
+        Negocio controller = new Negocio();
+        List<DetailIndexBarthel> listDetailIndexBarthel = controller.searchDetailIndexBarthel();
+
+        String obtiene_usuario = session1.getAttribute("usuario_rut").toString();
+        int obtiene_duo = 0;
+        if (request.getParameter("txt_duo") != null) {
+            obtiene_duo = Integer.parseInt(request.getParameter("txt_duo"));
+        }
+        if (request.getParameter("id") != null) {%>
+<script language="javascript">
+    window.open('<%=controller.getLocal()%>PDF_indexBarthel?id=' +<%=request.getParameter("id")%>, '', 'titlebar=no,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1400,height=1050');
+</script>
+<%}
 
 %>
 <script src="<%=neg.getLocal()%>js/jquery/jquery.js"></script>
 <body>
-    <h2 align='center' style="color:#00a3cc" >Indice Barthel</h2>
-    <div id="nav">
-        <form name="form_index_barthel" id="form_index_barthel" action="registers_index_barthel.jsp" method="POST"  >
+    <div>
+        <form  style=" padding-top: 2px" name="form_index_barthel" id="form_index_barthel" action="registers_index_barthel.jsp" method="POST"  >
+            <div class="paciente">
+                <h1 style="color:#00a3cc">Lista Pacientes</h1>
+                <select name="txt_duo" id="txt_duo" onchange="selecciona_cama()">
+                    <option value="0" >Seleccione...</option>
+                    <%    //
+                        ArrayList lista_cama = null;
+                        Iterator it_sala = null;
 
-            <table>
-                <tr>
-                    <td> <h1 style="color:#00a3cc">Lista Pacientes</h1></td>
-                    <td> <select name="txt_duo" id="txt_duo" onchange="selecciona_cama()">
-                            <option value="0" >Seleccione...</option>
-                            <%    //
-                                ArrayList lista_cama = null;
-                                Iterator it_sala = null;
+                        lista_cama = neg.lista_grilla_camas();
+                        it_sala = lista_cama.iterator();
 
-                                lista_cama = neg.lista_grilla_camas();
-                                it_sala = lista_cama.iterator();
-
-                                while (it_sala.hasNext()) {
-                                    cDuo aux = (cDuo) it_sala.next();
-                                    if (aux.getId_duo() != 0) {
-                                        out.write("<option value='" + aux.getId_duo() + "' >" + aux.getCama_descripcion() + "::" + aux.getNombres_paciente() + " " + aux.getApellidop_paciente() + "</option>");
-                                    }
-                                }
-                            %>
-                        </select></td>
-                </tr>
-            </table>
-
-
-            <br> <br>
+                        while (it_sala.hasNext()) {
+                            cDuo aux = (cDuo) it_sala.next();
+                            if (aux.getId_duo() != 0) {
+                                out.write("<option value='" + aux.getId_duo() + "' >" + aux.getCama_descripcion() + "::" + aux.getNombres_paciente() + " " + aux.getApellidop_paciente() + "</option>");
+                            }
+                        }
+                    %>
+                </select>
+            </div>
         </form>
-
     </div>
     <%    if (obtiene_duo == 0) {
 
         } else {
             cDuo duo = neg.obtiene_duo(obtiene_duo);
     %>
-    <form name="form_detail_index_barthel" action="<%=controller.getLocal()%>insertIndexBarthel" id="form_detail_index_barthel" method="POST"  >
+    <form style=" padding-top: 67px" name="form_detail_index_barthel" action="<%=controller.getLocal()%>insertIndexBarthel" id="form_detail_index_barthel" method="POST"  >
         <input type="hidden" name="txt_usuario" id="txt_usuario" value="<%=session1.getAttribute("usuario_rut")%>" >
 
         <input type="hidden" name="txt_duo" id="txt_duo" value="<%=obtiene_duo%>" > 
@@ -218,7 +220,7 @@
                     <td><div id="outcome" name="outcome"></div></td>
                 </tr>
             </table>
-            <h1 align='center' style="color:#00a3cc">Clasificación según Índice de Barthel (IB)</h1>
+            <h1 align='center' style="color:#00a3cc">Clasificación según IB</h1>
             <table class="center">
                 <tr style=" background-color:#00a3cc; color: #ffffff">
                     <th>Resultado</th>
@@ -272,7 +274,6 @@
         </div>
         <table align='center'>
             <tr>
-
                 <td><h1 align='center' style="color:#00a3cc">Datos Paciente</h1>
                     <table>
                         <tbody>

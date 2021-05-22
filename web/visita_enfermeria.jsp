@@ -16,7 +16,7 @@
                 + " window.location = '" + neg.getLocal() + "index.jsp?timeout=1' </script> ");
         response.sendRedirect("index.jsp?timeout=1");
     } else {
-    int obtiene_perfil = 0;
+        int obtiene_perfil = 0;
 
         try {
             obtiene_perfil = Integer.parseInt("" + session.getAttribute("usuario_perfil"));
@@ -63,7 +63,6 @@
 
 <jsp:include page="Header.jsp" />
 
-
 <script>
 
     function selecciona_cama() {
@@ -79,23 +78,19 @@
             if (obj.readyState == 4 && (obj.status == 200 || window.location.href.indexOf("http") == -1)) {
                 document.getElementById('div_cama_cargando').innerHTML = '';
                 document.getElementById("div_cama_seleccionada").innerHTML = obj.responseText;
-              //  $("#txt_fecha").datepicker();
+                //  $("#txt_fecha").datepicker();
                 cat();
                 lista_visita();
-                   <%
-              
-                if (obtiene_perfil == 12 || obtiene_perfil == 10) {
-                  
-                  %>
-                
-                     
-           $( "#txt_fecha" ).datepicker();
+    <%                       if (obtiene_perfil == 12 || obtiene_perfil == 10) {
 
-               
-                  <%
-                    
-                }
-            %>
+    %>
+
+
+                $("#txt_fecha").datepicker();
+
+
+    <%                      }
+    %>
             } else if (obj.readyState == 4 && (obj.status == 500 || window.location.href.indexOf("http") == -1)) {
                 document.getElementById('div_cama_cargando').innerHTML = '-Si el problema persisten consulte a Informática-';
                 document.getElementById("div_cama_seleccionada").innerHTML = '' + obj.statusText; // estado 12-02-2013
@@ -300,7 +295,7 @@
          > </div>
     <div id="content">
         <div id="column-left">
-            <h2>-Seleccione paciente-</h2>
+            <h1>Seleccione paciente</h1>
             <br>
             <select name="cbo_cama" id="cbo_cama" onchange="selecciona_cama()"  >
                 <option>Seleccione...</option>
@@ -317,13 +312,9 @@
                             out.write("<option value='" + aux.getId_duo() + "' >" + aux.getCama_descripcion() + "::" + aux.getNombres_paciente() + " " + aux.getApellidop_paciente() + "</option>");
                         }
                     }
-
-                
                 %>
 
             </select>
-
-
             <div id="div_cama_seleccionada" ></div>
             <div id="div_cama_cargando" ></div>
 
@@ -821,7 +812,7 @@
                         #column-left {
                             background-color: #EBE9EA;
                             border: 1px solid #D2D2D2;
-                            border-radius: 8px 8px 8px 8px;
+                            border-radius: 4px 4px 4px 4px;
                             float: left;
                             position: fixed;
                             min-height: 225px;
@@ -829,7 +820,8 @@
                             margin-right: 10px;
                             overflow: hidden;
                             text-align: center;
-                            width: 300px;
+                            width: 25%;
+                            
                         }
 
                         #central {
@@ -914,6 +906,5 @@
 
                     <jsp:include page="Footer.jsp" />
 
-                    <%
-                        }
+                    <%                        }
                     %>

@@ -152,7 +152,7 @@
             document.getElementById('Form1').onsubmit='';
             document.getElementById('Form1').action='<%=neg.getLocal()%>ingreso_dato';
             document.getElementById('Form1').submit();
-            window.open('<%=neg.getLocal() %>"PDF_ingreso_enfermeria?txt_duo='+document.getElementById('id_duo').value,'pop-up','width=500, height=500, scrollbars=yes, menubar=no, location=yes, status=no, resizable=yes,left = 800,top = 0');
+            window.open('<%=neg.getLocal() %>PDF_ingreso_enfermeria?txt_duo='+document.getElementById('id_duo').value,'pop-up','width=500, height=500, scrollbars=yes, menubar=no, location=yes, status=no, resizable=yes,left = 800,top = 0');
            
         }
     }

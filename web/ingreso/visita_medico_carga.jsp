@@ -116,7 +116,7 @@
                                 }
 
                 %>
-                <td><img src="../Iconos/pdf-ico-small.gif" style="cursor: pointer" onclick="window.open('http://10.8.4.9:9090/modulo_uo/Visita/CategorizacionPDF.jsp?id_visita='+<%=vis.getId_visita_categorizacion()%>, 'Categorizacion', 'height=800,width=800,left=100, top=100,resizable=yes,scrollbars=yes,toolbar=yes,status=yes')"></td>
+                <td><img src="../Iconos/pdf-ico-small.gif" style="cursor: pointer" onclick="window.open('/modulo_uhce/visitas/CategorizacionPDF.jsp?id_visita='+<%=vis.getId_visita_categorizacion()%>, 'Categorizacion', 'height=800,width=800,left=100, top=100,resizable=yes,scrollbars=yes,toolbar=yes,status=yes')"></td>
                 <td class="" style="text-transform: uppercase;cursor:pointer" onclick="location.href='VerVisita.jsp?id_visita=<%=vis.getId_visita_categorizacion()%>'"><%=vis.getFecha_visita()%></td>
                 <td onclick="location.href='http://10.8.4.9:9090/modulo_uo/Visita/VerVisita.jsp?id_visita=<%=vis.getId_visita_categorizacion()%>'" class="<%=clas%>"><%=vis.getCat_visita_categorizacion()%></td>
 
@@ -136,9 +136,7 @@
                  <% out.write("<a href='"+neg.getLocal()+"PDF_DUO?id_duo=" + obtiene_duo + "' target='_blank'><img src='../Imagenes/doctorImp.png' width='35' height='36' alt='Ingreso Medico'/></a>"); %>
                  <% out.write(" &nbsp;&nbsp;"); %>
                  <%  
-                 out.write("<a href='"+neg.getLocal()+"PDF_ingreso_enfermeria?txt_duo=" + obtiene_duo+ "' target='_blank'><img src='../Imagenes/enfermeraImp.png' width='35' height='36' alt='Ingreso Enfermeria'/></a>");  
-  //                               out.write("<a href='http://10.8.4.9:9090/modulo_uo/Ingreso/IngEnfPDF.jsp?id_duo=" + obtiene_duo+ "' target='_blank'><img src='../Imagenes/enfermeraImp.png' width='35' height='36' alt='Ingreso Enfermeria'/></a>");  
-  
+                 out.write("<a href='"+neg.getLocal()+"PDF_ingreso_enfermeria?txt_duo=" + obtiene_duo+ "' target='_blank'><img src='../Imagenes/enfermeraImp.png' width='35' height='36' alt='Ingreso Enfermeria'/></a>");    
                   %>
 
 

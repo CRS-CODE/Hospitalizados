@@ -3,10 +3,11 @@
     Created on : 10-may-2012, 12:11:06
     Author     : EseGamboa
 --%>
+<%@page import="CapaDato.prevision"%>
 <%@page import="CapaDato.cNacion"%>
 <%@page import="CapaDato.cEpicrisis"%>
 <%@page import="CapaDato.cPaciente"%>
-<%@page import="CapaNegocio.Negocio_fonasa"%>
+
 <%@page import="CapaDato.cPueblo"%>
 <%@page import="CapaDato.cCama"%>
 <%@page import="CapaDato.cConsultorio"%>
@@ -18,8 +19,10 @@
 <%
 
     NegocioQ neg = new NegocioQ();
-    Negocio_fonasa n_fon = new Negocio_fonasa();
+
     String obtiene_rut = request.getParameter("user");
+    String div = request.getParameter("div");
+    String rutsin = request.getParameter("sindiv");
 
     ArrayList lista_duo = neg.lista_documentos_paciente(obtiene_rut);
     Iterator itt = lista_duo.iterator();
@@ -38,7 +41,7 @@
         String hora_Registro = neg.obtiene_fecha_hora();
         //String obtiene_rut = "16.623.070-5";
         /* informacion para llenar el formulario*/
-        ArrayList comuna = neg.lista_comuna();
+        ArrayList comuna = neg.buscarComuna();
         ArrayList consultorio = neg.lista_consultorio_pertenecia();
         ArrayList derivador = neg.lista_derivador();
         ArrayList cama = neg.lista_cama_desocupada("11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28"); // 1 es el area para camas disponibles normales , puede ser tambien -(1,2)-
@@ -58,11 +61,7 @@
         cCama cam = new cCama();
         cPueblo pue = new cPueblo();
         cNacion nac = new cNacion();
-
-        /* FIN informacion para llenar el formulario*/
-        // cPaciente pac_fon = n_fon.getConsultaPrevision(obtiene_rut);
         cPaciente pac = neg.obtiene_paciente(obtiene_rut);
-
         String a_nombres = "";
         String a_apellidop = "";
         String a_apellidom = "";
@@ -72,11 +71,12 @@
         String a_direccion = "";
         String a_fecha_nacimiento = "";
         int a_sexo = -1;
-        String a_comuna = "";
+        int a_comuna = 0;
         int a_pueblo = -1;
         int a_consultorio_pertenencia = -1;
         String a_mail = "";
-
+        int codigoprevicion = -1;
+        int t = -1;
         String a_codigo_fonasa = "";
         String a_codigo_fonasa_descripcion = "";
         String a_tramo = "";
@@ -108,6 +108,9 @@
             a_tramo = pac_fon.getTramo_prevision();
             a_prais = pac_fon.getPrais();
 
+            codigoprevicion = pac.getId_prevision();
+            t = pac.getTramo();
+
         } else {
             existe = 1;
             a_nombres = pac.getNombres_paciente();
@@ -120,12 +123,15 @@
             a_fecha_nacimiento = pac.getFecha_nac();
             a_sexo = pac.getSexo();
 
-            a_comuna = pac.getComuna_codigo() + ""; // xq el tipo de id comuna es varchar en la BD ¬¬
+            a_comuna = pac.getComuna_codigo(); // xq el tipo de id comuna es varchar en la BD ¬¬
             a_pueblo = pac.getPueblo();
-            a_consultorio_pertenencia = pac.getConsultorio();
+            a_consultorio_pertenencia = pac.getProcedencia();
             a_mail = pac.getMail();
             a_prais = pac.getPrais();
             a_tramo = pac.getTramo_prevision();
+            codigoprevicion = pac.getId_prevision();
+            t = pac.getTramo();
+
         }
 
         /**/
@@ -135,24 +141,24 @@
         //  out.write(""+pac.getCodigo_fonasa()+"<br>"+pac.getTramo_prevision()+"<br>"+pac.getPrais());
 %>
 
-<form id="form1" name="form1" action="<% out.write(neg.getLocal());%>ingreso_uh" onsubmit="return valida_form()" method="POST"   >
+<form  id="form1" name="form1" action="<% out.write(neg.getLocal());%>ingreso_uh" onsubmit="return valida_form()" method="POST"   >
     <input type="hidden" name="modo" id="modo" value="1">
     <input type="hidden" name="existe" id="existe" value="<%=existe%>">
     <input type="hidden" name="verificado_fonasa" id="verificado_fonasa" value="0">
     <div id="Datitos"><input type="hidden" id="id_duo" value="0"></div>
     <fieldset>
         <legend>Ingreso del Paciente:<%=obtiene_rut%></legend>
-        <table  style="FONT-FAMILY: Verdana; FONT-SIZE: 13px;" BORDER="0" width="720">
-            <tr><td>Nombre:</td>
+        <table  style="FONT-FAMILY: Calibri; FONT-SIZE: 13px;" BORDER="0" width="720">
+            <tr><td>Nombre Paciente:</td>
                 <td><input type="text" size="25" name="nombres" id="nombres" value="<%=a_nombres%>"  ></td>
-                <td>Apellido P.</td><td><input name="apellidop" id="apellidop" type="text" size="25" value="<%=a_apellidop%>" ></td>
-                <td>Apellido M.</td><td><input name="apellidom" id="apellidom" type="text" size="25" value="<%=a_apellidom%>"  ></td>
+                <td>Primer Apellido.</td><td><input name="apellidop" id="apellidop" type="text" size="25" value="<%=a_apellidop%>" ></td>
+                <td>Segundo Apellido.</td><td><input name="apellidom" id="apellidom" type="text" size="25" value="<%=a_apellidom%>"  ></td>
             <tr>
                 <td>Rut:</td>
                 <td>
                     <input type="text" name="rut" id="rut" value="<%=a_rut%>" readonly="readonly" >
                 </td>
-                <td>Fecha Nac:</td>
+                <td>F. Nacimiento:</td>
                 <td>
                     <input name="fecha_nac" id="fecha_nac" type="text" size="20" value="<%=a_fecha_nacimiento%>"  >
                     <img src="Imagenes/calender.png" id="f_trigger_a" style="cursor:pointer" onclick="document.getElementById('fecha_nac').focus()">
@@ -164,16 +170,8 @@
                 </td>
                 <td>Sexo:</td>
                 <td>
-                    <%                     //
-                        /*   String marca0 = "";
-                        String marca1 = "";
-                        if (a_sexo == 1) {
-                            marca0 = "  checked='checked' ";//HOMBRE
-                        } else {
-                            marca1 = "  checked='checked' "; // MUJER
-                        }*/
-                    %>
-                    M<input type="radio" name="rbt_sexo" id="rbt_sexo0"  value="0"  checked='checked'     />
+
+                    M<input type="radio" name="rbt_sexo" id="rbt_sexo0"  value="2"  checked='checked'     />
                     F<input type="radio" name="rbt_sexo" id="rbt_sexo1"   value="1"  />
                 </td>
             </tr>
@@ -196,10 +194,10 @@
                             while (it_com.hasNext()) {
                                 com = (cComuna) it_com.next();
                                 cbo_opcion_seleccionada = "  ";
-                                if (a_comuna.equals(com.getComuna_codigo())) {
+                                if (a_comuna == com.getId_comuna()) {
                                     cbo_opcion_seleccionada = " selected='selected' ";
                                 }
-                                out.write("<option value='" + com.getComuna_codigo() + "' " + cbo_opcion_seleccionada + " >" + com.getComuna_descripcion() + "</option>");
+                                out.write("<option value='" + com.getId_comuna() + "' " + cbo_opcion_seleccionada + " >" + com.getComuna_descripcion() + "</option>");
                             }
                         %>
                     </select>
@@ -215,14 +213,14 @@
             </tr>
 
             <tr>
-                <td>Mail</td>
+                <td>Email</td>
                 <td colspan="3" >
                     <input style=" width: 400px " type="text" id="txt_mail" name="txt_mail"  value="<%=a_mail%>">
                 </td>
             </tr>
 
             <tr>
-                <td>Consultorio Pertenecia:</td>
+                <td>Consultorio de pertenencia:</td>
                 <td>
                     <select  name="id_consultorio_pertenencia" id="id_consultorio_pertenencia">
                         <option value="-2" >Seleccione...</option>
@@ -254,7 +252,7 @@
                         %>
                     </select>
                 </td>
-                <td>Nación Origen:
+                <td>País de origen del (de la) paciente:
                 </td>
                 <td>
                     <select name="paciente_nacion" id="paciente_nacion" style=" width:150px;  " >
@@ -277,60 +275,61 @@
             <tr>
                 <td>Previsión:</td>
                 <td>
-                    <select id='paciente_prevision' name='paciente_prevision'>
-                        <%      //
-                            String seleccionador_A = "";
-                            String seleccionador_B = "";
-                            String seleccionador_C = "";
-                            String seleccionador_D = "";
-                            String seleccionador_0 = "";
-                            String seleccionador_prais = "";
-                            if (a_tramo.contains("A")) {
-                                seleccionador_A = " selected='selected' ";
-                            } else if (a_tramo.contains("B")) {
-                                seleccionador_B = " selected='selected' ";
-                            } else if (a_tramo.contains("C")) {
-                                seleccionador_C = " selected='selected' ";
-                            } else if (a_tramo.contains("D")) {
-                                seleccionador_D = " selected='selected' ";
-                            } else if (a_tramo.contains("0")) {
-                                seleccionador_0 = " selected='selected' ";
-                            } else if (a_prais == 1) {
-                                seleccionador_prais = " selected='selected' ";
-                            }
+                    <select class="form-control" id="prevision" name="prevision"  onchange="javascript:
+                                    var pre = document.forms['form1']['prevision'].value;
+                            if (pre == 1) {
 
-                            out.write("<option value=\"-2\">Seleccione...");
-                            out.write(" <OPTION VALUE=\"00110A0\" " + seleccionador_A + " >FONASA A");  // <!--los 4 primeros es el cdigo fonasa, el quinto el tramo y el sexto Prais o no-->
-                            out.write("<OPTION VALUE=\"00110B0\" " + seleccionador_B + " >FONASA B");
-                            out.write("<OPTION VALUE=\"00110C0\" " + seleccionador_C + " >FONASA C");
-                            out.write("<OPTION VALUE=\"00110D0\" " + seleccionador_D + " >FONASA D");
-                            out.write("<OPTION VALUE=\"0190100\" " + seleccionador_0 + " >PARTICULAR/ISAPRE");
-                            out.write("<OPTION VALUE=\"00110A1\" " + seleccionador_prais + " >PRAIS");
+                                document.getElementById('t').style.display = 'block';
+                            } else
+                                document.getElementById('t').style.display = 'none';
+                            ">
 
-                        %>
+
+                        <option  value="-1">Prevision
+                            <% for (prevision pre : neg.buscarPrevicion()) {
+
+                                    if (codigoprevicion == pre.getId_prevision()) {
+                            %>
+
+                        <option selected  value="<%=pre.getId_prevision()%>"><%=pre.getNombre()%>
+                            <% } else {%>
+                        <option  value="<%=pre.getId_prevision()%>"><%=pre.getNombre()%>
+                            <%}
+                                }%>
+
                     </select>
                 </td>
-                <td colspan="4"> <%                    if (a_codigo_fonasa_descripcion.length() > 0) {
-                        out.write(a_codigo_fonasa_descripcion + "(Tramo " + a_tramo + ")<br> ");
-                    }
-                    if (a_prais == 1) {
-                        out.write("PRAIS<BR>");
-                    }
 
-                    %> <img src="Iconos/dialog_information_small.png" width="15" alt="" height="20">[Sujeta a verificación a la salida del paciente]
+                <td id="t" name="t" >
 
+                    <select class="form-control" id="tramo" name="tramo" >
+                        <option value="0">Tramo
+                            <% for (prevision pre : neg.buscarTramo()) {
+
+                                    if (pre.getId_prevision() == t) {%>
+                        <option selected value="<%=pre.getId_prevision()%>"><%=pre.getNombre()%>  
+                            <%} else {%>
+
+                        <option  value="<%=pre.getId_prevision()%>"><%=pre.getNombre()%>
+                            <%}
+                                }%>
+                    </select>
 
                 </td>
+
+
                 <td>
                     <input type="hidden" name="paciente_programa" id="paciente_programa" value="0" >
                 </td>
             </tr>
+
+
             <tr>
                 <td>Fecha y Hora:</td>
                 <td>
                     <input name="fecha_duo" id="fecha_duo" type="text" size="22" value="<% out.write(hora_Registro);%>" >
                 </td>
-                <td>Derivado desde:</td>
+                <td>Procedencia del (de la ) paciente:</td>
                 <td>
                     <select name="id_derivado" id="id_derivado">
                         <option value="-2">Seleccione...</option>
@@ -356,28 +355,18 @@
                     </select>
                 </td>
             </tr>
-
         </table>
-
-
+       
         <fieldset class="buttons">
             <br><br>
             <input class="btn btn-primary" type="submit" value="GUARDAR DATOS" name="btn_guarda_datos" />
 
-            <%
-                /*
-                 * <input type="button" id="BtnGuardarDatos" value="Guardar Datos" >
-                 <input type="button" id="BtnIngresar" style="display:none;" class="DR" value="Ingresar Paciente a Cama" onclick="if(confirm('Esta a Punto de Ingresar Al Paciente: '+document.getElementById('nombres').value+'a la cama '+document.getElementById('id_cama').value+'\nEsta Seguro?')){location.href='ModificaEstadoDuo.jsp?estado=1&id_duo='+document.getElementById('id_duo').value;}">
-                 <input type="button" id="BtnGuardarCambios" style="display:none" value="Guardar Cambios" onclick="if(DuoSinConexion()){GuardaDUO(2);}">
-                 <input type="button" disabled style="display:none" id="BtnFicha" value="Ver Ficha" onclick="window.open('http://10.8.4.9:9090/modulo_agenda/pdf_portada_ficha.jsp?rut='+document.getElementById('paciente_rut').value+'&rut2='+document.getElementById('txtRutSinDV').value+'&dv='+document.getElementById('txtDV').value,'pop-up','width=500, height=500, scrollbars=yes, menubar=no, location=yes, status=no, resizable=yes,left = 800,top = 0')">
-                 */
-
-            %>
-
             <br><br>
         </fieldset>
     </fieldset>
-</form>
 
-<%    }
+</form>
+                   
+<% 
+        }
 %>

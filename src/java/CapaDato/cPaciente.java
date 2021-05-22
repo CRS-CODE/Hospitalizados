@@ -3,6 +3,8 @@
  */
 package CapaDato;
 
+import java.util.Date;
+
 /**
  *
  * @author EseGamboa
@@ -13,13 +15,23 @@ public class cPaciente extends cUsuario {
     private String nombres_paciente;
     private String apellidop_paciente;
     private String apellidom_paciente;
-    private int sexo;
-    private String fecha_nac;
-    private String edad;
+    private Date fechanacimiento;
     private String direccion;
+    private String mail;
     private String telefono1;
     private String telefono2;
+
+    private int sexo;
+
+    private Date fechacreacion;
     private int comuna_codigo;
+    private int id_prevision;
+    private int tramo;
+    
+
+    private String fecha_nac;
+    private String edad;
+
     private String fecha_creacion;
     private int procedencia; // servicio asistencial de procedencia al ingresar paciente
     private int consultorio;
@@ -34,14 +46,14 @@ public class cPaciente extends cUsuario {
     private int prevision_verificada;
     private String codigo_fonasa;
     private String codigo_fonasa_descripcion;
-    private int id_prevision;
+
     private String tramo_prevision;
     private String error;
     private String rut_sdv;
     private String dv;
     private int prais;
     private int verificado_fonasa;
-    private String mail;
+
     private int nacion;
     private String nacion_descripcion;
     private String paciente_descripcion;
@@ -49,6 +61,8 @@ public class cPaciente extends cUsuario {
     private String parentesco_desc;
     private int id_contacto;
     private String ip_contacto;
+    private String nombreusuario;
+    private String variable;
 
     public cPaciente() {
         this.rut_paciente = "";
@@ -92,11 +106,54 @@ public class cPaciente extends cUsuario {
         ip_contacto = "";
     }
 
+    public String getVariable() {
+        return variable;
+    }
+
+    public void setVariable(String variable) {
+        this.variable = variable;
+    }
+
+    
+    
+    public String getNombreusuario() {
+        return nombreusuario;
+    }
+
+    public void setNombreusuario(String nombreusuario) {
+        this.nombreusuario = nombreusuario;
+    }
+
+    
+    public Date getFechacreacion() {
+        return fechacreacion;
+    }
+
+    public void setFechacreacion(Date fechacreacion) {
+        this.fechacreacion = fechacreacion;
+    }
+
+    public Date getFechanacimiento() {
+        return fechanacimiento;
+    }
+
+    public void setFechanacimiento(Date fechanacimiento) {
+        this.fechanacimiento = fechanacimiento;
+    }
+
     /**
      * @return the sexo
      */
     public int getSexo() {
         return sexo;
+    }
+
+    public int getTramo() {
+        return tramo;
+    }
+
+    public void setTramo(int tramo) {
+        this.tramo = tramo;
     }
 
     /**

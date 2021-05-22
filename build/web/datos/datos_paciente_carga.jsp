@@ -170,7 +170,7 @@
                             </td>
                             <td valign="top"><<-Ver Ingreso Médico</td>
 
-                          <% if (see_alta_medica.contains(obtiene_perfil) ){%>
+                            <% if (see_alta_medica.contains(obtiene_perfil)) {%>
                             <td style="  " align='right' > 
 
 
@@ -185,15 +185,13 @@
 
                             </td>
                             <td valign="top" ><<-Ir visita Médica</td>
-                           <%}%>
+                            <%}%>
                         </tr>
                         <tr>
 
                             <td align='right' >
                                 <%
                                     out.write("<a href='" + neg.getLocal() + "PDF_ingreso_enfermeria?txt_duo=" + duo.getId_duo() + "' target='_blank'><img src='../Imagenes/enfermeraImp.png' width='30' height='30' title='Ingreso Enfermeria'/></a>");
-
-                                    //    out.write("<a href='http://10.8.4.9:9090/modulo_uo/Ingreso/IngEnfPDF.jsp?id_duo=" + duo.getId_duo() + "' target='_blank'><img src='../Imagenes/enfermeraImp.png' width='25' height='26' alt='Ingreso Enfermeria'/></a>&nbsp;&nbsp;");
                                 %>
 
                             </td>
@@ -201,11 +199,11 @@
 
 
                             <td align='right' >
-                                <%                  
-                                 out.write("<form name='form_sesion_terapeuta" + duo.getId_duo() + "' id='form_sesion_terapeuta" + duo.getId_duo() + "' action='" + neg.getLocal() + "terapeuta/datos_terapeuta.jsp' method='POST' >");
+                                <%
+                                    out.write("<form name='form_sesion_terapeuta" + duo.getId_duo() + "' id='form_sesion_terapeuta" + duo.getId_duo() + "' action='" + neg.getLocal() + "terapeuta/datos_terapeuta.jsp' method='POST' >");
                                     out.write("<input type='hidden' name='txt_duo' value='" + duo.getId_duo() + "' >");
                                     out.write(" <img title='Visita Terapeuta' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_sesion_terapeuta" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
-                                    out.write("</form>");    
+                                    out.write("</form>");
 
                                 %>
 
@@ -215,56 +213,54 @@
                         </tr>
 
             </tr>
-            <a  ></a>
+        <a  ></a>
 
-            <tr>
-                <td align='right' >
-                    <%
-                        out.write("<a href='" + neg.getLocal() + "PDF_visita_medica?txt_duo=" + duo.getId_duo() + "' target='_blank'><img src='../Imagenes/pdf.png' width='30' height='30' title='Evolución Médica'/></a>");
-                        //    out.write("<a href='http://10.8.4.9:9090/modulo_uo/Ingreso/IngEnfPDF.jsp?id_duo=" + duo.getId_duo() + "' target='_blank'><img src='../Imagenes/enfermeraImp.png' width='25' height='26' alt='Ingreso Enfermeria'/></a>&nbsp;&nbsp;");
-                    %>
+        <tr>
+            <td align='right' >
+                <%                        out.write("<a href='" + neg.getLocal() + "PDF_visita_medica?txt_duo=" + duo.getId_duo() + "' target='_blank'><img src='../Imagenes/pdf.png' width='30' height='30' title='Evolución Médica'/></a>");
+                %>
 
-                </td>
-                <td valign="top"><<-Ver Evolución Médica</td>
+            </td>
+            <td valign="top"><<-Ver Evolución Médica</td>
 
-                <td align='right'>
-                    <%    // if (see_kinesiologia.contains(obtiene_perfil)) {
-                        out.write("<form name='form_kine" + duo.getId_duo() + "' id='form_kine" + duo.getId_duo() + "' action='" + neg.getLocal() + "kinesiologia/datos_kinesiologia.jsp' method='POST' >");
-                        out.write("<input type='hidden' name='txt_manda_duo' value='" + duo.getId_duo() + "' >");
-                        out.write(" <img title='Kinesiologia' width='30' height='30'   src='../Imagenes/k.png' onclick='document.forms[\"form_kine" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
-                        out.write("</form>");
-                        // }
-                    %>
+            <td align='right'>
+                <%    // if (see_kinesiologia.contains(obtiene_perfil)) {
+                    out.write("<form name='form_kine" + duo.getId_duo() + "' id='form_kine" + duo.getId_duo() + "' action='" + neg.getLocal() + "kinesiologia/datos_kinesiologia.jsp' method='POST' >");
+                    out.write("<input type='hidden' name='txt_manda_duo' value='" + duo.getId_duo() + "' >");
+                    out.write(" <img title='Kinesiologia' width='30' height='30'   src='../Imagenes/k.png' onclick='document.forms[\"form_kine" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
+                    out.write("</form>");
+                    // }
+                %>
 
-                </td>
-                <td valign="top" ><<-Ir kinesiología</td>
-            </tr>
-            <tr>
-                <td align='right' >
-                     <%    // if (see_kinesiologia.contains(obtiene_perfil)) {
-                        out.write("<form name='form_nutri" + duo.getId_duo() + "' id='form_nutri" + duo.getId_duo() + "' action='" + neg.getLocal() + "nutricionista/datos_nutricionista.jsp' method='POST' >");
-                        out.write("<input type='hidden' name='txt_manda_duo' value='" + duo.getId_duo() + "' >");
-                        out.write(" <img title='Nutricionista' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_nutri" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
-                        out.write("</form>");
-                        // }
-                    %>
+            </td>
+            <td valign="top" ><<-Ir kinesiología</td>
+        </tr>
+        <tr>
+            <td align='right' >
+                <%    // if (see_kinesiologia.contains(obtiene_perfil)) {
+                    out.write("<form name='form_nutri" + duo.getId_duo() + "' id='form_nutri" + duo.getId_duo() + "' action='" + neg.getLocal() + "nutricionista/datos_nutricionista.jsp' method='POST' >");
+                    out.write("<input type='hidden' name='txt_manda_duo' value='" + duo.getId_duo() + "' >");
+                    out.write(" <img title='Nutricionista' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_nutri" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
+                    out.write("</form>");
+                    // }
+                %>
 
-                </td>
-                <td valign="top"><<-Ir Evolución Nutricionista</td>
+            </td>
+            <td valign="top"><<-Ir Evolución Nutricionista</td>
 
-                <td align='right'>
-                    <%    // if (see_kinesiologia.contains(obtiene_perfil)) {
-                        out.write("<form name='form_fono" + duo.getId_duo() + "' id='form_fono" + duo.getId_duo() + "' action='" + neg.getLocal() + "fonoaudiologa/datos_fonoaudiologa.jsp' method='POST' >");
-                        out.write("<input type='hidden' name='txt_manda_duo' value='" + duo.getId_duo() + "' >");
-                        out.write(" <img title='Fonouriologo' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_fono" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
-                        out.write("</form>");
-                        // }
-                    %>
+            <td align='right'>
+                <%    // if (see_kinesiologia.contains(obtiene_perfil)) {
+                    out.write("<form name='form_fono" + duo.getId_duo() + "' id='form_fono" + duo.getId_duo() + "' action='" + neg.getLocal() + "fonoaudiologa/datos_fonoaudiologa.jsp' method='POST' >");
+                    out.write("<input type='hidden' name='txt_manda_duo' value='" + duo.getId_duo() + "' >");
+                    out.write(" <img title='Fonouriologo' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_fono" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
+                    out.write("</form>");
+                    // }
+                %>
 
-                </td>
-                <td valign="top" ><<-Ir Fonoaudiologa</td>
-            </tr>
-            <tr>
+            </td>
+            <td valign="top" ><<-Ir Fonoaudiologa</td>
+        </tr>
+        <tr>
 
     </table>
 </td>

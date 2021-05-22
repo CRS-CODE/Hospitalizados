@@ -24,7 +24,6 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 
-
 import CapaNegocio.NegocioQ;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.html.WebColors;

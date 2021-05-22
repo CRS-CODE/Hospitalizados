@@ -58,10 +58,8 @@
         see_visita.add(13);
         see_visita.add(14);
         see_visita.add(15);
-         see_visita.add(16);
-          see_visita.add(17);
-
-       
+        see_visita.add(16);
+        see_visita.add(17);
 
         ArrayList see_informe = new ArrayList();
         see_informe.add(10);
@@ -73,10 +71,11 @@
         see_mantencion.add(11);
         see_mantencion.add(12);
 
-       
+
 %>
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>SISTEMA UNIDAD DE HOSPITALIZACIÒN</title>
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=neg.getLocal()%>css/style_tabla.css">
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=neg.getLocal()%>css/style.css">
@@ -119,7 +118,7 @@
                     <ul class="menu">
                         <li><a href="<%=neg.getLocal()%>inicio.jsp" class="parent"><span>INICIO</span></a>
                         </li>
-                          <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>CAMAS HOSPITALARIAS</span></a>
+                        <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>CAMAS HOSPITALARIAS</span></a>
                         </li>
 
                         <%    if (see_admision_urgencia.contains(obtiene_perfil) || see_duo_x_ingresar.add(obtiene_perfil) || see_admision_suam.contains(obtiene_perfil)) {
@@ -131,30 +130,10 @@
                                 <%
                                     if (see_admision_urgencia.contains(obtiene_perfil)) {
                                 %>
-                                <li><a href="<%=neg.getLocal()%>admision_ugu.jsp" class="dir">Admision UGU</a></li>
-                                    <%                                        }
+                                <li><a href="<%=neg.getLocal()%>admision_ugu.jsp" class="dir">Admision</a></li>
+                                    <% }
+                                        if (see_admision_urgencia.contains(obtiene_perfil) || see_duo_x_ingresar.add(obtiene_perfil) || see_admision_suam.contains(obtiene_perfil)) {
                                     %>
-
-                                <%
-                                    if (see_duo_x_ingresar.add(obtiene_perfil)) {
-                                %>
-
-                                <li><a href="<%=neg.getLocal()%>admision_uhce.jsp" class="dir">DUOs por Ingresar</a></li>
-                                    <%                                        }
-                                    %>
-
-
-                                <%
-                                    if (see_admision_suam.contains(obtiene_perfil)) {
-                                %>
-
-                                <li><a href="<%=neg.getLocal()%>admision_suam.jsp" class="dir">Admision SUAM</a></li>
-                                    <%                                        }
-                                    %>
-
-                                <%
-                                    if (see_admision_urgencia.contains(obtiene_perfil) || see_duo_x_ingresar.add(obtiene_perfil) || see_admision_suam.contains(obtiene_perfil)) {
-                                %>
                             </ul>
                         </li>
                         <%    }
@@ -162,11 +141,11 @@
                         </li>
                         <li><a href="<%=neg.getLocal()%>index_barthel/registers_index_barthel.jsp"><span>INDICE BARTHEL</span></a>
                         </li>
-                          
+
                         <%
                             if (see_visita.contains(obtiene_perfil)) {
                         %>
-                       
+
                         <li><a><span>EVOLUCIÓN </span></a>
                             <ul>
                                 <li><a href="<%=neg.getLocal()%>visita_medica.jsp"><span>Medica</span></a>  
@@ -182,11 +161,11 @@
                         </li>
                         <%  }
                         %>
-                        
+
 
                         <li><a href="<%=neg.getLocal()%>receta.jsp"><span>INDICACIONES</span></a>
                         </li>
-                      
+
                         <li><a href="<%=neg.getLocal()%>uh_paciente.jsp"><span>HISTORIAL</span></a>
                         </li>
 
@@ -229,6 +208,6 @@
                 <fieldset style=" height:50">
                     <br>
 
-             <%  }%>
+                    <%  }%>
 
 

@@ -91,7 +91,7 @@
     if (sw_mismo_dia) {
         out.write("<h2>Este paciente ya tiene una visita asignada para este dia</h2>");
              
-        out.write("<form name='form_enf" + obtiene_duo + "' id='form_enf" + obtiene_duo + "' action='http://10.8.4.9:9090/modulo_uo/Visita/CategorizacionPDF.jsp?id_visita="+visita_mismo_dia+"' target='a_blank' method='POST' >");
+        out.write("<form name='form_enf" + obtiene_duo + "' id='form_enf" + obtiene_duo + "' action='"+neg.getLocal()+"visitas/CategorizacionPDF.jsp?id_visita="+visita_mismo_dia+"' target='a_blank' method='POST' >");
                     out.write("<input type='hidden' name='txt_manda_duo' value='" + obtiene_duo + "' >");
                     out.write(" <img title='Visita Enfermera' src='Imagenes/Nurse_edit.png' onclick='document.forms[\"form_enf" + obtiene_duo + "\"].submit();' style='cursor:pointer'> "
                             + "<--Ver PDF");
@@ -104,7 +104,7 @@
             String dia1 = fecha_hora_at_dma.substring(0, 2);
             String mes1 = fecha_hora_at_dma.substring(3, 5);
             String ano1 = fecha_hora_at_dma.substring(6, 10);
-            String fecha1 = mes1 + "-" + dia1 + "-" + ano1;
+            String fecha1 = dia1+ "-" + mes1+ "-" +ano1;
             String hora1 = hora + ":" + minuto + ":00";
             int id_categorizacion = 0;
             int d1 = Integer.parseInt(request.getParameter("d1"));
@@ -134,7 +134,7 @@
                 if (grabo > 0) {
                     out.print("<h2>La Visita Correspondiente al dia de Hoy Se ha grabado Satisfactoriamente!!</h2><br>");
 
-                    out.write("<form name='form_enf" + obtiene_duo + "' id='form_enf" + obtiene_duo + "' action='http://10.8.4.9:9090/modulo_uo/Visita/CategorizacionPDF.jsp?id_visita="+grabo+"' target='a_blank' method='POST' >");
+                    out.write("<form name='form_enf" + obtiene_duo + "' id='form_enf" + obtiene_duo + "' action='"+neg.getLocal()+"visitas/CategorizacionPDF.jsp?id_visita="+grabo+"' target='a_blank' method='POST' >");
                     out.write("<input type='hidden' name='txt_manda_duo' value='" + obtiene_duo + "' >");
                     out.write(" <img title='Visita Enfermera' src='Imagenes/Nurse_edit.png' onclick='document.forms[\"form_enf" + obtiene_duo + "\"].submit();' style='cursor:pointer'> "
                             + "<--Ver PDF");

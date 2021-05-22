@@ -109,8 +109,6 @@
                 <% for (int j = 0; j < 55; j++) {
                         out.write("&nbsp;");
                     }%>
-
-
             </td>
             <td>
                 <table>

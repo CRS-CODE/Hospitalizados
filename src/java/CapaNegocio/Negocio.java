@@ -9,6 +9,7 @@ import CapaDato.ClinicData;
 import CapaDato.DetailIndexBarthel;
 import CapaDato.DuoDetailBarthel;
 import CapaDato.DuoIndexBarthel;
+import CapaDato.HistorialVisita;
 import CapaDato.cAlta_Das;
 import CapaDato.cCategorizacion;
 import CapaDato.cContacto;
@@ -30,6 +31,7 @@ import CapaDato.cRegistroSocial;
 import CapaDato.cSesionKine;
 import CapaDato.cUsuario;
 import CapaDato.cVisita;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,14 +52,65 @@ public class Negocio {
         this.cnn.setDriver("org.postgresql.Driver");
         this.cnn.setNombreTabla(tabla);
         this.cnn.setUser("postgres");
-        this.cnn.setPassword("crsdb2008");
-        this.cnn.setNombreBaseDatos("jdbc:postgresql://10.8.4.9:5432/postgres");
+        this.cnn.setPassword("crsdb2020");
+        this.cnn.setNombreBaseDatos("jdbc:postgresql://10.8.4.163:5432/crsmbackup");
     }
 
     public String getLocal() {
-         String local = "http://10.8.4.9:9090/modulo_uhce/";
-        //String local = "http://localhost:8080/modulo_uhce/";
+        String local = "http://10.8.4.163:8080/modulo_uhce/";
+      //  String local = "http://localhost:8080/modulo_uhce/";
         return local;
+    }
+
+    /*NEW INFO*/
+    public HistorialVisita getVisita(int id_visita) {
+        HistorialVisita h = null;
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("select * from schema_uo.visita V, schema_uo.visita_categorizacion VC,"
+                + "schema_uo.cama C,schema_uo.usuario U where V.rut_usuario=U.rut_usuario and V.id_cama=C.id_cama and "
+                + "V.id_visita_categorizacion=VC.id_visita_categorizacion and V.id_visita=" + id_visita + "");
+
+        this.cnn.conectar();
+
+        try {
+            while (this.cnn.getRst().next()) {
+                h = new HistorialVisita();
+                h.setD1_visita_categorizacion(this.cnn.getRst().getInt("d1_visita_categorizacion"));
+                h.setD2_visita_categorizacion(this.cnn.getRst().getInt("d2_visita_categorizacion"));
+                h.setD3_visita_categorizacion(this.cnn.getRst().getInt("d3_visita_categorizacion"));
+                h.setD4_visita_categorizacion(this.cnn.getRst().getInt("d4_visita_categorizacion"));
+                h.setD5_visita_categorizacion(this.cnn.getRst().getInt("d5_visita_categorizacion"));
+                h.setD6_visita_categorizacion(this.cnn.getRst().getInt("d6_visita_categorizacion"));
+                h.setR1_visita_categorizacion(this.cnn.getRst().getInt("r1_visita_categorizacion"));
+                h.setR2_visita_categorizacion(this.cnn.getRst().getInt("r2_visita_categorizacion"));
+                h.setR3_visita_categorizacion(this.cnn.getRst().getInt("r3_visita_categorizacion"));
+                h.setR4_visita_categorizacion(this.cnn.getRst().getInt("r4_visita_categorizacion"));
+                h.setR5_visita_categorizacion(this.cnn.getRst().getInt("r5_visita_categorizacion"));
+                h.setR6_visita_categorizacion(this.cnn.getRst().getInt("r6_visita_categorizacion"));
+                h.setR7_visita_categorizacion(this.cnn.getRst().getInt("r7_visita_categorizacion"));
+                h.setR8_visita_categorizacion(this.cnn.getRst().getInt("r8_visita_categorizacion"));
+                h.setCat_visita_categorizacion(this.cnn.getRst().getString("cat_visita_categorizacion"));
+                h.setFecha_visita(this.cnn.getRst().getDate("fecha_visita"));
+                h.setHora_visita(this.cnn.getRst().getString("hora_visita"));
+                h.setObs_visita(this.cnn.getRst().getString("obs_visita"));
+                h.setRut_usuario(this.cnn.getRst().getString("rut_usuario"));
+                h.setId_duo(this.cnn.getRst().getInt("id_duo"));
+                h.setId_cama(this.cnn.getRst().getInt("id_cama"));
+                h.setTipo_visita(this.cnn.getRst().getInt("tipo_visita"));
+                h.setDescripcion_cama(this.cnn.getRst().getString("descripcion_cama"));
+                h.setNombre_usuario(this.cnn.getRst().getString("nombre_usuario"));
+                h.setApellidom_usuario(this.cnn.getRst().getString("apellidom_usuario"));
+                h.setApellidop_usuario(this.cnn.getRst().getString("apellidop_usuario"));
+
+            }
+        } catch (SQLException var7) {
+            Logger.getLogger(NegocioQ.class.getName()).log(Level.SEVERE, (String) null, var7);
+        }
+
+        this.cnn.cerrarConexion();
+        return (h);
+
     }
 
     public void ingresa_visita_medica(cVisita vis) {
@@ -282,6 +335,48 @@ public class Negocio {
 
     }
 
+    /*new code*/
+    public String guardarPaciente(cPaciente p) throws UnknownHostException {
+        String mensaje = "";
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("INSERT INTO "
+                + "  agenda.paciente "
+                + "VALUES ("
+                + "  '" + p.getRut_paciente().toUpperCase() + "',"
+                + "  '" + p.getNombres_paciente() + "',"
+                + "  '" + p.getApellidop_paciente() + "',"
+                + "  '" + p.getApellidom_paciente() + "',"
+                + "  '" + p.getFechanacimiento() + "',"
+                + "  '" + p.getDireccion() + "',"
+                + "  '" + p.getMail() + "',"
+                + "  '" + p.getTelefono1() + "',"
+                + "  '" + p.getTelefono2() + "',"
+                + "  1,"
+                + "  " + p.getSexo() + ","
+                + "   CURRENT_DATE ,"
+                + "  " + p.getComuna_codigo() + ","
+                + "  " + p.getId_prevision() + ","
+                + "  " + p.getTramo() + ","
+                + "  " + p.getProcedencia() + ", "
+                + "  '" + p.getIp_contacto() + "' ,"
+                + "   '" + p.getNombreusuario() + "', "
+                + "  -1, "
+                + "  -1,"
+                + "  " + p.getNacion() + ", "
+                + "  ' ' ,"
+                + "" + p.getPueblo() + ""
+                + ");");
+        this.cnn.conectar();
+        if (this.cnn.getResultadoSQL() == 1) {
+            mensaje = "Paciente Registrado Exitosamente.";
+        } else {
+            mensaje = "Ocurrio un problema!! Intente mas tarde";
+        }
+        this.cnn.cerrarConexion();
+        return mensaje;
+    }
+
     public List<DetailIndexBarthel> searchDetailIndexBarthel() {
         List<DetailIndexBarthel> listDetailIndexBarthel = new ArrayList();
         this.configurarConexion("");
@@ -320,7 +415,7 @@ public class Negocio {
                 + "  inner join schema_uo.detail_index_barthel dib\n"
                 + "  on ddb.id_detail_barthel = dib.id_detail\n"
                 + "  inner join  schema_uo.index_barthel ib on ib.id_index_barthel = dib.id_index_barthel\n"
-                + "  where ib.status_barthel = 1 and dib.status=1 and ddb.id_register_duo ="+id+"\n"
+                + "  where ib.status_barthel = 1 and dib.status=1 and ddb.id_register_duo =" + id + "\n"
                 + "  order by ib.id_index_barthel asc ,\n"
                 + "  punctuction desc ");
         this.cnn.conectar();
@@ -419,7 +514,37 @@ public class Negocio {
         return value;
     }
 
-    /**/
+    /*new code*/
+    public boolean buscarpaciente(String rut) {
+        boolean siexiste = false;
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT  * FROM agenda.paciente where upper(rut)=upper('" + rut + "') and estatus = 1  ");
+        this.cnn.conectar();
+
+        try {
+            if (this.cnn.getRst().next()) {
+                siexiste = true;
+            }
+        } catch (SQLException ex) {
+
+        }
+
+        this.cnn.cerrarConexion();
+
+        return siexiste;
+    }
+
+    public void modifica_paciente_datos(String rut, int consultorio) {
+        this.configurarConexion("");
+        cnn.setEsSelect(false);
+        cnn.setSentenciaSQL("UPDATE  agenda.paciente  "
+                + " SET  procedencia = '" + consultorio + "' "
+                + " WHERE  rut ='" + rut + "' ;");
+        cnn.conectar();
+        cnn.cerrarConexion();
+    }
+
     public void ingresa_anula_duo(String motivo, String usuario, int duo) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
@@ -428,12 +553,18 @@ public class Negocio {
         this.cnn.cerrarConexion();
     }
 
-    public void modifica_paciente_datos(String rut, int consultorio) {
+    public void modifica_paciente_fono_correo(cPaciente pac) {
         this.configurarConexion("");
-        this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE  schema_urgencia.paciente   SET  paciente_consultorio = '" + consultorio + "'  WHERE  paciente_rut ='" + rut + "' ;");
-        this.cnn.conectar();
-        this.cnn.cerrarConexion();
+        cnn.setEsSelect(false);
+        cnn.setSentenciaSQL("UPDATE  "
+                + " agenda.paciente   "
+                + " SET  "
+                + "  contacto1 = '" + pac.getTelefono1() + "', "
+                + "  contacto2 = '" + pac.getTelefono2() + "', "
+                + "  email = '" + pac.getMail() + "'  "
+                + "  WHERE   rut = '" + pac.getRut_paciente() + "';");
+        cnn.conectar();
+        cnn.cerrarConexion();
     }
 
     public void modifica_valida_epicrisis(int duo_id) {
@@ -463,7 +594,7 @@ public class Negocio {
     public void ingresa_epicrisis(cEpicrisis epi) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("insert into schema_uo.epicrisis (resumen_epicrisis,examen_epicrisis,diagnostico_epicrisis,indicacion_epicrisis,fecha_epicrisis,hora_epicrisis,rut_usuario,id_duo,ip_epicrisis,medicamentos_prescritos) values('" + epi.getResumen_epicrisis() + "','" + epi.getExamen_epicrisis() + "', '" + epi.getDiagnostico_epicrisis() + "','" + epi.getIndicacion_epicrisis() + "','" + epi.getFecha_epicrisis() + "','" + epi.getHora_epicrisis() + "','" + epi.getRut_usuario() + "'," + epi.getId_duo() + ",'" + epi.getIp_epicrisis() + "' ,'"+epi.getMedicamentos_prescritos()+"')");
+        this.cnn.setSentenciaSQL("insert into schema_uo.epicrisis (resumen_epicrisis,examen_epicrisis,diagnostico_epicrisis,indicacion_epicrisis,fecha_epicrisis,hora_epicrisis,rut_usuario,id_duo,ip_epicrisis,medicamentos_prescritos) values('" + epi.getResumen_epicrisis() + "','" + epi.getExamen_epicrisis() + "', '" + epi.getDiagnostico_epicrisis() + "','" + epi.getIndicacion_epicrisis() + "','" + epi.getFecha_epicrisis() + "','" + epi.getHora_epicrisis() + "','" + epi.getRut_usuario() + "'," + epi.getId_duo() + ",'" + epi.getIp_epicrisis() + "' ,'" + epi.getMedicamentos_prescritos() + "')");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -582,28 +713,23 @@ public class Negocio {
         this.cnn.cerrarConexion();
     }
 
-    public void ingresa_paciente(cPaciente pac) {
-        this.configurarConexion("");
-        this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO  schema_urgencia.paciente  (paciente_rut, paciente_nombres, paciente_apellidop, paciente_apellidom,   paciente_sexo, paciente_fecha_nac, paciente_direccion, paciente_telefono1,   paciente_telefono2, comuna_codigo, paciente_fecha_creacion, paciente_procedencia,   paciente_consultorio, paciente_pueblo,paciente_mail,paciente_nacionalidad) VALUES (   '" + pac.getRut_paciente() + "',  '" + pac.getNombres_paciente() + "',   '" + pac.getApellidop_paciente() + "','" + pac.getApellidom_paciente() + "',  '" + pac.getSexo() + "',   '" + pac.getFecha_nac() + "', '" + pac.getDireccion() + "',   '" + pac.getTelefono1() + "',  '" + pac.getTelefono2() + "',   '" + pac.getComuna_codigo() + "',  CURRENT_TIMESTAMP,   '7',  '" + pac.getConsultorio() + "',  '" + pac.getPueblo() + "','" + pac.getMail() + "','" + pac.getNacion() + "' );");
-        this.cnn.conectar();
-        this.cnn.cerrarConexion();
-    }
-
     public void modifica_paciente(cPaciente pac) {
         this.configurarConexion("");
-        this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE   schema_urgencia.paciente    SET   paciente_direccion = '" + pac.getDireccion() + "',   paciente_telefono1 = '" + pac.getTelefono1() + "',   paciente_telefono2 = '" + pac.getTelefono2() + "',   comuna_codigo = '" + pac.getComuna_codigo() + "',    paciente_pueblo = '" + pac.getPueblo() + "',   paciente_consultorio = '" + pac.getConsultorio() + "',   paciente_mail = '" + pac.getMail() + "',    paciente_nacionalidad = '" + pac.getNacion() + "'   WHERE    paciente_rut = '" + pac.getRut_paciente() + "';");
-        this.cnn.conectar();
-        this.cnn.cerrarConexion();
-    }
-
-    public void modifica_paciente_fono_correo(cPaciente pac) {
-        this.configurarConexion("");
-        this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE   schema_urgencia.paciente    SET    paciente_telefono1 = '" + pac.getTelefono1() + "',   paciente_telefono2 = '" + pac.getTelefono2() + "',   paciente_mail = '" + pac.getMail() + "'    WHERE   paciente_rut = '" + pac.getRut_paciente() + "';");
-        this.cnn.conectar();
-        this.cnn.cerrarConexion();
+        cnn.setEsSelect(false);
+        cnn.setSentenciaSQL("UPDATE  "
+                + " agenda.paciente   "
+                + " SET  "
+                + " direccion = '" + pac.getDireccion() + "', "
+                + "  contacto1 = '" + pac.getTelefono1() + "', "
+                + "  contacto2 = '" + pac.getTelefono2() + "', "
+                + "  id_comuna = '" + pac.getComuna_codigo() + "',  "
+                + "  id_puebloorigen = '" + pac.getPueblo() + "', "
+                + "  procedencia = '" + pac.getConsultorio() + "', "
+                + "  email = '" + pac.getMail() + "',  "
+                + "  id_nacionalidad = '" + pac.getNacion() + "' "
+                + "  WHERE    rut = '" + pac.getRut_paciente() + "';");
+        cnn.conectar();
+        cnn.cerrarConexion();
     }
 
     public void ingresa_prevision(cPaciente pac) {
@@ -884,23 +1010,6 @@ public class Negocio {
         return sw;
     }
 
-    public boolean ingresa_contacto(cContacto con) {
-        boolean sw = false;
-        this.configurarConexion("");
-        this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO  schema_suam.contacto  ( das_id, con_usuario, con_ingreso,   con_estado, con_ip, con_nombre, con_fecha,   con_hora, con_observacion )  VALUES (   '" + con.getDas_id() + "',  '" + con.getRut_usuario() + "',   CURRENT_TIMESTAMP, '" + con.getEstado() + "',   '" + con.getIp() + "', '" + con.getNombre() + "',   '" + con.getFecha() + "', '" + con.getHora() + "', '" + con.getObservacion() + "');");
-
-        try {
-            this.cnn.conectar();
-            sw = true;
-        } catch (Exception var4) {
-            sw = false;
-        }
-
-        this.cnn.cerrarConexion();
-        return sw;
-    }
-
     public boolean elimina_epicrisis_segun_duo(int id_duo, String usuario) {
         boolean sw = false;
         this.configurarConexion("");
@@ -1081,21 +1190,26 @@ public class Negocio {
         return sw;
     }
 
-    public boolean ingresa_contacto(cPaciente con) {
+    public boolean ingresa_contacto(cContacto con) {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO  schema_urgencia.paciente_contacto\n (rut_paciente, fono1_fono_direccion_paciente, fono2_fono_direccion_paciente, direccion_fono_direccion_paciente,\n  fecha_transaccion_fono_direccion_paciente, usuario_fono_direccion_paciente, ip_fono_direccion_paciente,\n  id_comuna, contacto_nombre, contacto_parentesco ) \n VALUES (\n '" + con.getRut_paciente() + "', '" + con.getTelefono1() + "',\n  '" + con.getTelefono2() + "', '" + con.getDireccion() + "',\n  CURRENT_TIMESTAMP, '" + con.getRut_usuario() + "',\n  '" + con.getIp_contacto() + "', '" + con.getComuna_codigo() + "',\n  '" + con.getNombres_paciente() + "', '" + con.getParentesco_desc() + "' );");
-
+        this.cnn.setSentenciaSQL("INSERT INTO  schema_suam.contacto "
+                + " ( das_id, con_usuario, con_ingreso, "
+                + "  con_estado, con_ip, con_nombre, con_fecha, "
+                + "  con_hora, con_observacion )  VALUES ( "
+                + "  '" + con.getDas_id() + "',  '" + con.getRut_usuario() + "', "
+                + "  CURRENT_TIMESTAMP, '" + con.getEstado() + "', "
+                + "  '" + con.getIp() + "', '" + con.getNombre() + "', "
+                + "  '" + con.getFecha() + "', '" + con.getHora() + "', '" + con.getObservacion() + "');");
         try {
             this.cnn.conectar();
             sw = true;
-        } catch (Exception var7) {
+        } catch (Exception ex) {
             sw = false;
-        } finally {
-            this.cnn.cerrarConexion();
         }
 
+        this.cnn.cerrarConexion();
         return sw;
     }
 
