@@ -5,12 +5,12 @@
 --%>
 <%@page contentType="text/html" pageEncoding="iso-8859-1"%>
 <%
-        /*    response.setHeader("Pragma", "no-cache");
+           response.setHeader("Pragma", "no-cache");
             response.addHeader("Cache-Control", "no-cache, must-revalidate");
             response.addHeader("Cache-Control", "post-check=0, pre-check=0");
             response.addHeader("Cache-Control", "no-store");
             response.addHeader("Cache-Control", "private");
-            response.setDateHeader("Expires", -1);*/
+            response.setDateHeader("Expires", -1);
             String guarda_duo = request.getParameter("txt_manda_duo").toString().toUpperCase();
 %>
 
@@ -37,7 +37,7 @@
     {
         messageObj.setSource(url);
         messageObj.setCssClassMessageBox(false);
-        messageObj.setSize(780,690);
+        messageObj.setSize(930,690);
         messageObj.setShadowDivVisible(true);	// Enable shadow for these boxes
         messageObj.display();
     }

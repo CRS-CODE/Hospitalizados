@@ -8,6 +8,22 @@
 <%@page import="CapaDato.cDuo"%>
 <%@page import="CapaNegocio.NegocioQ"%>
 <%@page import="CapaNegocio.Negocio"%>
+<style>
+
+.button {
+  background-color: #4169E1; /* Green */
+  border: none;
+  color: white;
+  padding:9px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+}
+</style>
 <%
     HttpSession session1 = request.getSession();
     String titulo = " style=' background-color: #4169E1 ; color: white '  ";
@@ -91,12 +107,12 @@
     }
 </script>
 
-<div style=" vertical-align: top  " align="right" >
+<div style=" vertical-align: top ; " align="right" >
     <a href="../uh_visita.jsp">
         <img src="../Imagenes/fileclose.png" width="30" height="30" alt="Cerrar Ventana"/>
     </a>
 </div>
-<fieldset><legend>Datos del Paciente</legend>
+<fieldset style="top: 10px"><legend>Datos del Paciente</legend>
     <table border="1" >
         <tbody>
             <tr>
@@ -280,14 +296,14 @@
                     <form action="../egreso/cambio_cama.jsp" name="form_cambiar_entre" method="POST" >
                         <input type="hidden" name="txt_manda_duo" value="<%=duo.getId_duo()%>"  >
                         <input type="hidden"name="txt_modo" value="1"  >
-                        <input type="submit" name="btn_cambiar_disponible"  value="CAMBIAR A CAMA DISPONIBLE" style="width: 200px"   />
+                        <input type="submit" name="btn_cambiar_disponible" class="button" value="CAMBIAR A CAMA DISPONIBLE" style="width: 200px"   />
                         &nbsp;
                     </form>
                     <br>       
                     <form action="../egreso/cambio_cama.jsp" name="form_cambiar_entre" method="POST" >
                         <input type="hidden" name="txt_manda_duo" value="<%=duo.getId_duo()%>"  >
                         <input type="hidden" name="txt_modo" value="2"  >
-                        <input type="submit" name="btn_cambiar_entre"  value="CAMBIAR ENTRE CAMAS" style=" width:  200px"   />
+                        <input type="submit" name="btn_cambiar_entre" class="button" value="CAMBIAR ENTRE CAMAS" style=" width:  200px"   />
                         &nbsp;
                     </form>
                     <br>
@@ -298,7 +314,7 @@
                     <form action="<%=neg.getLocal()%>egreso/alta_medica.jsp" name="form_alta_medica" method="POST"   >
                         <input type="hidden" name="txt_manda_duo" value="<%=duo.getId_duo()%>"  >
                         <input type="hidden" name="txt_modo" value="1"  >
-                        <input type="submit" name="btn_alta_medica"  value="DAR ALTA MEDICA" style="width: 200px"   />
+                        <input type="submit" name="btn_alta_medica" class="button" value="DAR ALTA MEDICA" style="width: 200px"   />
                         &nbsp;
                     </form>
                     <%     } else {
@@ -314,7 +330,7 @@
                     <form action="<%=neg.getLocal()%>ingresa_alta" name="form_alta_adm" method="POST" onsubmit="return  valida_valida_epicrisis()"  >
                         <input type="hidden" name="id_duo" value="<%=duo.getId_duo()%>"  >
                         <input type="hidden" name="txt_modo" value="2"  >
-                        <input type="submit" name="btn_alta_adm"  value="VALIDAR ALTA MEDICA" style="width: 200px"   />
+                        <input type="submit" name="btn_alta_adm" class="button" value="VALIDAR ALTA MEDICA" style="width: 200px"   />
                         &nbsp;
                     </form>
                     <%
@@ -326,7 +342,7 @@
                     <form action="<%=neg.getLocal()%>egreso/alta_administrativa.jsp" name="form_alta_adm" method="POST"  >
                         <input type="hidden" name="txt_manda_duo" value="<%=duo.getId_duo()%>"  >
                         <input type="hidden" name="txt_modo" value="3"  >
-                        <input type="submit" name="btn_alta_adm"  value="DAR ALTA ADMINISTRATIVA"  style="width: 200px"  />
+                        <input type="submit" name="btn_alta_adm" class="button" value="DAR ALTA ADMINISTRATIVA"  style="width: 200px"  />
                         &nbsp;
                     </form>
                     <%  } else {
@@ -336,6 +352,10 @@
                             out.write("Duo estado:" + duo.getEstado_duo_descripcion());
                         }
                     %>
+                    &nbsp;
+                   <br><br>
+                   <a class="button" href="../uh_visita.jsp">  VOLVER </a> 
+                    &nbsp;
                 </td>
             </tr>
         </tbody>

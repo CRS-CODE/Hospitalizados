@@ -43,7 +43,9 @@ DHTML_modalMessage = function()
 	this.width = 400;						// Default width of modal message
 	this.cssClassOfMessageBox = false;		// Default alternative css class for the message box
 	this.shadowDivVisible = true;			// Shadow div is visible by default
-	this.shadowOffset = 5;					// Default shadow offset.
+	this.shadowOffset = 5;
+        
+        // Default shadow offset.
 	this.MSIE = false;
 	if(navigator.userAgent.indexOf('MSIE')>=0) this.MSIE = true;
 	

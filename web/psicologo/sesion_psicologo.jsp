@@ -74,7 +74,7 @@
         //Preparar el envio  con Open
         obj.open("POST", "sesion_psicologo_carga.jsp", true);
         //Enviar cabeceras para que acepte POST:
-        obj.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        obj.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
         obj.setRequestHeader("Content-length", misdatos.length);
         obj.setRequestHeader("Connection", "close");
         obj.send(misdatos); //pasar datos como parámetro

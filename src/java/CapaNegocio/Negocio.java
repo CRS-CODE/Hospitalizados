@@ -51,12 +51,12 @@ public class Negocio {
         this.cnn.setNombreTabla(tabla);
         this.cnn.setUser("postgres");
         this.cnn.setPassword("crsdb2008");
-        this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5432/postgres");
+        this.cnn.setNombreBaseDatos("jdbc:postgresql://10.8.4.9:5432/postgres");
     }
 
     public String getLocal() {
-         String local = "http://10.8.4.9:9090/modulo_uhce/";
-        //String local = "http://localhost:8080/modulo_uhce/";
+        String local = "http://10.8.4.9:9090/modulo_uhce/";
+       //  String local = "http://localhost:8080/modulo_uhce/";
         return local;
     }
 

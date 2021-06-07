@@ -59,7 +59,7 @@ public class PDF_sesion_psicolo extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/pdf");
-        response.setHeader("charset=UTF-8", " attachment; filename=\"Informe.pdf\"");
+        response.setHeader("charset=UTF-8", "attachment; filename=\"Informe.pdf\"");
 //      Document document = new Document(PageSize.A4, 50, 50, 50, 50);
         Document document = new Document();
         /**
@@ -135,7 +135,7 @@ public class PDF_sesion_psicolo extends HttpServlet {
             Font ft4 = FontFactory.getFont("Verdana", 8, Font.ITALIC, BaseColor.BLACK); // PARA LA HORA DE IMPRESIOn
             Font ft2 = FontFactory.getFont("Verdana", 13, Font.ITALIC, BaseColor.BLACK);
             Font ft3 = FontFactory.getFont("Verdana", 9, Font.ITALIC, BaseColor.WHITE);
-             Font ft5 = FontFactory.getFont("Verdana", 6, Font.ITALIC, BaseColor.BLACK); // PARA LA HORA DE IMPRESIOn
+            Font ft5 = FontFactory.getFont("Verdana", 6, Font.ITALIC, BaseColor.BLACK); // PARA LA HORA DE IMPRESIOn
 
             PdfPCell celda = new PdfPCell(new Paragraph(tipo_informe, ft2));             // color
             //unimos esta celda con otras 2
@@ -240,7 +240,7 @@ public class PDF_sesion_psicolo extends HttpServlet {
             document.add(tabla2);
 
             /*FIN TABLA 2*/
-            /* TABLA 3*/
+ /* TABLA 3*/
             float[] colsWidth3 = {0.4f, 3.5f, 0.3f};
             PdfPTable tabla3 = new PdfPTable(colsWidth3);
             tabla3.setWidthPercentage(95);
@@ -262,7 +262,7 @@ public class PDF_sesion_psicolo extends HttpServlet {
                     cSesionKine ses = (cSesionKine) it_ses.next();
 
                     if (!ses.getFecha().equals(guarda_fecha)) {
-                       // celda = new PdfPCell(new Paragraph("                                                                 Día " + ses.getFecha(), ft1));
+                        // celda = new PdfPCell(new Paragraph("                                                                 Día " + ses.getFecha(), ft1));
 
                         celda = new PdfPCell(new Paragraph("Día " + ses.getFecha(), ft1));
 
@@ -278,7 +278,7 @@ public class PDF_sesion_psicolo extends HttpServlet {
                     celda.setColspan(1);
                     tabla3.addCell(celda);
 
-                    celda = new PdfPCell(new Paragraph("" + ses.getNombre_usuario()+"\n"+ses.getApellidop_usuario(), ft5));
+                    celda = new PdfPCell(new Paragraph("" + ses.getNombre_usuario() + "\n" + ses.getApellidop_usuario(), ft5));
                     celda.setColspan(1);
                     tabla3.addCell(celda);
 
@@ -290,7 +290,7 @@ public class PDF_sesion_psicolo extends HttpServlet {
             document.add(tabla3);
 
             /*FIN TABLA 3*/
-            /* TABLA 10*/
+ /* TABLA 10*/
             float[] colsWidth10 = {4f};
             PdfPTable tabla10 = new PdfPTable(colsWidth10);
             tabla10.setWidthPercentage(95);
@@ -314,9 +314,8 @@ public class PDF_sesion_psicolo extends HttpServlet {
             Logger.getLogger(PDF_sesion_kinesiologia.class.getName()).log(Level.SEVERE, null, "Ocurrio un Error" + e);
         }
     }
-    
-    
-     public class FooterPiePaginaiText_sesion extends PdfPageEventHelper {
+
+    public class FooterPiePaginaiText_sesion extends PdfPageEventHelper {
 
         @Override
         public void onCloseDocument(PdfWriter writer, Document document) {
@@ -331,7 +330,6 @@ public class PDF_sesion_psicolo extends HttpServlet {
         }
 
     }
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

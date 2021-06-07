@@ -239,7 +239,7 @@
                     </tr>
                     <tr>
                         <td colspan="4" width="150px">
-                            <textarea cols="85"  rows="6" name="anamnesis" id="anamnesis" title="Anamnesis" onblur="onBlurAnamnesis();" onfocus="onFocusAnamnesis()" style=" color: gray  "   >Anamnesis...</textarea>
+                            <textarea rows="15" cols="90" name="anamnesis" id="anamnesis" title="Anamnesis" onblur="onBlurAnamnesis();" onfocus="onFocusAnamnesis()" style=" color: gray  "   >Anamnesis...</textarea>
                         </td>
                         <td colspan="5">
                             <center>
