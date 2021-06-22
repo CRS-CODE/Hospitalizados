@@ -18,8 +18,7 @@
 
 <br><br><br><br>
 
-
-   <li> <a href="http://10.8.4.9:9090/modulo_uo/Informe/InfDuoProvisorioEnUnidadxls.jsp" target="_blank">Pacientes en la Unidad</a>
+   <li> <a href="Informe/InfDuoProvisorioEnUnidadxls.jsp" target="_blank">Pacientes en la Unidad</a>
        
    <li> <a href="nominaPacientes" target="_blank">Nomina Pacintes Hospitalizados</a>
 

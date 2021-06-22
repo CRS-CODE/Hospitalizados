@@ -42,7 +42,7 @@ public class ingresa_alta extends HttpServlet {
             dia = fecha_dma.substring(0, 2);
             mes = fecha_dma.substring(3, 5);
             año = fecha_dma.substring(6, 10);
-            fecha_mda = mes + "-" + dia + "-" + año;
+            fecha_mda = dia + "-" + mes + "-" + año;
             out.write("" + fecha_mda + "<br>");
             hora = request.getParameter("fecha_epi");
             hora = hora.substring(hora.length() - 8, hora.length());
@@ -85,7 +85,7 @@ public class ingresa_alta extends HttpServlet {
             dia = fecha_dma.substring(0, 2);
             mes = fecha_dma.substring(3, 5);
             año = fecha_dma.substring(6, 10);
-            fecha_mda = mes + "-" + dia + "-" + año;
+            fecha_mda = dia + "-" + mes + "-" + año;
             hora = request.getParameter("fecha_epi");
             hora = hora.substring(hora.length() - 8, hora.length());
             String obs = request.getParameter("obs");

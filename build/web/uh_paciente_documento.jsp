@@ -100,7 +100,7 @@
     <p  style=' font-size:   xx-small ' > Terapeuta  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_terapeuta?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>
     <p  style=' font-size:   xx-small ' > Nutricionista  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_nutricionista?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>
     <p  style=' font-size:   xx-small ' > Fonoaudiologa  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_fono?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>
-
+    <p  style=' font-size:   xx-small ' > Psicòlogo/a  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_psicolo?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>
 </form>   
 <%
 

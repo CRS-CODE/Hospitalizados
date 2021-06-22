@@ -73,8 +73,11 @@ public class XLS_AdmissionHospitalization extends HttpServlet {
         String año2 = fecha2_dma.substring(6, 10);
         String fecha1_mda = mes1 + "-" + dia1 + "-" + año1;
         String fecha2_mda = mes2 + "-" + dia2 + "-" + año2;
+        String fecha1_dma_sh = dia1 + "-" + mes1 + "-" + año1;
+        String fecha2_dma_sh = dia2 + "-" + mes2 + "-" + año2;
 
-        ArrayList lista_duo = neg.getAdmissionHospitalization( fecha1_mda, fecha2_mda);
+
+        ArrayList lista_duo = neg.getAdmissionHospitalization( fecha1_dma_sh, fecha2_dma_sh);
         Iterator it_lista = lista_duo.iterator();
 
        

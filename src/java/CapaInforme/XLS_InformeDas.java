@@ -76,7 +76,7 @@ public class XLS_InformeDas extends HttpServlet {
 
   
         int modo= Integer.parseInt(request.getParameter("modo"));
-        ArrayList lista = neg.lista_das(fecha1_mda,fecha2_mda,modo);
+        ArrayList lista = neg.lista_das(fecha1_dma_sh,fecha2_dma_sh,modo);
 
         try {
             Workbook wb = new HSSFWorkbook(); //or new HSSFWorkbook();

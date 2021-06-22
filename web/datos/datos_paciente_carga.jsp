@@ -8,6 +8,22 @@
 <%@page import="CapaDato.cDuo"%>
 <%@page import="CapaNegocio.NegocioQ"%>
 <%@page import="CapaNegocio.Negocio"%>
+<style>
+
+    .button {
+        background-color: #4169E1; /* Green */
+        border: none;
+        color: white;
+        padding:9px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 12px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 12px;
+    }
+</style>
 <%
     HttpSession session1 = request.getSession();
     String titulo = " style=' background-color: #4169E1 ; color: white '  ";
@@ -40,6 +56,7 @@
     see_visita.add(15);
     see_visita.add(16);
     see_visita.add(17);
+    see_visita.add(18);
 
     // see_visita.add(12);
     ArrayList see_alta_medica = new ArrayList();
@@ -90,12 +107,12 @@
     }
 </script>
 
-<div style=" vertical-align: top  " align="right" >
+<div style=" vertical-align: top ; " align="right" >
     <a href="../uh_visita.jsp">
         <img src="../Imagenes/fileclose.png" width="30" height="30" alt="Cerrar Ventana"/>
     </a>
 </div>
-<fieldset><legend>Datos del Paciente</legend>
+<fieldset style="top: 10px"><legend>Datos del Paciente</legend>
     <table border="1" >
         <tbody>
             <tr>
@@ -151,16 +168,6 @@
         <tbody>
             <tr valign="top" >
                 <% if (see_visita.contains(obtiene_perfil)) {%>
-                <%--   <td align="left"  >
-                      <%
-                          out.write("<form name='form_enf" + duo.getId_duo() + "' id='form_enf" + duo.getId_duo() + "' action='" + neg.getLocal() + "ingreso/visita_enfermeria.jsp' method='POST' >");
-                          out.write("<input type='hidden' name='txt_manda_duo' value='" + duo.getId_duo() + "' >");
-                          out.write(" <img title='Visita Enfermera' width='25' height='26' style='border:2px solid blue'  src='../Imagenes/Nurse_edit.png' onclick='document.forms[\"form_enf" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
-                          out.write("</form>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-                      %>
-                
-                style="border:  #000; border-style:  dotted"
-                  </td>--%>
                 <td>
                     <table cellpadding='5px' border='1'  >
                         <tr>
@@ -192,6 +199,7 @@
                             <td align='right' >
                                 <%
                                     out.write("<a href='" + neg.getLocal() + "PDF_ingreso_enfermeria?txt_duo=" + duo.getId_duo() + "' target='_blank'><img src='../Imagenes/enfermeraImp.png' width='30' height='30' title='Ingreso Enfermeria'/></a>");
+
                                 %>
 
                             </td>
@@ -199,8 +207,7 @@
 
 
                             <td align='right' >
-                                <%
-                                    out.write("<form name='form_sesion_terapeuta" + duo.getId_duo() + "' id='form_sesion_terapeuta" + duo.getId_duo() + "' action='" + neg.getLocal() + "terapeuta/datos_terapeuta.jsp' method='POST' >");
+                                <%                                    out.write("<form name='form_sesion_terapeuta" + duo.getId_duo() + "' id='form_sesion_terapeuta" + duo.getId_duo() + "' action='" + neg.getLocal() + "terapeuta/datos_terapeuta.jsp' method='POST' >");
                                     out.write("<input type='hidden' name='txt_duo' value='" + duo.getId_duo() + "' >");
                                     out.write(" <img title='Visita Terapeuta' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_sesion_terapeuta" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
                                     out.write("</form>");
@@ -209,133 +216,147 @@
 
                             </td>
                             <td valign="top"><<-Ir Terapeuta Ocupacional</td>
+                        </tr>
+
+
+                        <a  ></a>
+
+                        <tr>
+                            <td align='right' >
+                                <%                        out.write("<a href='" + neg.getLocal() + "PDF_visita_medica?txt_duo=" + duo.getId_duo() + "' target='_blank'><img src='../Imagenes/pdf.png' width='30' height='30' title='Evolución Médica'/></a>");
+                                %>
+
+                            </td>
+                            <td valign="top"><<-Ver Evolución Médica</td>
+
+                            <td align='right'>
+                                <%    // if (see_kinesiologia.contains(obtiene_perfil)) {
+                                    out.write("<form name='form_kine" + duo.getId_duo() + "' id='form_kine" + duo.getId_duo() + "' action='" + neg.getLocal() + "kinesiologia/datos_kinesiologia.jsp' method='POST' >");
+                                    out.write("<input type='hidden' name='txt_manda_duo' value='" + duo.getId_duo() + "' >");
+                                    out.write(" <img title='Kinesiologia' width='30' height='30'   src='../Imagenes/k.png' onclick='document.forms[\"form_kine" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
+                                    out.write("</form>");
+                                    // }
+                                %>
+
+                            </td>
+                            <td valign="top" ><<-Ir kinesiología</td>
+                        </tr>
+                        <tr>
+                            <td align='right' >
+                                <%    // if (see_kinesiologia.contains(obtiene_perfil)) {
+                                    out.write("<form name='form_nutri" + duo.getId_duo() + "' id='form_nutri" + duo.getId_duo() + "' action='" + neg.getLocal() + "nutricionista/datos_nutricionista.jsp' method='POST' >");
+                                    out.write("<input type='hidden' name='txt_manda_duo' value='" + duo.getId_duo() + "' >");
+                                    out.write(" <img title='Nutricionista' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_nutri" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
+                                    out.write("</form>");
+                                    // }
+                                %>
+
+                            </td>
+                            <td valign="top"><<-Ir Evolución Nutricionista</td>
+
+                            <td align='right'>
+                                <%    // if (see_kinesiologia.contains(obtiene_perfil)) {
+                                    out.write("<form name='form_fono" + duo.getId_duo() + "' id='form_fono" + duo.getId_duo() + "' action='" + neg.getLocal() + "fonoaudiologa/datos_fonoaudiologa.jsp' method='POST' >");
+                                    out.write("<input type='hidden' name='txt_manda_duo' value='" + duo.getId_duo() + "' >");
+                                    out.write(" <img title='Fonouriologo' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_fono" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
+                                    out.write("</form>");
+                                    // }
+                                %>
+
+                            </td>
+                            <td valign="top" ><<-Ir Fonoaudiologa</td>
+                        </tr>
+                        <tr>
+                            <td align='right' >
+                                <%                                    out.write("<form name='form_sesion_psicologo" + duo.getId_duo() + "' id='form_sesion_psicologo" + duo.getId_duo() + "' action='" + neg.getLocal() + "psicologo/datos_psicologo.jsp' method='POST' >");
+                                    out.write("<input type='hidden' name='txt_duo' value='" + duo.getId_duo() + "' >");
+                                    out.write(" <img title='Visita Spicologo' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_sesion_psicologo" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
+                                    out.write("</form>");
+
+                                %>
+
+                            </td>
+                            <td valign="top"><<-Ir Psicologia</td>
 
                         </tr>
 
+                    </table>
+                </td>
+
+                <td>
+                    &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; 
+                </td>
+
+                <% }%>
+
+                <td>
+
+                    <form action="../egreso/cambio_cama.jsp" name="form_cambiar_entre" method="POST" >
+                        <input type="hidden" name="txt_manda_duo" value="<%=duo.getId_duo()%>"  >
+                        <input type="hidden"name="txt_modo" value="1"  >
+                        <input type="submit" name="btn_cambiar_disponible" class="button" value="CAMBIAR A CAMA DISPONIBLE" style="width: 200px"   />
+
+                    </form>
+                    <br>       
+                    <form action="../egreso/cambio_cama.jsp" name="form_cambiar_entre" method="POST" >
+                        <input type="hidden" name="txt_manda_duo" value="<%=duo.getId_duo()%>"  >
+                        <input type="hidden" name="txt_modo" value="2"  >
+                        <input type="submit" name="btn_cambiar_entre" class="button" value="CAMBIAR ENTRE CAMAS" style=" width:  200px"   />
+
+                    </form>
+                    <br>
+
+                    <% if (duo.getEstado_duo() == 21) {
+                            if (see_alta_medica.contains(obtiene_perfil)) {
+                    %>
+                    <form action="<%=neg.getLocal()%>egreso/alta_medica.jsp" name="form_alta_medica" method="POST"   >
+                        <input type="hidden" name="txt_manda_duo" value="<%=duo.getId_duo()%>"  >
+                        <input type="hidden" name="txt_modo" value="1"  >
+                        <input type="submit" name="btn_alta_medica" class="button" value="DAR ALTA MEDICA" style="width: 200px"   />
+
+                    </form>
+                    <%     } else {
+                            out.write("Debe tener Epicrisis en UO");
+                        }
+
+                    } else if (duo.getEstado_duo() == 3) {
+
+                        if (duo.getFecha_hora_alta_med_duo().contains("---")) {
+
+                            if (see_alta_medica.contains(obtiene_perfil)) {
+                    %>
+                    <form action="<%=neg.getLocal()%>ingresa_alta" name="form_alta_adm" method="POST" onsubmit="return  valida_valida_epicrisis()"  >
+                        <input type="hidden" name="id_duo" value="<%=duo.getId_duo()%>"  >
+                        <input type="hidden" name="txt_modo" value="2"  >
+                        <input type="submit" name="btn_alta_adm" class="button" value="VALIDAR ALTA MEDICA" style="width: 200px"   />
+
+                    </form>
+                    <%
+                        } else {
+                            out.write("Debe validarse en UO");
+                        }
+                    } else if (see_alta_administrativa.contains(obtiene_perfil)) {
+                    %>
+                    <form action="<%=neg.getLocal()%>egreso/alta_administrativa.jsp" name="form_alta_adm" method="POST"  >
+                        <input type="hidden" name="txt_manda_duo" value="<%=duo.getId_duo()%>"  >
+                        <input type="hidden" name="txt_modo" value="3"  >
+                        <input type="submit" name="btn_alta_adm" class="button" value="DAR ALTA ADMINISTRATIVA"  style="width: 200px"  />
+                        &nbsp;
+                    </form>
+                    <%  } else {
+                                out.write("Debe ser Dado de Alta en Admision UGU");
+                            }
+                        } else {
+                            out.write("Duo estado:" + duo.getEstado_duo_descripcion());
+                        }
+                    %>
+
+                    <a class="button" href="../uh_visita.jsp">  VOLVER </a> 
+
+                </td>
             </tr>
-        <a  ></a>
-
-        <tr>
-            <td align='right' >
-                <%                        out.write("<a href='" + neg.getLocal() + "PDF_visita_medica?txt_duo=" + duo.getId_duo() + "' target='_blank'><img src='../Imagenes/pdf.png' width='30' height='30' title='Evolución Médica'/></a>");
-                %>
-
-            </td>
-            <td valign="top"><<-Ver Evolución Médica</td>
-
-            <td align='right'>
-                <%    // if (see_kinesiologia.contains(obtiene_perfil)) {
-                    out.write("<form name='form_kine" + duo.getId_duo() + "' id='form_kine" + duo.getId_duo() + "' action='" + neg.getLocal() + "kinesiologia/datos_kinesiologia.jsp' method='POST' >");
-                    out.write("<input type='hidden' name='txt_manda_duo' value='" + duo.getId_duo() + "' >");
-                    out.write(" <img title='Kinesiologia' width='30' height='30'   src='../Imagenes/k.png' onclick='document.forms[\"form_kine" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
-                    out.write("</form>");
-                    // }
-                %>
-
-            </td>
-            <td valign="top" ><<-Ir kinesiología</td>
-        </tr>
-        <tr>
-            <td align='right' >
-                <%    // if (see_kinesiologia.contains(obtiene_perfil)) {
-                    out.write("<form name='form_nutri" + duo.getId_duo() + "' id='form_nutri" + duo.getId_duo() + "' action='" + neg.getLocal() + "nutricionista/datos_nutricionista.jsp' method='POST' >");
-                    out.write("<input type='hidden' name='txt_manda_duo' value='" + duo.getId_duo() + "' >");
-                    out.write(" <img title='Nutricionista' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_nutri" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
-                    out.write("</form>");
-                    // }
-                %>
-
-            </td>
-            <td valign="top"><<-Ir Evolución Nutricionista</td>
-
-            <td align='right'>
-                <%    // if (see_kinesiologia.contains(obtiene_perfil)) {
-                    out.write("<form name='form_fono" + duo.getId_duo() + "' id='form_fono" + duo.getId_duo() + "' action='" + neg.getLocal() + "fonoaudiologa/datos_fonoaudiologa.jsp' method='POST' >");
-                    out.write("<input type='hidden' name='txt_manda_duo' value='" + duo.getId_duo() + "' >");
-                    out.write(" <img title='Fonouriologo' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_fono" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
-                    out.write("</form>");
-                    // }
-                %>
-
-            </td>
-            <td valign="top" ><<-Ir Fonoaudiologa</td>
-        </tr>
-        <tr>
-
+        </tbody>
     </table>
-</td>
-
-<td>
-    &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; 
-</td>
-
-<% }%>
-
-<td>
-
-    <form action="../egreso/cambio_cama.jsp" name="form_cambiar_entre" method="POST" >
-        <input type="hidden" name="txt_manda_duo" value="<%=duo.getId_duo()%>"  >
-        <input type="hidden"name="txt_modo" value="1"  >
-        <input type="submit" name="btn_cambiar_disponible"  value="CAMBIAR A CAMA DISPONIBLE" style="width: 200px"   />
-        &nbsp;
-    </form>
-    <br>       
-    <form action="../egreso/cambio_cama.jsp" name="form_cambiar_entre" method="POST" >
-        <input type="hidden" name="txt_manda_duo" value="<%=duo.getId_duo()%>"  >
-        <input type="hidden" name="txt_modo" value="2"  >
-        <input type="submit" name="btn_cambiar_entre"  value="CAMBIAR ENTRE CAMAS" style=" width:  200px"   />
-        &nbsp;
-    </form>
-    <br>
-
-    <% if (duo.getEstado_duo() == 21) {
-            if (see_alta_medica.contains(obtiene_perfil)) {
-    %>
-    <form action="<%=neg.getLocal()%>egreso/alta_medica.jsp" name="form_alta_medica" method="POST"   >
-        <input type="hidden" name="txt_manda_duo" value="<%=duo.getId_duo()%>"  >
-        <input type="hidden" name="txt_modo" value="1"  >
-        <input type="submit" name="btn_alta_medica"  value="DAR ALTA MEDICA" style="width: 200px"   />
-        &nbsp;
-    </form>
-    <%     } else {
-            out.write("Debe tener Epicrisis en UO");
-        }
-
-    } else if (duo.getEstado_duo() == 3) {
-
-        if (duo.getFecha_hora_alta_med_duo().contains("---")) {
-
-            if (see_alta_medica.contains(obtiene_perfil)) {
-    %>
-    <form action="<%=neg.getLocal()%>ingresa_alta" name="form_alta_adm" method="POST" onsubmit="return  valida_valida_epicrisis()"  >
-        <input type="hidden" name="id_duo" value="<%=duo.getId_duo()%>"  >
-        <input type="hidden" name="txt_modo" value="2"  >
-        <input type="submit" name="btn_alta_adm"  value="VALIDAR ALTA MEDICA" style="width: 200px"   />
-        &nbsp;
-    </form>
-    <%
-        } else {
-            out.write("Debe validarse en UO");
-        }
-    } else if (see_alta_administrativa.contains(obtiene_perfil)) {
-    %>
-    <form action="<%=neg.getLocal()%>egreso/alta_administrativa.jsp" name="form_alta_adm" method="POST"  >
-        <input type="hidden" name="txt_manda_duo" value="<%=duo.getId_duo()%>"  >
-        <input type="hidden" name="txt_modo" value="3"  >
-        <input type="submit" name="btn_alta_adm"  value="DAR ALTA ADMINISTRATIVA"  style="width: 200px"  />
-        &nbsp;
-    </form>
-    <%  } else {
-                out.write("Debe ser Dado de Alta en Admision UGU");
-            }
-        } else {
-            out.write("Duo estado:" + duo.getEstado_duo_descripcion());
-        }
-    %>
-</td>
-</tr>
-</tbody>
-</table>
 
 </fieldset>
 

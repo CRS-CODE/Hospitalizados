@@ -76,7 +76,7 @@ public class XLS_DuosDadoAltaSimpleAsistenciaSocial extends HttpServlet {
         String fecha2_dma_sh = dia2 + "-" + mes2 + "-" + año2;
 
         String resto_sql = "";
-        ArrayList lista_duo = neg.lista_vista_duo("fecha_duo", fecha1_mda, fecha2_mda, resto_sql);
+        ArrayList lista_duo = neg.lista_vista_duo("fecha_duo", fecha1_dma_sh, fecha2_dma_sh, resto_sql);
         Iterator it_lista = lista_duo.iterator();
 
         try {

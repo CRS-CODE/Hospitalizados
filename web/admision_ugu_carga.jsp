@@ -162,16 +162,11 @@
                 <td>
                     <input name="fecha_nac" id="fecha_nac" type="text" size="20" value="<%=a_fecha_nacimiento%>"  >
                     <img src="Imagenes/calender.png" id="f_trigger_a" style="cursor:pointer" onclick="document.getElementById('fecha_nac').focus()">
-
-                    <%
-
-
-                    %>
                 </td>
                 <td>Sexo:</td>
                 <td>
 
-                    M<input type="radio" name="rbt_sexo" id="rbt_sexo0"  value="2"  checked='checked'     />
+                    M<input type="radio" name="rbt_sexo" id="rbt_sexo0"  value="0"  checked='checked'     />
                     F<input type="radio" name="rbt_sexo" id="rbt_sexo1"   value="1"  />
                 </td>
             </tr>
@@ -188,7 +183,7 @@
                 <td>Comuna:</td>
                 <td>
                     <select id="id_comuna" name="id_comuna" >
-                        <option value="-2" >Seleccione...</option>
+                        <option value="-1" >Seleccione...</option>
                         <%
 
                             while (it_com.hasNext()) {
@@ -223,7 +218,7 @@
                 <td>Consultorio de pertenencia:</td>
                 <td>
                     <select  name="id_consultorio_pertenencia" id="id_consultorio_pertenencia">
-                        <option value="-2" >Seleccione...</option>
+                        <option value="0" >Seleccione...</option>
                         <%
                             while (it_cons.hasNext()) {
                                 cons = (cConsultorio) it_cons.next();

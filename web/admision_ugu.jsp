@@ -20,6 +20,7 @@
             document.getElementById('id_txt_user').focus();
             return false;
         }
+      
         var obj = false;
         if (window.XMLHttpRequest) {
             //Cuidado aqui, el objeto XMLHttpRequest no esta disponible en versiones previas a IE7

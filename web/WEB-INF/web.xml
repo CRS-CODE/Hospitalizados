@@ -109,6 +109,10 @@
         <servlet-class>CapaInforme.PDF_visita_enfermeria</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>PDF_sesion_psicolo</servlet-name>
+        <servlet-class>CapaInforme.PDF_sesion_psicolo</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>PDF_evaluacion_respiratoria</servlet-name>
         <servlet-class>CapaInforme.PDF_evaluacion_respiratoria</servlet-class>
     </servlet>
@@ -355,6 +359,10 @@
     <servlet-mapping>
         <servlet-name>PDF_HISTORIAL</servlet-name>
         <url-pattern>/PDF_HISTORIAL</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>PDF_sesion_psicolo</servlet-name>
+        <url-pattern>/PDF_sesion_psicolo</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PDF_INGRESOMEDICO</servlet-name>

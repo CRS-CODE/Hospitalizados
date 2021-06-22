@@ -72,7 +72,7 @@ public class XLS_VisitasEnfermeria extends HttpServlet {
 
         String fecha1_dma_sh = dia1 + "-" + mes1 + "-" + año1;
 
-        ArrayList lista = neg.listada_categorizaciones(fecha1_mda, fecha1_mda);
+        ArrayList lista = neg.listada_categorizaciones(fecha1_dma_sh, fecha1_dma_sh);
 
 
         try {

@@ -27,6 +27,7 @@
 <body>
 <legend>INFORME</legend>
 
+
 <table>
     <TR>
         <TD id="111" >
@@ -52,7 +53,7 @@
                                         <option value="XLS_AdmissionHospitalization">Ingresos a Hospitalizaciòn</option>
                                         <option value="XLS_DuosDadoAltaSimple">Duos Dado de Alta Simple</option>
                                         <option value="XLS_DuosDadoAltaDatosEpicrisis">Duos Dado de Alta con Datos Epicrisis</option>
-                                        <option value="http://10.8.4.9:9090/modulo_uo/Informe/InfDuoxOrigenxls.jsp">Duos por Origen</option>
+                                        <option value="Informe/InfDuoxOrigenxls.jsp">Duos por Origen</option>
                                         <option value="XLS_DuosDadoAltaSimpleAsistenciaSocial">Duos Dado de Alta Simple + Registro Social</option>  
                                         <option value="XLS_InformeDas?modo=1">Nomina Das por Fecha Ingreso</option>
                                         <option value="XLS_InformeDas?modo=2">Nomina Das por Fecha Egreso</option>

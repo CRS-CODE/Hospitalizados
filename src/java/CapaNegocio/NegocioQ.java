@@ -74,18 +74,18 @@ public class NegocioQ extends Negocio {
         DuoIndexBarthel duoIndexBarthel = new DuoIndexBarthel();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT \n"
-                + "p.paciente_nombres ||' ' || p.paciente_apellidop ||' ' || p.paciente_apellidom as nameP,\n"
-                + "p.paciente_rut,\n"
-                + "to_char(dib.date_registers , 'DD-MM-YYYY') as dateRgister,\n"
-                + "dib.degree_of_dependency,\n"
-                + "case when dib.type_registers = 1 then 'Ingreso' else 'Egreso' end  as typeRegister,\n"
-                + "dib.total_puntuction,\n"
-                + "u.nombre_usuario ||' ' || u.apellidop_usuario ||' ' || u.apellidom_usuario as userRegister\n"
-                + "FROM \n"
-                + "  schema_uo.duo_index_barthel dib inner join schema_uo.duo d on dib.id_duo= d.id_duo\n"
-                + "  inner join schema_urgencia.paciente p on p.paciente_rut= d.rut_paciente \n"
-                + "  inner join schema_uo.usuario u on dib.user_registers = u.rut_usuario  where dib.id = " + id + ";");
+        this.cnn.setSentenciaSQL("SELECT\n"
+                + "                p.nombre ||' ' || p.apellido_paterno ||' ' || p.apellido_moderno as nameP,\n"
+                + "                p.rut as paciente_rut,\n"
+                + "                to_char(dib.date_registers , 'DD-MM-YYYY') as dateRgister,\n"
+                + "                dib.degree_of_dependency,\n"
+                + "                case when dib.type_registers = 1 then 'Ingreso' else 'Egreso' end  as typeRegister,\n"
+                + "                dib.total_puntuction,\n"
+                + "                u.nombre_usuario ||' ' || u.apellidop_usuario ||' ' || u.apellidom_usuario as userRegister\n"
+                + "                FROM\n"
+                + "                  schema_uo.duo_index_barthel dib inner join schema_uo.duo d on dib.id_duo= d.id_duo\n"
+                + "                  inner join agenda.paciente p on p.rut= d.rut_paciente\n"
+                + "                  inner join schema_uo.usuario u on dib.user_registers = u.rut_usuario where dib.id = " + id + ";");
         this.cnn.conectar();
         try {
             if (cnn.getRst().next()) {
@@ -111,26 +111,23 @@ public class NegocioQ extends Negocio {
         Vector<cDuo> vi = new Vector<cDuo>();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL(" SELECT c.descripcion_cama, COALESCE( D.rut_paciente, '') as rut_paciente,COALESCE(lower(paciente_apellidop),'') as  paciente_apellidop ,\n"
-                + "COALESCE(lower(paciente_apellidom),'')as paciente_apellidom,COALESCE( lower(paciente_nombres),'') as paciente_nombres,\n"
-                + "                        COALESCE(to_char(D.fecha_duo,'DD/MM/YYYY'),'') as fecha_duo ,COALESCE(D.hora_duo,'00:00 ') as hora_duo, \n"
-                + "                            \n"
-                + "                                EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo))+1 as dias_cama ,"
-                + "           COALESCE( to_char (age(CURRENT_TIMESTAMP, paciente_fecha_nac),'yy'),'') as edad ,\n"
-                + "        COALESCE((SELECT BB.cat_visita_categorizacion \n"
-                + "            FROM schema_uo.visita AA  \n"
-                + "            JOIN schema_uo.visita_categorizacion BB ON \n"
-                + "                  (AA.id_visita_categorizacion=BB.id_visita_categorizacion) \n"
-                + "                        where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as ultima_cat\n"
-                + "                               FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama \n"
-                + "                                and D.estado_duo in (2,1, 3, 21)\n"
-                + "                               left JOIN schema_uo.sala   \n"
-                + "                              ON (schema_uo.sala.id_sala=C.id_sala) \n"
-                + "                               left JOIN schema_urgencia.paciente  \n"
-                + "                            ON (schema_urgencia.paciente.paciente_rut=D.rut_paciente) \n"
-                + "                               where C.id_sala in (11) and C.estado_cama=1 order by schema_uo.sala.posicion\n"
-                + "  \n"
-                + "   ");
+        this.cnn.setSentenciaSQL("SELECT c.descripcion_cama, COALESCE( D.rut_paciente, '') as rut_paciente,COALESCE(lower(apellido_paterno),'') as  paciente_apellidop ,\n"
+                + "   COALESCE(lower(apellido_moderno ),'')as paciente_apellidom,COALESCE( lower(nombre),'') as paciente_nombres,\n"
+                + "   COALESCE(to_char(D.fecha_duo,'DD/MM/YYYY'),'') as fecha_duo ,COALESCE(D.hora_duo,'00:00 ') as hora_duo, \n"
+                + "    EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo))+1 as dias_cama ,\n"
+                + "    COALESCE( to_char (age(CURRENT_TIMESTAMP, fecha_nacimiento),'yy'),'') as edad ,\n"
+                + "    COALESCE((SELECT BB.cat_visita_categorizacion \n"
+                + "     FROM schema_uo.visita AA  \n"
+                + "    JOIN schema_uo.visita_categorizacion BB ON \n"
+                + "     (AA.id_visita_categorizacion=BB.id_visita_categorizacion) \n"
+                + "     where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as ultima_cat\n"
+                + "     FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama \n"
+                + "      and D.estado_duo in (2,1, 3, 21)\n"
+                + "      left JOIN schema_uo.sala   \n"
+                + "       ON (schema_uo.sala.id_sala=C.id_sala) \n"
+                + "       left JOIN agenda.paciente  \n"
+                + "       ON (agenda.paciente.rut=D.rut_paciente) \n"
+                + "       where C.id_sala in (11) and C.estado_cama=1 order by schema_uo.sala.posicion ");
         this.cnn.conectar();
         try {
             while (cnn.getRst().next()) {
@@ -159,25 +156,22 @@ public class NegocioQ extends Negocio {
         Vector<cDuo> vi = new Vector<cDuo>();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL(" SELECT c.descripcion_cama, COALESCE( D.rut_paciente, '') as rut_paciente,COALESCE(lower(paciente_apellidop),'') as  paciente_apellidop ,\n"
-                + "COALESCE(lower(paciente_apellidom),'')as paciente_apellidom,COALESCE( lower(paciente_nombres),'') as paciente_nombres,\n"
-                + "                        COALESCE(to_char(D.fecha_duo,'DD/MM/YYYY'),'') as fecha_duo ,COALESCE(D.hora_duo,'00:00 ') as hora_duo, \n"
-                + "                            \n"
-                + "                                EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo))+1 as dias_cama,COALESCE(to_char (age(CURRENT_TIMESTAMP, paciente_fecha_nac),'yy'),'') as edad ,\n"
-                + "COALESCE((SELECT BB.cat_visita_categorizacion \n"
-                + "                                          FROM schema_uo.visita AA  \n"
-                + "                                             JOIN schema_uo.visita_categorizacion BB ON \n"
-                + "                                           (AA.id_visita_categorizacion=BB.id_visita_categorizacion) \n"
-                + "                                              where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as ultima_cat \n"
-                + "                               FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama \n"
-                + "                                and D.estado_duo in (2,1, 3, 21)\n"
-                + "                               left JOIN schema_uo.sala   \n"
-                + "                              ON (schema_uo.sala.id_sala=C.id_sala) \n"
-                + "                               left JOIN schema_urgencia.paciente  \n"
-                + "                            ON (schema_urgencia.paciente.paciente_rut=D.rut_paciente) \n"
-                + "                               where C.id_sala in (12) and C.estado_cama=1 order by schema_uo.sala.posicion\n"
-                + "  \n"
-                + "   ");
+        this.cnn.setSentenciaSQL("  SELECT c.descripcion_cama, COALESCE( D.rut_paciente, '') as rut_paciente,COALESCE(lower(apellido_paterno),'') as  paciente_apellidop ,\n"
+                + "        COALESCE(lower(apellido_moderno),'')as paciente_apellidom,COALESCE( lower(nombre),'') as paciente_nombres,\n"
+                + "         COALESCE(to_char(D.fecha_duo,'DD/MM/YYYY'),'') as fecha_duo ,COALESCE(D.hora_duo,'00:00 ') as hora_duo,\n"
+                + "           EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo))+1 as dias_cama,COALESCE(to_char (age(CURRENT_TIMESTAMP, fecha_nacimiento),'yy'),'') as edad ,\n"
+                + "           COALESCE((SELECT BB.cat_visita_categorizacion\n"
+                + "           FROM schema_uo.visita AA \n"
+                + "           JOIN schema_uo.visita_categorizacion BB ON\n"
+                + "           (AA.id_visita_categorizacion=BB.id_visita_categorizacion)\n"
+                + "          where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as ultima_cat\n"
+                + "             FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama\n"
+                + "              and D.estado_duo in (2,1, 3, 21)\n"
+                + "                left JOIN schema_uo.sala  \n"
+                + "                 ON (schema_uo.sala.id_sala=C.id_sala)\n"
+                + "                left JOIN agenda.paciente \n"
+                + "                     ON (agenda.paciente.rut=D.rut_paciente)\n"
+                + "                    where C.id_sala in (12) and C.estado_cama=1 order by schema_uo.sala.posicion");
         this.cnn.conectar();
         try {
             while (cnn.getRst().next()) {
@@ -205,25 +199,22 @@ public class NegocioQ extends Negocio {
         Vector<cDuo> vi = new Vector<cDuo>();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL(" SELECT c.descripcion_cama, COALESCE( D.rut_paciente, '') as rut_paciente,COALESCE(lower(paciente_apellidop),'') as  paciente_apellidop ,\n"
-                + "COALESCE(lower(paciente_apellidom),'')as paciente_apellidom,COALESCE( lower(paciente_nombres),'') as paciente_nombres,\n"
-                + "                        COALESCE(to_char(D.fecha_duo,'DD/MM/YYYY'),'') as fecha_duo ,COALESCE(D.hora_duo,'00:00 ') as hora_duo, \n"
-                + "                            \n"
-                + "                                EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo))+1 as dias_cama,COALESCE(to_char (age(CURRENT_TIMESTAMP, paciente_fecha_nac),'yy'),'') as edad ,\n"
-                + "COALESCE((SELECT BB.cat_visita_categorizacion \n"
-                + "                                          FROM schema_uo.visita AA  \n"
-                + "                                             JOIN schema_uo.visita_categorizacion BB ON \n"
-                + "                                           (AA.id_visita_categorizacion=BB.id_visita_categorizacion) \n"
-                + "                                              where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as ultima_cat \n"
-                + "                               FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama \n"
-                + "                                and D.estado_duo in (2,1, 3, 21)\n"
-                + "                               left JOIN schema_uo.sala   \n"
-                + "                              ON (schema_uo.sala.id_sala=C.id_sala) \n"
-                + "                               left JOIN schema_urgencia.paciente  \n"
-                + "                            ON (schema_urgencia.paciente.paciente_rut=D.rut_paciente) \n"
-                + "                               where C.id_sala in (25) and C.estado_cama=1 order by C.\"posicionCama\" asc \n"
-                + "  \n"
-                + "   ");
+        this.cnn.setSentenciaSQL(" SELECT c.descripcion_cama, COALESCE( D.rut_paciente, '') as rut_paciente,COALESCE(lower(apellido_paterno),'') as  paciente_apellidop ,\n"
+                + "        COALESCE(lower(apellido_moderno),'')as paciente_apellidom,COALESCE( lower(nombre),'') as paciente_nombres,\n"
+                + "         COALESCE(to_char(D.fecha_duo,'DD/MM/YYYY'),'') as fecha_duo ,COALESCE(D.hora_duo,'00:00 ') as hora_duo,\n"
+                + "           EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo))+1 as dias_cama,COALESCE(to_char (age(CURRENT_TIMESTAMP, fecha_nacimiento),'yy'),'') as edad ,\n"
+                + "           COALESCE((SELECT BB.cat_visita_categorizacion\n"
+                + "           FROM schema_uo.visita AA \n"
+                + "           JOIN schema_uo.visita_categorizacion BB ON\n"
+                + "           (AA.id_visita_categorizacion=BB.id_visita_categorizacion)\n"
+                + "          where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as ultima_cat\n"
+                + "             FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama\n"
+                + "              and D.estado_duo in (2,1, 3, 21)\n"
+                + "                left JOIN schema_uo.sala  \n"
+                + "                 ON (schema_uo.sala.id_sala=C.id_sala)\n"
+                + "                left JOIN agenda.paciente \n"
+                + "                     ON (agenda.paciente.rut=D.rut_paciente)\n"
+                + "                    where C.id_sala in (25) and C.estado_cama=1 order by C.\"posicionCama\" asc  ");
         this.cnn.conectar();
         try {
             while (cnn.getRst().next()) {
@@ -277,11 +268,12 @@ public class NegocioQ extends Negocio {
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
         this.cnn.setSentenciaSQL("select TO_CHAR(V.fecha_visita,'DD/MM/YYYY') as fecha_visita , TO_CHAR(V.hora_visita,'HH24:MI') as hora_visita, V.rut_usuario , U.nombre_usuario ||' ' ||U.apellidop_usuario AS usuario_registra,\n"
-                + "p.paciente_rut  , p.paciente_nombres ||' ' || p.paciente_apellidop as datos_paciente, vc.*\n"
-                + "from schema_uo.visita V,schema_uo.visita_categorizacion VC, schema_uo.usuario U,\n"
-                + "schema_uo.duo d , schema_urgencia.paciente p\n"
-                + "where VC.id_visita_categorizacion=V.id_visita_categorizacion and v.rut_usuario = U.rut_usuario AND\n"
-                + "d.id_duo = v.id_duo and p.paciente_rut = d.rut_paciente and\n"
+                + "                p.rut as paciente_rut  , p.nombre ||' ' || p.apellido_paterno as datos_paciente, vc.*\n"
+                + "                from schema_uo.visita V,schema_uo.visita_categorizacion VC, schema_uo.usuario U,\n"
+                + "                schema_uo.duo d , agenda.paciente p\n"
+                + "                where VC.id_visita_categorizacion=V.id_visita_categorizacion and v.rut_usuario = U.rut_usuario AND\n"
+                + "                d.id_duo = v.id_duo and p.rut = d.rut_paciente\n"
+                + "                   and\n"
                 + "V.fecha_visita BETWEEN '" + initDate + "' and '" + end + "'  order by v.fecha_visita");
         this.cnn.conectar();
 
@@ -649,6 +641,43 @@ public class NegocioQ extends Negocio {
         return total;
     }
 
+    /*new code */
+    public ArrayList lista_sesion_psicolo(int id_duo) {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT  ses_id, ses_estado, ses_usuario, \n TO_CHAR(ses_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_ingreso, TO_CHAR(ses_fecha_hora,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_hora, \n TO_CHAR(ses_fecha_hora,'DD/MM/YYYY')as ses_fecha,\n TO_CHAR(ses_fecha_hora,'HH24:MI:SS')as ses_hora,\n ses_detalle, ses_duo,\n USU.nombre_usuario,USU.apellidop_usuario,USU.apellidom_usuario\n FROM  schema_uo.psicolo_sesion\n SES INNER JOIN schema_uo.usuario USU ON(SES.ses_usuario=USU.rut_usuario)\n WHERE  ses_duo='" + id_duo + "' and ses_estado='1'  order by SES.ses_fecha_hora desc  ;");
+        this.cnn.conectar();
+
+        cSesionKine ses;
+        try {
+            for (; this.cnn.getRst().next(); lista.add(ses)) {
+                ses = new cSesionKine();
+                ses.setId_sesion_kine(this.cnn.getRst().getInt("ses_id"));
+                ses.setId_duo(this.cnn.getRst().getInt("ses_duo"));
+                ses.setFecha_ingreso_sesion(this.cnn.getRst().getString("ses_fecha_ingreso"));
+                ses.setFecha_hora(this.cnn.getRst().getString("ses_fecha_hora"));
+                ses.setFecha(this.cnn.getRst().getString("ses_fecha"));
+                ses.setHora(this.cnn.getRst().getString("ses_hora"));
+                ses.setDetalle(this.cnn.getRst().getString("ses_detalle"));
+                ses.setRut_usuario(this.cnn.getRst().getString("ses_usuario"));
+                ses.setNombre_usuario(this.cnn.getRst().getString("nombre_usuario"));
+                ses.setApellidop_usuario(this.cnn.getRst().getString("apellidop_usuario"));
+                ses.setApellidom_usuario(this.cnn.getRst().getString("apellidom_usuario"));
+                ses.setEstado_sesion(this.cnn.getRst().getInt("ses_estado"));
+                if (ses.getEstado_sesion() == 0) {
+                    ses.setEstado_desc_sesion("Anulado");
+                } else {
+                    ses.setEstado_desc_sesion("Activo");
+                }
+            }
+        } catch (SQLException var4) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
+        }
+
+        return lista;
+    }
+
     public String getCatRiesgo(int valor_riesgo) {
         String letra = "";
         this.configurarConexion("");
@@ -721,7 +750,7 @@ public class NegocioQ extends Negocio {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("select  fecha,\n    hora,\n    proviene,\n    profesional,\n    descripcion from schema_uo.sesiones where duo = " + id_duo + "");
+        this.cnn.setSentenciaSQL("select  fecha,    hora,    proviene,    profesional,   descripcion , fechadate from schema_uo.sesiones where duo = " + id_duo + " ORDER BY fechadate desc");
         this.cnn.conectar();
 
         try {
@@ -964,6 +993,7 @@ public class NegocioQ extends Negocio {
                 duo.setEstado_duo(cnn.getRst().getInt("estado_duo"));
                 duo.setFecha(cnn.getRst().getDate("fecha"));
                 duo.setDias_cama(cnn.getRst().getInt("dias_cama2"));
+                duo.setDias_reales_cama(this.cnn.getRst().getInt("dias_cama"));
 
                 if (duo.getEstado_duo() == 1) {
                     duo.setEstado_duo_descripcion("INGRESADO ADM.");
@@ -1313,25 +1343,24 @@ public class NegocioQ extends Negocio {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL(" SELECT to_char(D.fecha_duo,'DD/MM/YYYY') as fecha_duo ,D.hora_duo, \n"
-                + "                 C.id_cama,C.id_sala,schema_uo.sala.descripcion_sala ,C.descripcion_cama, \n"
-                + "                D.id_duo,D.rut_paciente,D.id_categorizacion,D.estado_duo,   \n"
-                + "                p.nombre as paciente_nombres,p.apellido_paterno as paciente_apellidop,\n"
-                + "                p.apellido_moderno as paciente_apellidom , \n"
-                + "                fecha_hora_alta_adm_duo,fecha_hora_alta_med_duo, \n"
-                + "                D.duo_tiene_enfermeria, (SELECT BB.cat_visita_categorizacion \n"
-                + "                FROM schema_uo.visita AA  \n"
-                + "                 JOIN schema_uo.visita_categorizacion BB ON \n"
-                + "                 (AA.id_visita_categorizacion=BB.id_visita_categorizacion) \n"
-                + "                where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1) as ultima_cat, \n"
-                + "                EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo)) as dias_cama \n"
-                + "                FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama \n"
-                + "                and (D.estado_duo=2 or D.estado_duo=1 or D.estado_duo=3 or D.estado_duo=21) \n"
-                + "                 left JOIN schema_uo.sala   \n"
-                + "                 ON (schema_uo.sala.id_sala=C.id_sala) \n"
-                + "                left JOIN agenda.paciente p  \n"
-                + "                ON (p.rut =D.rut_paciente) \n"
-                + "                 where C.id_sala in (11,12,25) and C.estado_cama=1 order by schema_uo.sala.posicion");
+        this.cnn.setSentenciaSQL("SELECT to_char(D.fecha_duo,'DD/MM/YYYY') as fecha_duo ,D.hora_duo,\n"
+                + "                            C.id_cama,C.id_sala,schema_uo.sala.descripcion_sala ,C.descripcion_cama,\n"
+                + "                            D.id_duo,D.rut_paciente,D.id_categorizacion,D.estado_duo,  \n"
+                + "                            nombre as paciente_nombres,apellido_paterno as paciente_apellidop,apellido_moderno  as paciente_apellidom ,\n"
+                + "                            fecha_hora_alta_adm_duo,fecha_hora_alta_med_duo,\n"
+                + "                            D.duo_tiene_enfermeria, (SELECT BB.cat_visita_categorizacion\n"
+                + "                            FROM schema_uo.visita AA \n"
+                + "                            JOIN schema_uo.visita_categorizacion BB ON\n"
+                + "                            (AA.id_visita_categorizacion=BB.id_visita_categorizacion)\n"
+                + "                            where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1) as ultima_cat,\n"
+                + "                            EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo)) as dias_cama\n"
+                + "                            FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama\n"
+                + "                            and (D.estado_duo=2 or D.estado_duo=1 or D.estado_duo=3 or D.estado_duo=21)\n"
+                + "                            left JOIN schema_uo.sala  \n"
+                + "                            ON (schema_uo.sala.id_sala=C.id_sala) \n"
+                + "                            left JOIN agenda.paciente  \n"
+                + "                            ON (agenda.paciente.rut=D.rut_paciente)\n"
+                + "                            where C.id_sala in (11,12,25) and C.estado_cama=1 order by schema_uo.sala.posicion ,c.\"posicionCama\"");
         this.cnn.conectar();
         try {
             while (cnn.getRst().next()) {
@@ -1474,7 +1503,16 @@ public class NegocioQ extends Negocio {
         cEpicrisis aux = new cEpicrisis();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT  id_epicrisis,resumen_epicrisis,examen_epicrisis,  diagnostico_epicrisis,indicacion_epicrisis,  to_char(fecha_epicrisis,'DD/MM/YYYY') as fecha_epicrisis, hora_epicrisis,  BB.rut_usuario,AA.id_duo,fecha_hora_epicrisis,  BB.nombre_usuario, BB.apellidop_usuario,BB.apellidom_usuario,  paciente_nombres,paciente_apellidop,paciente_apellidom  FROM schema_uo.epicrisis AA   JOIN schema_uo.usuario BB ON   (AA.rut_usuario=BB.rut_usuario)  JOIN schema_uo.duo ON  (AA.id_duo=schema_uo.duo.id_duo)  JOIN schema_urgencia.paciente ON   (schema_uo.duo.rut_paciente=schema_urgencia.paciente.paciente_rut)   where id_epicrisis='" + id_epicrisis + "';");
+        this.cnn.setSentenciaSQL("SELECT  id_epicrisis,resumen_epicrisis,examen_epicrisis, \n"
+                + " diagnostico_epicrisis,indicacion_epicrisis, \n"
+                + "  to_char(fecha_epicrisis,'DD/MM/YYYY') as fecha_epicrisis,\n"
+                + "  hora_epicrisis,  BB.rut_usuario,AA.id_duo,fecha_hora_epicrisis,  BB.nombre_usuario, \n"
+                + "  BB.apellidop_usuario,BB.apellidom_usuario,  nombre,\n"
+                + "  apellido_paterno,apellido_moderno  FROM schema_uo.epicrisis AA   \n"
+                + "  JOIN schema_uo.usuario BB ON   (AA.rut_usuario=BB.rut_usuario)  \n"
+                + "  JOIN schema_uo.duo ON  (AA.id_duo=schema_uo.duo.id_duo)  \n"
+                + "  JOIN agenda.paciente ON \n"
+                + "  (schema_uo.duo.rut_paciente=agenda.paciente.rut)  where id_epicrisis='" + id_epicrisis + "';");
         this.cnn.conectar();
 
         try {
@@ -1562,7 +1600,12 @@ public class NegocioQ extends Negocio {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT  con_id,con_descripcion,  con_fecha_ingreso FROM  schemaoirs.consultorio_pertenencia  where con_estado='1' ");
+        this.cnn.setSentenciaSQL("SELECT \n"
+                + "  id_servicio_salud as con_id,\n"
+                + " tipo||' '|| nombre_servicio_salud as con_descripcion\n"
+                + "\n"
+                + "FROM \n"
+                + "  agenda.procedencia where estado_servicio_salud = 1  ;");
         this.cnn.conectar();
 
         try {
@@ -1585,26 +1628,24 @@ public class NegocioQ extends Negocio {
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
         this.cnn.setSentenciaSQL("select d.rut_paciente,\n"
-                + "(p.paciente_nombres || ' '|| p.paciente_apellidop ||' '|| p.paciente_apellidom) as nombre_paciente, \n"
-                + "EXTRACT(YEAR from age(CURRENT_TIMESTAMP ,p.paciente_fecha_nac))AS paciente_edad,\n"
-                + "case when p.paciente_sexo = 1 then 'Femenino' else 'Masculino' end as paciente_sexo,\n"
-                + "(SELECT PP.con_descripcion from schemaoirs.consultorio_pertenencia PP WHERE   PP.con_id=p.paciente_consultorio)as cesfam,\n"
-                + "(select dr.descripcion_derivador from schema_uo.derivador dr where dr.id_derivador= p.paciente_procedencia) as origen,\n"
-                + "d.rut_usuario,\n"
-                + "to_char(fecha_duo,'DD/MM/YYYY')as fecha_duo, \n"
-                + "to_char(d.hora_duo,'HH24:MI') as hora_duo,  \n"
-                + "d.rut_usuario_ing_med,\n"
-                + "to_char(d.fecha_hora_ing_med,'DD/MM/YYYY') as fecha_ingreso_medico,\n"
-                + "to_char(d.fecha_hora_ing_med,'HH24:MI') as hora_ingreso_medico,"
-                + "(SELECT LL.rut_usuario_ing_enfermeria FROM schema_uo.ing_enfermeria LL    where LL.id_duo_ing_enfermeria=d.id_duo limit 1) as rut_ing_enf, \n"
-                + "(SELECT to_char(LL.fecha_hora_ing_enfermeria,'DD/MM/YYYY') as fecha_hora_ing_enfermeria FROM schema_uo.ing_enfermeria LL    where LL.id_duo_ing_enfermeria=d.id_duo limit 1) as fecha_ing_enf, \n"
-                + "(SELECT to_char(LL.fecha_hora_ing_enfermeria,'HH24:MI') as fecha_hora_ing_enfermeria FROM schema_uo.ing_enfermeria LL    where LL.id_duo_ing_enfermeria=d.id_duo limit 1) as hora_ing_enf,   \n"
-                + "( SELECT BB.cat_visita_categorizacion     FROM schema_uo.visita AA      JOIN schema_uo.visita_categorizacion BB ON     (AA.id_visita_categorizacion=BB.id_visita_categorizacion)      where id_duo=d.id_duo order by AA.fecha_hora_visita ASC limit 1 ) as primera_cat,\n"
-                + "( SELECT to_char(aa.fecha_visita,'DD/MM/YYYY')     FROM schema_uo.visita AA      JOIN schema_uo.visita_categorizacion BB ON     (AA.id_visita_categorizacion=BB.id_visita_categorizacion)      where id_duo=d.id_duo order by AA.fecha_hora_visita ASC limit 1 ) as fecha_cat,\n"
-                + "( SELECT to_char(aa.hora_visita,'HH24:MI')    FROM schema_uo.visita AA      JOIN schema_uo.visita_categorizacion BB ON     (AA.id_visita_categorizacion=BB.id_visita_categorizacion)      where id_duo=d.id_duo order by AA.fecha_hora_visita ASC limit 1 ) as hora_cat\n"
-                + "\n"
-                + "\n"
-                + "from schema_uo.duo d inner join schema_urgencia.paciente p on p.paciente_rut = d.rut_paciente where  d.fecha_duo BETWEEN '" + init + "' and '" + end + "' ");
+                + "                (p.nombre || ' '|| p.apellido_paterno ||' '|| p.apellido_moderno) as nombre_paciente,\n"
+                + "                EXTRACT(YEAR from age(CURRENT_TIMESTAMP ,p.fecha_registro))AS paciente_edad,\n"
+                + "                case when p.genero = 1 then 'Femenino' else 'Masculino' end as paciente_sexo,\n"
+                + "                (SELECT PP.con_descripcion from schemaoirs.consultorio_pertenencia PP WHERE   PP.con_id=p.procedencia)as cesfam,\n"
+                + "                (select dr.descripcion_derivador from schema_uo.derivador dr where dr.id_derivador= p.procedencia) as origen,\n"
+                + "                d.rut_usuario,\n"
+                + "                to_char(fecha_duo,'DD/MM/YYYY')as fecha_duo,\n"
+                + "                to_char(d.hora_duo,'HH24:MI') as hora_duo, \n"
+                + "                d.rut_usuario_ing_med,\n"
+                + "                to_char(d.fecha_hora_ing_med,'DD/MM/YYYY') as fecha_ingreso_medico,\n"
+                + "                to_char(d.fecha_hora_ing_med,'HH24:MI') as hora_ingreso_medico,\n"
+                + "                (SELECT LL.rut_usuario_ing_enfermeria FROM schema_uo.ing_enfermeria LL    where LL.id_duo_ing_enfermeria=d.id_duo limit 1) as rut_ing_enf,\n"
+                + "                (SELECT to_char(LL.fecha_hora_ing_enfermeria,'DD/MM/YYYY') as fecha_hora_ing_enfermeria FROM schema_uo.ing_enfermeria LL    where LL.id_duo_ing_enfermeria=d.id_duo limit 1) as fecha_ing_enf,\n"
+                + "                (SELECT to_char(LL.fecha_hora_ing_enfermeria,'HH24:MI') as fecha_hora_ing_enfermeria FROM schema_uo.ing_enfermeria LL    where LL.id_duo_ing_enfermeria=d.id_duo limit 1) as hora_ing_enf,  \n"
+                + "                ( SELECT BB.cat_visita_categorizacion     FROM schema_uo.visita AA      JOIN schema_uo.visita_categorizacion BB ON     (AA.id_visita_categorizacion=BB.id_visita_categorizacion)      where id_duo=d.id_duo order by AA.fecha_hora_visita ASC limit 1 ) as primera_cat,\n"
+                + "                ( SELECT to_char(aa.fecha_visita,'DD/MM/YYYY')     FROM schema_uo.visita AA      JOIN schema_uo.visita_categorizacion BB ON     (AA.id_visita_categorizacion=BB.id_visita_categorizacion)      where id_duo=d.id_duo order by AA.fecha_hora_visita ASC limit 1 ) as fecha_cat,\n"
+                + "                ( SELECT to_char(aa.hora_visita,'HH24:MI')    FROM schema_uo.visita AA      JOIN schema_uo.visita_categorizacion BB ON     (AA.id_visita_categorizacion=BB.id_visita_categorizacion)      where id_duo=d.id_duo order by AA.fecha_hora_visita ASC limit 1 ) as hora_cat\n"
+                + "                 from schema_uo.duo d inner join agenda.paciente p on p.rut = d.rut_paciente where  d.fecha_duo BETWEEN '" + init + "' and '" + end + "' ");
         this.cnn.conectar();
 
         try {
@@ -2586,40 +2627,40 @@ public class NegocioQ extends Negocio {
         this.cnn.setEsSelect(true);
 
         this.cnn.setSentenciaSQL("SELECT duo.id_duo,e.id_epicrisis,duo.estado_duo, p.rut as paciente_rut, \n"
-                + "                 p.nombre as paciente_nombres, p.apellido_paterno as paciente_apellidop,p.apellido_moderno as paciente_apellidom, \n"
-                + "                 (CASE \n"
-                + "              WHEN p.genero = 1 THEN 'FEMENINO'  \n"
-                + "            WHEN p.genero = 0 THEN 'MASCULINO'   \n"
-                + "         END) AS paciente_sexo, to_char(p.fecha_nacimiento,'DD/MM/YYYY')as paciente_fecha_nac, \n"
-                + "             age(current_date, p.fecha_nacimiento) AS paciente_edad, \n"
-                + "              (Select con.con_descripcion from schemaoirs.consultorio_pertenencia con \n"
-                + "             where con.con_id=p.procedencia) as con_descripcion, \n"
-                + "             cf.codigo_fonasa_descripcion,   pp.nombre as tramo_prevision_paciente, \n"
-                + "             to_char(fecha_hora_ing_enfermeria,'DD/MM/YYYY HH24:MI:SS') AS fecha_hora_ing_enfermeria ,e.resumen_epicrisis, \n"
-                + "                e.diagnostico_epicrisis, e.examen_epicrisis,e.indicacion_epicrisis, \n"
-                + "                 de.descripcion_derivador, d.descripcion_destino, \n"
-                + "                to_char(duo.fecha_duo + duo.hora_duo,'DD/MM/YYYY HH24:MI:SS') AS fecha_duo, \n"
-                + "               to_char(e.fecha_epicrisis + e.hora_epicrisis,'DD/MM/YYYY HH24:MI:SS') AS fecha_epicrisis,  \n"
-                + "                 to_char( a.fecha_hora_alta_adm, 'DD/MM/YYYY HH24:MI:SS') AS fecha_hora_alta_adm, \n"
-                + "                age(e.fecha_epicrisis + e.hora_epicrisis, duo.fecha_duo + duo.hora_duo) \n"
-                + "               AS qdias_epi_duo, \n"
-                + "                 age(a.fecha_hora_alta_adm, duo.fecha_duo + duo.hora_duo) \n"
-                + "                  AS qdias_altaadm_duo, fecha_hora_alta_med_duo ,\n"
-                + "                 EXTRACT(DAY FROM (fecha_hora_alta_med_duo)-(fecha_duo+hora_duo)) as fecha_dias, \n"
-                + "                  e.rut_usuario, gg.nombre_usuario, gg.apellidop_usuario, gg.apellidom_usuario \n"
-                + "                  FROM agenda.paciente p, \n"
-                + "                 schema_uo.destino d, schema_uo.duo duo, schema_uo.epicrisis e, \n"
-                + "                 schema_uo.alta_adm a,schema_uo.derivador de, \n"
-                + "                agenda.prevision pp,schema_urgencia.codigo_fonasa cf, \n"
-                + "               schema_uo.ing_enfermeria ie,schema_uo.usuario gg ,\n"
-                + "               agenda.tramo t\n"
-                + "                 WHERE p.rut = duo.rut_paciente AND \n"
-                + "                 e.id_duo = duo.id_duo AND  a.id_destino = d.id_destino AND \n"
-                + "                 a.id_duo = duo.id_duo AND  duo.id_derivador = de.id_derivador AND \n"
-                + "                \n"
-                + "                 pp.id_prevision = p.provision AND \n"
-                + "                 t.id= p.tramo and\n"
-                + "              ie.id_duo_ing_enfermeria = duo.id_duo AND gg.rut_usuario = e.rut_usuario "
+                + "                               p.nombre as paciente_nombres, p.apellido_paterno as paciente_apellidop,p.apellido_moderno as paciente_apellidom, \n"
+                + "                               (CASE \n"
+                + "                            WHEN p.genero = 1 THEN 'FEMENINO'  \n"
+                + "                          WHEN p.genero = 0 THEN 'MASCULINO'   \n"
+                + "                       END) AS paciente_sexo, to_char(p.fecha_nacimiento,'DD/MM/YYYY')as paciente_fecha_nac, \n"
+                + "                           age(current_date, p.fecha_nacimiento) AS paciente_edad, \n"
+                + "                            (Select con.con_descripcion from schemaoirs.consultorio_pertenencia con \n"
+                + "                           where con.con_id=p.procedencia) as con_descripcion, \n"
+                + "                           pp.nombre as codigo_fonasa_descripcion,   t.nombre as tramo_prevision_paciente, \n"
+                + "                           to_char(fecha_hora_ing_enfermeria,'DD/MM/YYYY HH24:MI:SS') AS fecha_hora_ing_enfermeria ,e.resumen_epicrisis, \n"
+                + "                              e.diagnostico_epicrisis, e.examen_epicrisis,e.indicacion_epicrisis, \n"
+                + "                               de.descripcion_derivador, d.descripcion_destino, \n"
+                + "                              to_char(duo.fecha_duo + duo.hora_duo,'DD/MM/YYYY HH24:MI:SS') AS fecha_duo, \n"
+                + "                             to_char(e.fecha_epicrisis + e.hora_epicrisis,'DD/MM/YYYY HH24:MI:SS') AS fecha_epicrisis,  \n"
+                + "                               to_char( a.fecha_hora_alta_adm, 'DD/MM/YYYY HH24:MI:SS') AS fecha_hora_alta_adm, \n"
+                + "                              age(e.fecha_epicrisis + e.hora_epicrisis, duo.fecha_duo + duo.hora_duo) \n"
+                + "                             AS qdias_epi_duo, \n"
+                + "                               age(a.fecha_hora_alta_adm, duo.fecha_duo + duo.hora_duo) \n"
+                + "                                AS qdias_altaadm_duo, fecha_hora_alta_med_duo ,\n"
+                + "                               EXTRACT(DAY FROM (fecha_hora_alta_med_duo)-(fecha_duo+hora_duo)) as fecha_dias, \n"
+                + "                                e.rut_usuario, gg.nombre_usuario, gg.apellidop_usuario, gg.apellidom_usuario \n"
+                + "                                FROM agenda.paciente p, \n"
+                + "                               schema_uo.destino d, schema_uo.duo duo, schema_uo.epicrisis e, \n"
+                + "                               schema_uo.alta_adm a,schema_uo.derivador de, \n"
+                + "                              agenda.prevision pp,\n"
+                + "                             schema_uo.ing_enfermeria ie,schema_uo.usuario gg ,\n"
+                + "                             agenda.tramo t\n"
+                + "                               WHERE p.rut = duo.rut_paciente AND \n"
+                + "                               e.id_duo = duo.id_duo AND  a.id_destino = d.id_destino AND \n"
+                + "                               a.id_duo = duo.id_duo AND  duo.id_derivador = de.id_derivador AND \n"
+                + "                              \n"
+                + "                               pp.id_prevision = p.provision AND \n"
+                + "                               t.id= p.tramo and\n"
+                + "                            ie.id_duo_ing_enfermeria = duo.id_duo AND gg.rut_usuario = e.rut_usuario "
                 + "   AND " + campo_fecha + " BETWEEN '" + fecha1 + " 00:00:00' AND '" + fecha2 + " 23:59:59' " + resto_sql + " "
                 + "  ORDER BY duo.id_duo ");
 
@@ -3813,7 +3854,7 @@ public class NegocioQ extends Negocio {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT  ses_id, ses_estado, ses_usuario, \n TO_CHAR(ses_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_ingreso, TO_CHAR(ses_fecha_hora,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_hora, \n TO_CHAR(ses_fecha_hora,'DD/MM/YYYY')as ses_fecha,\n TO_CHAR(ses_fecha_hora,'HH24:MI:SS')as ses_hora,\n ses_detalle, ses_duo,\n USU.nombre_usuario,USU.apellidop_usuario,USU.apellidom_usuario\n FROM  schema_uo.kin_sesion\n SES INNER JOIN schema_uo.usuario USU ON(SES.ses_usuario=USU.rut_usuario)\n WHERE  ses_duo='" + id_duo + "' and ses_estado='1'  order by ses_fecha_hora  ;");
+        this.cnn.setSentenciaSQL("SELECT  ses_id, ses_estado, ses_usuario, \n TO_CHAR(ses_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_ingreso, TO_CHAR(ses_fecha_hora,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_hora, \n TO_CHAR(ses_fecha_hora,'DD/MM/YYYY')as ses_fecha,\n TO_CHAR(ses_fecha_hora,'HH24:MI:SS')as ses_hora,\n ses_detalle, ses_duo,\n USU.nombre_usuario,USU.apellidop_usuario,USU.apellidom_usuario\n FROM  schema_uo.kin_sesion\n SES INNER JOIN schema_uo.usuario USU ON(SES.ses_usuario=USU.rut_usuario)\n WHERE  ses_duo='" + id_duo + "' and ses_estado='1'  order by SES.ses_fecha_hora desc  ;");
         this.cnn.conectar();
 
         cSesionKine ses;
@@ -3849,7 +3890,7 @@ public class NegocioQ extends Negocio {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT  ses_id, ses_estado, ses_usuario, \n TO_CHAR(ses_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_ingreso, TO_CHAR(ses_fecha_hora,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_hora, \n TO_CHAR(ses_fecha_hora,'DD/MM/YYYY')as ses_fecha,\n TO_CHAR(ses_fecha_hora,'HH24:MI:SS')as ses_hora,\n ses_detalle, ses_duo,\n USU.nombre_usuario,USU.apellidop_usuario,USU.apellidom_usuario\n FROM  schema_uo.fonouriologa_sesion \n SES INNER JOIN schema_uo.usuario USU ON(SES.ses_usuario=USU.rut_usuario)\n WHERE  ses_duo='" + id_duo + "' and ses_estado='1'  order by ses_fecha_hora  ;");
+        this.cnn.setSentenciaSQL("SELECT  ses_id, ses_estado, ses_usuario, \n TO_CHAR(ses_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_ingreso, TO_CHAR(ses_fecha_hora,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_hora, \n TO_CHAR(ses_fecha_hora,'DD/MM/YYYY')as ses_fecha,\n TO_CHAR(ses_fecha_hora,'HH24:MI:SS')as ses_hora,\n ses_detalle, ses_duo,\n USU.nombre_usuario,USU.apellidop_usuario,USU.apellidom_usuario\n FROM  schema_uo.fonouriologa_sesion \n SES INNER JOIN schema_uo.usuario USU ON(SES.ses_usuario=USU.rut_usuario)\n WHERE  ses_duo='" + id_duo + "' and ses_estado='1'  order by order by SES.ses_fecha_hora desc  ;");
         this.cnn.conectar();
 
         cSesionKine ses;
@@ -3885,7 +3926,7 @@ public class NegocioQ extends Negocio {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT  ses_id, ses_estado, ses_usuario, \n TO_CHAR(ses_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_ingreso, TO_CHAR(ses_fecha_hora,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_hora, \n TO_CHAR(ses_fecha_hora,'DD/MM/YYYY')as ses_fecha,\n TO_CHAR(ses_fecha_hora,'HH24:MI:SS')as ses_hora,\n ses_detalle, ses_duo,\n USU.nombre_usuario,USU.apellidop_usuario,USU.apellidom_usuario\n FROM  schema_uo.terapeuta_sesion\n SES INNER JOIN schema_uo.usuario USU ON(SES.ses_usuario=USU.rut_usuario)\n WHERE  ses_duo='" + id_duo + "' and ses_estado='1'  order by ses_fecha_hora  ;");
+        this.cnn.setSentenciaSQL("SELECT  ses_id, ses_estado, ses_usuario, \n TO_CHAR(ses_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_ingreso, TO_CHAR(ses_fecha_hora,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_hora, \n TO_CHAR(ses_fecha_hora,'DD/MM/YYYY')as ses_fecha,\n TO_CHAR(ses_fecha_hora,'HH24:MI:SS')as ses_hora,\n ses_detalle, ses_duo,\n USU.nombre_usuario,USU.apellidop_usuario,USU.apellidom_usuario\n FROM  schema_uo.terapeuta_sesion\n SES INNER JOIN schema_uo.usuario USU ON(SES.ses_usuario=USU.rut_usuario)\n WHERE  ses_duo='" + id_duo + "' and ses_estado='1'  order by SES.ses_fecha_hora desc ;");
         this.cnn.conectar();
 
         cSesionKine ses;
@@ -3921,7 +3962,7 @@ public class NegocioQ extends Negocio {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT  ses_id, ses_estado, ses_usuario, \n TO_CHAR(ses_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_ingreso, TO_CHAR(ses_fecha_hora,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_hora, \n TO_CHAR(ses_fecha_hora,'DD/MM/YYYY')as ses_fecha,\n TO_CHAR(ses_fecha_hora,'HH24:MI:SS')as ses_hora,\n ses_detalle, ses_duo,\n USU.nombre_usuario,USU.apellidop_usuario,USU.apellidom_usuario\n FROM  schema_uo.nutricionista_sesion\n SES INNER JOIN schema_uo.usuario USU ON(SES.ses_usuario=USU.rut_usuario)\n WHERE  ses_duo='" + id_duo + "' and ses_estado='1'  order by ses_fecha_hora  ;");
+        this.cnn.setSentenciaSQL("SELECT  ses_id, ses_estado, ses_usuario, \n TO_CHAR(ses_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_ingreso, TO_CHAR(ses_fecha_hora,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_hora, \n TO_CHAR(ses_fecha_hora,'DD/MM/YYYY')as ses_fecha,\n TO_CHAR(ses_fecha_hora,'HH24:MI:SS')as ses_hora,\n ses_detalle, ses_duo,\n USU.nombre_usuario,USU.apellidop_usuario,USU.apellidom_usuario\n FROM  schema_uo.nutricionista_sesion\n SES INNER JOIN schema_uo.usuario USU ON(SES.ses_usuario=USU.rut_usuario)\n WHERE  ses_duo='" + id_duo + "' and ses_estado='1'  order by SES.ses_fecha_hora desc  ;");
         this.cnn.conectar();
 
         cSesionKine ses;

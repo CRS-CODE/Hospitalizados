@@ -68,11 +68,11 @@ public class XLS_DuosDadoAltaDatosEpicrisis extends HttpServlet {
         String fecha2_dma_sh = dia2 + "-" + mes2 + "-" + año2;
 
         String resto_sql = "";
-        ArrayList lista_duo = neg.lista_vista_duo("fecha_hora_alta_adm", fecha1_mda, fecha2_mda, resto_sql);
+        ArrayList lista_duo = neg.lista_vista_duo("fecha_hora_alta_adm", fecha1_dma_sh, fecha2_dma_sh, resto_sql);
         Iterator it_lista = lista_duo.iterator();
 
-        resto_sql = " and  fecha_hora_alta_adm>'" + fecha2_mda + " 23:59:59' ";
-        ArrayList lista_duo2 = neg.lista_vista_duo("fecha_epicrisis", fecha1_mda, fecha2_mda, resto_sql);
+        resto_sql = " and  fecha_hora_alta_adm>'" + fecha2_dma_sh + " 23:59:59' ";
+        ArrayList lista_duo2 = neg.lista_vista_duo("fecha_epicrisis", fecha1_dma_sh, fecha2_dma_sh, resto_sql);
         Iterator it_lista2 = lista_duo2.iterator();
         resto_sql = "";// porsiacaso
 

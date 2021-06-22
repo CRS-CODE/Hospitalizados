@@ -1,10 +1,13 @@
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.Statement"%>
 <%
     // POSTGRES
 
-  String usuarioBD = "halvarez";
-  String passwordBD = "123";
+  String usuarioBD = "hospitalizados";
+  String passwordBD = "crsdb2020";
   String drv = "org.postgresql.Driver";
-  String dsn = "jdbc:postgresql://localhost:5432/postgres";
+  String dsn = "jdbc:postgresql://10.8.4.163:5432/crsm";
 
   Connection cn = null;
   Statement st = null;

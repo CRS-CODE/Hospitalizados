@@ -204,17 +204,17 @@ Statement st2 = cn.createStatement();
                                         int dif_dd=0;
                                         try
                                         {
-                                            String query2="select A.das_id,to_char(A.das_fecha_ingreso,'DD/MM HH24:MI' ) as das_fecha_ingreso,A.das_estado," +
-                                                " (B.paciente_nombres||' '||B.paciente_apellidop||' '||B.paciente_apellidom) as nombre," +
-                                                " ('Dr. '||C.usuario_urgencia_nombres||' '||C.usuario_urgencia_apellidop||' '||C.usuario_urgencia_apellidom) as medico," +
-                                                " EXTRACT(HOUR FROM CURRENT_TIMESTAMP-A.das_fecha_ingreso) as dif_hh," +
-                                                " EXTRACT(DAY FROM CURRENT_TIMESTAMP-A.das_fecha_ingreso) as dif_dd" +
-                                                " from schema_suam.das A, schema_urgencia.paciente B," +
-                                                " schema_urgencia.usuario_urgencia C" +
-                                                " where A.das_camilla="+rs.getString("cam_id")+" and" +
-                                                " A.das_estado in (1,2,3) and" +
-                                                " B.paciente_rut=A.das_paciente and" +
-                                                " C.usuario_urgencia_rut=A.das_medico";
+                                            String query2="select A.das_id,to_char(A.das_fecha_ingreso,'DD/MM HH24:MI' ) as das_fecha_ingreso,A.das_estado,\n" +
+                                              " (B.nombre ||' '||B.apellido_paterno ||' '||B.apellido_moderno ) as nombre,\n" +
+                                              " ('Dr. '||C.usuario_urgencia_nombres||' '||C.usuario_urgencia_apellidop||' '||C.usuario_urgencia_apellidom) as medico,\n" +
+                                              " EXTRACT(HOUR FROM CURRENT_TIMESTAMP-A.das_fecha_ingreso) as dif_hh,\n" +
+                                              " EXTRACT(DAY FROM CURRENT_TIMESTAMP-A.das_fecha_ingreso) as dif_dd\n" +
+                                              " from schema_suam.das A, agenda.paciente B, \n" +
+                                              " schema_urgencia.usuario_urgencia C \n" +
+                                              " where A.das_camilla="+rs.getString("cam_id")+" and \n" +
+                                              " A.das_estado in (1,2,3) and \n" +
+                                              " B.rut=A.das_paciente and \n" +
+                                              " C.usuario_urgencia_rut=A.das_medico";
                                             ResultSet rs2=st2.executeQuery(query2);
                                             int control=0;
                                             if(rs2.next())

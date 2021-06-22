@@ -31,9 +31,9 @@ public class Select extends Negocio {
 
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("select * from schema_uo.epicrisis E, schema_uo.duo D,schema_urgencia.paciente P,"
-                + " schema_uo.usuario U where E.id_duo=D.id_duo and "
-                + "D.rut_paciente=P.paciente_rut and E.rut_usuario=U.rut_usuario and E.id_epicrisis=" + id_epicrisis + "");
+        this.cnn.setSentenciaSQL("select * from schema_uo.epicrisis E, schema_uo.duo D,agenda.paciente P,\n"
+                + "              schema_uo.usuario U where E.id_duo=D.id_duo and \n"
+                + "                D.rut_paciente=P.rut and E.rut_usuario=U.rut_usuario  and E.id_epicrisis=" + id_epicrisis + "");
         this.cnn.conectar();
         try {
 
