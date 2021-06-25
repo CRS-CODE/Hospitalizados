@@ -3890,7 +3890,13 @@ public class NegocioQ extends Negocio {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT  ses_id, ses_estado, ses_usuario, \n TO_CHAR(ses_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_ingreso, TO_CHAR(ses_fecha_hora,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_hora, \n TO_CHAR(ses_fecha_hora,'DD/MM/YYYY')as ses_fecha,\n TO_CHAR(ses_fecha_hora,'HH24:MI:SS')as ses_hora,\n ses_detalle, ses_duo,\n USU.nombre_usuario,USU.apellidop_usuario,USU.apellidom_usuario\n FROM  schema_uo.fonouriologa_sesion \n SES INNER JOIN schema_uo.usuario USU ON(SES.ses_usuario=USU.rut_usuario)\n WHERE  ses_duo='" + id_duo + "' and ses_estado='1'  order by order by SES.ses_fecha_hora desc  ;");
+        this.cnn.setSentenciaSQL("SELECT  ses_id, ses_estado, ses_usuario, TO_CHAR(ses_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_ingreso,"
+                + " TO_CHAR(ses_fecha_hora,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_hora,  "
+                + " TO_CHAR(ses_fecha_hora,'DD/MM/YYYY')as ses_fecha, TO_CHAR(ses_fecha_hora,"
+                + "'HH24:MI:SS')as ses_hora, ses_detalle, ses_duo,"
+                + " USU.nombre_usuario,USU.apellidop_usuario,USU.apellidom_usuario"
+                + " FROM  schema_uo.fonouriologa_sesion SES INNER JOIN schema_uo.usuario USU ON(SES.ses_usuario=USU.rut_usuario) WHERE "
+                + " ses_duo='" + id_duo + "' and ses_estado='1' order by SES.ses_fecha_hora desc  ;");
         this.cnn.conectar();
 
         cSesionKine ses;
