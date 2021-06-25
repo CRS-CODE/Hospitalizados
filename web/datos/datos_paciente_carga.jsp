@@ -93,6 +93,9 @@
     see_cambio_cama.add(10);
     see_cambio_cama.add(12);
 
+    ArrayList psicologo = new ArrayList();
+    psicologo.add(18);
+
 
 %>
 <script>
@@ -266,6 +269,7 @@
                             </td>
                             <td valign="top" ><<-Ir Fonoaudiologa</td>
                         </tr>
+                        <% if (psicologo.contains(obtiene_perfil)) {%>
                         <tr>
                             <td align='right' >
                                 <%                                    out.write("<form name='form_sesion_psicologo" + duo.getId_duo() + "' id='form_sesion_psicologo" + duo.getId_duo() + "' action='" + neg.getLocal() + "psicologo/datos_psicologo.jsp' method='POST' >");
@@ -279,6 +283,7 @@
                             <td valign="top"><<-Ir Psicologia</td>
 
                         </tr>
+                        <%}%>
 
                     </table>
                 </td>
