@@ -121,7 +121,7 @@
                     <ul class="menu">
                         <li><a href="<%=neg.getLocal()%>inicio.jsp" class="parent"><span>INICIO</span></a>
                         </li>
-                        <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>CAMAS HOSPITALARIAS</span></a>
+                        <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>HOSP. DOMICILIARIA</span></a>
                         </li>
 
                         <%    if (see_admision_urgencia.contains(obtiene_perfil) || see_duo_x_ingresar.add(obtiene_perfil) || see_admision_suam.contains(obtiene_perfil)) {

@@ -193,12 +193,12 @@
 
             String consulta = "SELECT  "
                     + "  *  "
-                    + " FROM schema_uo.vista_uoce_actual VU ORDER BY VU.id_cama,VU.paciente_rut;";
+                    + " FROM schema_uhd.vista_uoce_actual VU ORDER BY VU.id_cama,VU.paciente_rut;";
 
             ResultSet rs = st1.executeQuery(consulta);
 
-            String consulta_cama = "Select id_cama,descripcion_cama,MAR.id_sala,MAR.descripcion_sala from schema_uo.cama DIS JOIN "
-                    + "schema_uo.sala MAR ON (DIS.id_sala=MAR.id_sala) WHERE "
+            String consulta_cama = "Select id_cama,descripcion_cama,MAR.id_sala,MAR.descripcion_sala from schema_uhd.cama DIS JOIN "
+                    + "schema_uhd.sala MAR ON (DIS.id_sala=MAR.id_sala) WHERE "
                     + "MAR.estado_sala IN (1) and DIS.estado_cama IN (1)";
             ResultSet rs_cam = st.executeQuery(consulta_cama);
             boolean sw_ocupada = false;

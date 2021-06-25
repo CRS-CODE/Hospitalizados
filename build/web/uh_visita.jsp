@@ -117,7 +117,7 @@
 <body onload="" >
     <script type="text/javascript" src="js/jquery/tooltip.js"></script>
     <script type="text/javascript" src="js/jquery/jquery.form.js"></script>
-<legend >LISTADO DE CAMAS HOSPITALARIAS <% out.write(" " + fecha_hora);%></legend>
+<legend >LISTADO DE HOSP. DOMICILIARIA <% out.write(" " + fecha_hora);%></legend>
 <center>
     <table width="30px">
 

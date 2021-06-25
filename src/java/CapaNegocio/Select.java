@@ -31,8 +31,8 @@ public class Select extends Negocio {
 
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("select * from schema_uo.epicrisis E, schema_uo.duo D,agenda.paciente P,\n"
-                + "              schema_uo.usuario U where E.id_duo=D.id_duo and \n"
+        this.cnn.setSentenciaSQL("select * from schema_uhd.epicrisis E, schema_uhd.duo D,agenda.paciente P,\n"
+                + "              schema_uhd.usuario U where E.id_duo=D.id_duo and \n"
                 + "                D.rut_paciente=P.rut and E.rut_usuario=U.rut_usuario  and E.id_epicrisis=" + id_epicrisis + "");
         this.cnn.conectar();
         try {
@@ -76,7 +76,7 @@ public class Select extends Negocio {
         int epi = 0;
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("select E.id_epicrisis from schema_uo.duo D,schema_uo.epicrisis E where "
+        this.cnn.setSentenciaSQL("select E.id_epicrisis from schema_uhd.duo D,schema_uhd.epicrisis E where "
                 + "E.id_duo=D.id_duo and D.id_duo=" + id_duo + "");
         this.cnn.conectar();
         try {

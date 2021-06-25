@@ -30,7 +30,7 @@
 
         if (neg.ingresa_sesion_kine(ses)) {
             /*    out.write("<h3>Se grabo registro</h3>");
-             out.write("INSERT INTO   schema_uo.kin_sesion ( ses_estado, ses_usuario,\n"
+             out.write("INSERT INTO   schema_uhd.kin_sesion ( ses_estado, ses_usuario,\n"
              + "  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \n"
              + "VALUES ( '1', " + ses.getRut_usuario() + ",\n"
              + "  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");

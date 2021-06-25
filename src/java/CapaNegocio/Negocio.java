@@ -51,14 +51,14 @@ public class Negocio {
         this.cnn = new Conexion();
         this.cnn.setDriver("org.postgresql.Driver");
         this.cnn.setNombreTabla(tabla);
-        this.cnn.setUser("hospitalizados");
-        this.cnn.setPassword("crsdb2020");
-        this.cnn.setNombreBaseDatos("jdbc:postgresql://10.8.4.163:5432/crsm");
+        this.cnn.setUser("postgres");
+        this.cnn.setPassword("crsdb2008");
+        this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5432/crsm");
     }
 
     public String getLocal() {
-        String local = "http://10.8.4.163:8080/modulo_uhce/";
-       //String local = "http://localhost:8080/modulo_uhce/";
+        //String local = "http://10.8.4.163:8080/modulo_uhce/";
+       String local = "http://localhost:8080/modulo_uhd/";
         return local;
     }
 
@@ -67,8 +67,8 @@ public class Negocio {
         HistorialVisita h = null;
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("select * from schema_uo.visita V, schema_uo.visita_categorizacion VC,"
-                + "schema_uo.cama C,schema_uo.usuario U where V.rut_usuario=U.rut_usuario and V.id_cama=C.id_cama and "
+        this.cnn.setSentenciaSQL("select * from schema_uhd.visita V, schema_uhd.visita_categorizacion VC,"
+                + "schema_uhd.cama C,schema_uhd.usuario U where V.rut_usuario=U.rut_usuario and V.id_cama=C.id_cama and "
                 + "V.id_visita_categorizacion=VC.id_visita_categorizacion and V.id_visita=" + id_visita + "");
 
         this.cnn.conectar();
@@ -118,7 +118,7 @@ public class Negocio {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO   schema_uo.psicolo_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
+        this.cnn.setSentenciaSQL("INSERT INTO   schema_uhd.psicolo_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
 
         try {
             this.cnn.conectar();
@@ -135,7 +135,7 @@ public class Negocio {
     public void ingresa_visita_medica(cVisita vis) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO  schema_uo.visita_medica ( vis_usuario, vis_fecha_ingreso, vis_duo,   vis_fecha, vis_evolucion, vis_estado )  VALUES (   '" + vis.getRut_usuario() + "', CURRENT_TIMESTAMP,  '" + vis.getId_duo() + "' ,   '" + vis.getFecha_visita() + "', '" + vis.getObs_visita() + "', '" + 1 + "'  ); ");
+        this.cnn.setSentenciaSQL("INSERT INTO  schema_uhd.visita_medica ( vis_usuario, vis_fecha_ingreso, vis_duo,   vis_fecha, vis_evolucion, vis_estado )  VALUES (   '" + vis.getRut_usuario() + "', CURRENT_TIMESTAMP,  '" + vis.getId_duo() + "' ,   '" + vis.getFecha_visita() + "', '" + vis.getObs_visita() + "', '" + 1 + "'  ); ");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -143,7 +143,7 @@ public class Negocio {
     public void anula_visita_medica(String motivo, String usuario, int id_visita_medica) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE  schema_uo.visita_medica  SET  vis_estado ='0', vis_usuario_anula = '" + usuario + "',  vis_motivo_anula = '" + motivo + "'  WHERE  vis_id = '" + id_visita_medica + "'  ");
+        this.cnn.setSentenciaSQL("UPDATE  schema_uhd.visita_medica  SET  vis_estado ='0', vis_usuario_anula = '" + usuario + "',  vis_motivo_anula = '" + motivo + "'  WHERE  vis_id = '" + id_visita_medica + "'  ");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -152,7 +152,7 @@ public class Negocio {
     public void insertDuoIndexBarthel(DuoIndexBarthel duoIndexBarthel) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO schema_uo.duo_index_barthel(\n"
+        this.cnn.setSentenciaSQL("INSERT INTO schema_uhd.duo_index_barthel(\n"
                 + "             status, user_registers, date_registers, type_registers, total_puntuction, \n"
                 + "            degree_of_dependency,id_duo)\n"
                 + "    VALUES (1, '" + duoIndexBarthel.getUserRegisters() + "', CURRENT_TIMESTAMP, " + duoIndexBarthel.getTypeRegisters() + ", " + duoIndexBarthel.getTotalPuntuction() + ", \n"
@@ -167,7 +167,7 @@ public class Negocio {
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
         this.cnn.setSentenciaSQL("SELECT id\n"
-                + "  FROM schema_uo.duo_index_barthel where id_duo = " + idDuo + " and type_registers = " + TypeRegisters + " ;");
+                + "  FROM schema_uhd.duo_index_barthel where id_duo = " + idDuo + " and type_registers = " + TypeRegisters + " ;");
         this.cnn.conectar();
 
         try {
@@ -185,7 +185,7 @@ public class Negocio {
     public void insertDouDetailBarthel(DuoDetailBarthel duoDetailBarthel) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO schema_uo.duo_detail_barthel(\n"
+        this.cnn.setSentenciaSQL("INSERT INTO schema_uhd.duo_detail_barthel(\n"
                 + "            id_register_duo, id_detail_barthel)\n"
                 + "    VALUES (" + duoDetailBarthel.getIdRegisterDuo() + ", " + duoDetailBarthel.getIdDetailBarthel() + ");");
         this.cnn.conectar();
@@ -200,141 +200,141 @@ public class Negocio {
         this.cnn.setSentenciaSQL("(SELECT \n"
                 + " sum(quantity) , 1 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinicha where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinicha where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "  \n"
                 + "  union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 2 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichb where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichb where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 3 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichc where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichc where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 4 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichd where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichd where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 5 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.datacliniche where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.datacliniche where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT  \n"
                 + " sum(quantity) , 6 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichf where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichf where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 7 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichg where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichg where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 8 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichh where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichh where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 9 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichi where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichi where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 10 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichj where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichj where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 11 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichk where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichk where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 12 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichl where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichl where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 13 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichm where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichm where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 14 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichn where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichn where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "  \n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 15 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinicho where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinicho where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 16 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichp where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichp where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 17 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichq where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichq where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 18 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichr where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichr where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 19 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichs where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichs where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 20 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinicht where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinicht where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 21 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichu where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichu where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT  \n"
                 + " sum(quantity) , 22 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichv where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
+                + "  schema_uhd.dataclinichv where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "'\n"
                 + "    union \n"
                 + "  \n"
                 + "  SELECT \n"
                 + " sum(quantity) , 23 as tipe\n"
                 + "FROM \n"
-                + "  schema_uo.dataclinichw where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "' ) order by tipe ");
+                + "  schema_uhd.dataclinichw where dataRegister BETWEEN '" + dateInic + "' and '" + dateEnd + "' ) order by tipe ");
         this.cnn.conectar();
 
         try {
@@ -401,7 +401,7 @@ public class Negocio {
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
         this.cnn.setSentenciaSQL("SELECT index.id_index_barthel, description_barthel, description_detail, punctuction , detail.id_detail\n"
-                + "  FROM schema_uo.index_barthel index inner join schema_uo.detail_index_barthel detail on index.id_index_barthel = detail.id_index_barthel\n"
+                + "  FROM schema_uhd.index_barthel index inner join schema_uhd.detail_index_barthel detail on index.id_index_barthel = detail.id_index_barthel\n"
                 + "  where index.status_barthel = 1 and detail.status=1 order by index.id_index_barthel asc , punctuction desc");
         this.cnn.conectar();
 
@@ -430,10 +430,10 @@ public class Negocio {
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
         this.cnn.setSentenciaSQL("SELECT ib.id_index_barthel, description_barthel, description_detail, punctuction , dib.id_detail\n"
-                + "  FROM schema_uo.duo_detail_barthel ddb\n"
-                + "  inner join schema_uo.detail_index_barthel dib\n"
+                + "  FROM schema_uhd.duo_detail_barthel ddb\n"
+                + "  inner join schema_uhd.detail_index_barthel dib\n"
                 + "  on ddb.id_detail_barthel = dib.id_detail\n"
-                + "  inner join  schema_uo.index_barthel ib on ib.id_index_barthel = dib.id_index_barthel\n"
+                + "  inner join  schema_uhd.index_barthel ib on ib.id_index_barthel = dib.id_index_barthel\n"
                 + "  where ib.status_barthel = 1 and dib.status=1 and ddb.id_register_duo =" + id + "\n"
                 + "  order by ib.id_index_barthel asc ,\n"
                 + "  punctuction desc ");
@@ -469,7 +469,7 @@ public class Negocio {
                 + "  descripcion_via_medicamento,\n"
                 + "  estado_via_medicamento\n"
                 + "FROM \n"
-                + "  schema_uo.via_medicamento where estado_via_medicamento = 1 order by descripcion_via_medicamento;");
+                + "  schema_uhd.via_medicamento where estado_via_medicamento = 1 order by descripcion_via_medicamento;");
         this.cnn.conectar();
 
         try {
@@ -490,7 +490,7 @@ public class Negocio {
     public void ingresarindicaones(cReceta r) {
         this.configurarConexion("");
         cnn.setEsSelect(false);
-        cnn.setSentenciaSQL("INSERT INTO schema_uo.indicaciones(\n"
+        cnn.setSentenciaSQL("INSERT INTO schema_uhd.indicaciones(\n"
                 + " idindicaciones, idduo, reposo, regimen, otras_indicaciones, fecha, \n"
                 + "  usuario, control_signos, aislamiento, alergias, diagnostico, contencion, \n"
                 + "            imagenes, otros, indicaciones_enfermeria, indicaciones_nutricionista, \n"
@@ -508,7 +508,7 @@ public class Negocio {
     public void ingresarindicaonesReceta(cReceta r) {
         this.configurarConexion("");
         cnn.setEsSelect(false);
-        cnn.setSentenciaSQL("INSERT INTO schema_uo.indicaciones_receta(\n"
+        cnn.setSentenciaSQL("INSERT INTO schema_uhd.indicaciones_receta(\n"
                 + "             id_indicaciones, id_medicamento, cantidad, id_medida, \n"
                 + "            frecuencia, duracion, indicaciones_especiales,id_via)\n"
                 + "    VALUES ( " + r.getId_receta() + ", " + r.getId_receta_detalle() + ", " + r.getCantidad() + ", " + r.getMedida() + ", \n"
@@ -520,7 +520,7 @@ public class Negocio {
     public void ingresarSolicitudExamenes(cReceta r) {
         this.configurarConexion("");
         cnn.setEsSelect(false);
-        cnn.setSentenciaSQL("INSERT INTO schema_uo.solicitudexamenes_indicaciones(\n"
+        cnn.setSentenciaSQL("INSERT INTO schema_uhd.solicitudexamenes_indicaciones(\n"
                 + "            idindicaciones,  id_examenes)\n"
                 + "    VALUES (" + r.getId_duo() + ",  " + r.getId_receta() + "); ");
         cnn.conectar();
@@ -567,7 +567,7 @@ public class Negocio {
     public void ingresa_anula_duo(String motivo, String usuario, int duo) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO  schema_uo.anulo_duo  (  motivo_anulo_duo,  fecha_anulo_duo, rut_usuario, id_duo  ) VALUES (  '" + motivo + "',CURRENT_TIMESTAMP,    '" + usuario + "','" + duo + "' );");
+        this.cnn.setSentenciaSQL("INSERT INTO  schema_uhd.anulo_duo  (  motivo_anulo_duo,  fecha_anulo_duo, rut_usuario, id_duo  ) VALUES (  '" + motivo + "',CURRENT_TIMESTAMP,    '" + usuario + "','" + duo + "' );");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -589,7 +589,7 @@ public class Negocio {
     public void modifica_valida_epicrisis(int duo_id) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE  schema_uo.duo   SET  fecha_hora_alta_med_duo = CURRENT_TIMESTAMP  WHERE  id_duo = '" + duo_id + "'");
+        this.cnn.setSentenciaSQL("UPDATE  schema_uhd.duo   SET  fecha_hora_alta_med_duo = CURRENT_TIMESTAMP  WHERE  id_duo = '" + duo_id + "'");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -597,7 +597,7 @@ public class Negocio {
     public void modifica_estado_duo_alta_administrativa(int duo_id, int nuevo_estado) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE  schema_uo.duo   SET  estado_duo = '" + nuevo_estado + "' , fecha_hora_alta_adm_duo = CURRENT_TIMESTAMP  WHERE  id_duo ='" + duo_id + "';");
+        this.cnn.setSentenciaSQL("UPDATE  schema_uhd.duo   SET  estado_duo = '" + nuevo_estado + "' , fecha_hora_alta_adm_duo = CURRENT_TIMESTAMP  WHERE  id_duo ='" + duo_id + "';");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -605,7 +605,7 @@ public class Negocio {
     public void modifica_estado_duo(int duo_id, int nuevo_estado) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE  schema_uo.duo   SET  estado_duo = '" + nuevo_estado + "'  WHERE  id_duo ='" + duo_id + "';");
+        this.cnn.setSentenciaSQL("UPDATE  schema_uhd.duo   SET  estado_duo = '" + nuevo_estado + "'  WHERE  id_duo ='" + duo_id + "';");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -613,7 +613,7 @@ public class Negocio {
     public void ingresa_epicrisis(cEpicrisis epi) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("insert into schema_uo.epicrisis (resumen_epicrisis,examen_epicrisis,diagnostico_epicrisis,indicacion_epicrisis,fecha_epicrisis,hora_epicrisis,rut_usuario,id_duo,ip_epicrisis,medicamentos_prescritos) values('" + epi.getResumen_epicrisis() + "','" + epi.getExamen_epicrisis() + "', '" + epi.getDiagnostico_epicrisis() + "','" + epi.getIndicacion_epicrisis() + "','" + epi.getFecha_epicrisis() + "','" + epi.getHora_epicrisis() + "','" + epi.getRut_usuario() + "'," + epi.getId_duo() + ",'" + epi.getIp_epicrisis() + "' ,'" + epi.getMedicamentos_prescritos() + "')");
+        this.cnn.setSentenciaSQL("insert into schema_uhd.epicrisis (resumen_epicrisis,examen_epicrisis,diagnostico_epicrisis,indicacion_epicrisis,fecha_epicrisis,hora_epicrisis,rut_usuario,id_duo,ip_epicrisis,medicamentos_prescritos) values('" + epi.getResumen_epicrisis() + "','" + epi.getExamen_epicrisis() + "', '" + epi.getDiagnostico_epicrisis() + "','" + epi.getIndicacion_epicrisis() + "','" + epi.getFecha_epicrisis() + "','" + epi.getHora_epicrisis() + "','" + epi.getRut_usuario() + "'," + epi.getId_duo() + ",'" + epi.getIp_epicrisis() + "' ,'" + epi.getMedicamentos_prescritos() + "')");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -621,7 +621,7 @@ public class Negocio {
     public void ingresa_alta_adm(String obs, String fecha, String hora, String rut_usuario, int id_duo, int id_destino, String ip) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("insert into schema_uo.alta_adm(fecha_hora_alta_adm,rut_usuario,obs_alta_adm,id_duo,id_destino,ip_alta_adm) values('" + fecha + " " + hora + "','" + rut_usuario + "','" + obs + "'," + id_duo + "," + id_destino + ",'" + ip + "')");
+        this.cnn.setSentenciaSQL("insert into schema_uhd.alta_adm(fecha_hora_alta_adm,rut_usuario,obs_alta_adm,id_duo,id_destino,ip_alta_adm) values('" + fecha + " " + hora + "','" + rut_usuario + "','" + obs + "'," + id_duo + "," + id_destino + ",'" + ip + "')");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -629,7 +629,7 @@ public class Negocio {
     public void modifica_duo_x_medico(cDuo duo) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE schema_uo.duo SET  estado_duo='" + duo.getEstado_duo() + "',anamnesis_duo='" + duo.getAnamnesis_duo() + "', id_categorizacion='" + duo.getCategorizacion_id() + "', rut_usuario_ing_med='" + duo.getRut_usuario_ing_med() + "',  fecha_hora_ing_med=current_timestamp, ip_ing_med='" + duo.getIp_ing_med() + "'    where id_duo='" + duo.getId_duo() + "';");
+        this.cnn.setSentenciaSQL("UPDATE schema_uhd.duo SET  estado_duo='" + duo.getEstado_duo() + "',anamnesis_duo='" + duo.getAnamnesis_duo() + "', id_categorizacion='" + duo.getCategorizacion_id() + "', rut_usuario_ing_med='" + duo.getRut_usuario_ing_med() + "',  fecha_hora_ing_med=current_timestamp, ip_ing_med='" + duo.getIp_ing_med() + "'    where id_duo='" + duo.getId_duo() + "';");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -637,7 +637,7 @@ public class Negocio {
     public void modifica_duo_x_enfermeria(cDuo duo) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE schema_uo.duo SET  estado_duo='" + duo.getEstado_duo() + "',duo_tiene_enfermeria='1', ip_ing_enf='" + duo.getIp_ing_enf() + "'  where id_duo='" + duo.getId_duo() + "' ;");
+        this.cnn.setSentenciaSQL("UPDATE schema_uhd.duo SET  estado_duo='" + duo.getEstado_duo() + "',duo_tiene_enfermeria='1', ip_ing_enf='" + duo.getIp_ing_enf() + "'  where id_duo='" + duo.getId_duo() + "' ;");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -645,7 +645,7 @@ public class Negocio {
     public void ingresa_ingreso_enfermeria(String morbilidades, String farmacos, String observacion, String rut_usuario, int id_ex_fisico, int id_duo, String otro_ex_docto_ing_enfermeria) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        String query = "insert into schema_uo.ing_enfermeria(otro_comorbilidad_ing_enfermeria,farmaco_ing_enfermeria,obs_ing_enfermeria,rut_usuario_ing_enfermeria,id_examen_fisico_ing_enfermeria,id_duo_ing_enfermeria,otro_ex_docto_ing_enfermeria) values('" + morbilidades.toUpperCase().replace("'", "''") + "','" + farmacos.toUpperCase().replace("'", "''") + "','" + observacion.toUpperCase().replace("'", "''") + "','" + rut_usuario.toUpperCase().replace("'", "''") + "'," + id_ex_fisico + "," + id_duo + ",'" + otro_ex_docto_ing_enfermeria.toUpperCase().replace("'", "''") + "')";
+        String query = "insert into schema_uhd.ing_enfermeria(otro_comorbilidad_ing_enfermeria,farmaco_ing_enfermeria,obs_ing_enfermeria,rut_usuario_ing_enfermeria,id_examen_fisico_ing_enfermeria,id_duo_ing_enfermeria,otro_ex_docto_ing_enfermeria) values('" + morbilidades.toUpperCase().replace("'", "''") + "','" + farmacos.toUpperCase().replace("'", "''") + "','" + observacion.toUpperCase().replace("'", "''") + "','" + rut_usuario.toUpperCase().replace("'", "''") + "'," + id_ex_fisico + "," + id_duo + ",'" + otro_ex_docto_ing_enfermeria.toUpperCase().replace("'", "''") + "')";
         this.cnn.setSentenciaSQL(query);
         this.cnn.conectar();
         this.cnn.cerrarConexion();
@@ -655,11 +655,11 @@ public class Negocio {
         int id_examen_fisico = 0;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        String query = "insert into schema_uo.ex_fisico(conciencia_ex_fisico,cabeza_ex_fisico,mucosa_ex_fisico,torax_ex_fisico,abdomen_ex_fisico,eess_ex_fisico,eeii_ex_fisico,z_sacra_ex_fisico,peso_ex_fisico,talla_ex_fisico,pulso_ex_fisico,presion_a_ex_fisico,temp_ex_fisico,satura_ex_fisico,vvp1_ex_fisico,vvp2_ex_fisico,vvc_ex_fisico,sng_ex_fisico,s_foley_ex_fisico,dorso_lumbar_ex_fisico,piel_ex_fisico) VALUES('" + conciencia.toUpperCase().replace("'", "''") + "','" + cabeza.toUpperCase().replace("'", "''") + "','" + mucoza.toUpperCase().replace("'", "''") + "','" + torax.toUpperCase().replace("'", "''") + "','" + abdomen.toUpperCase().replace("'", "''") + "','" + eess.toUpperCase().replace("'", "''") + "','" + eeii.toUpperCase().replace("'", "''") + "','" + zona.toUpperCase().replace("'", "''") + "','" + peso.toUpperCase().replace("'", "''") + "','" + talla.toUpperCase().replace("'", "''") + "','" + pulso.toUpperCase().replace("'", "''") + "','" + presion.toUpperCase().replace("'", "''") + "','" + temp.toUpperCase().replace("'", "''") + "','" + sat.toUpperCase().replace("'", "''") + "','" + vvp1.toUpperCase().replace("'", "''") + "','" + vvp2.toUpperCase().replace("'", "''") + "','" + vvc.toUpperCase().replace("'", "''") + "','" + sng.toUpperCase().replace("'", "''") + "','" + sfoley.toUpperCase().replace("'", "''") + "','" + dorso_lumbar_ex_fisico.toUpperCase().replace("'", "''") + "','" + piel_ex_fisico.toUpperCase().replace("'", "''") + "')";
+        String query = "insert into schema_uhd.ex_fisico(conciencia_ex_fisico,cabeza_ex_fisico,mucosa_ex_fisico,torax_ex_fisico,abdomen_ex_fisico,eess_ex_fisico,eeii_ex_fisico,z_sacra_ex_fisico,peso_ex_fisico,talla_ex_fisico,pulso_ex_fisico,presion_a_ex_fisico,temp_ex_fisico,satura_ex_fisico,vvp1_ex_fisico,vvp2_ex_fisico,vvc_ex_fisico,sng_ex_fisico,s_foley_ex_fisico,dorso_lumbar_ex_fisico,piel_ex_fisico) VALUES('" + conciencia.toUpperCase().replace("'", "''") + "','" + cabeza.toUpperCase().replace("'", "''") + "','" + mucoza.toUpperCase().replace("'", "''") + "','" + torax.toUpperCase().replace("'", "''") + "','" + abdomen.toUpperCase().replace("'", "''") + "','" + eess.toUpperCase().replace("'", "''") + "','" + eeii.toUpperCase().replace("'", "''") + "','" + zona.toUpperCase().replace("'", "''") + "','" + peso.toUpperCase().replace("'", "''") + "','" + talla.toUpperCase().replace("'", "''") + "','" + pulso.toUpperCase().replace("'", "''") + "','" + presion.toUpperCase().replace("'", "''") + "','" + temp.toUpperCase().replace("'", "''") + "','" + sat.toUpperCase().replace("'", "''") + "','" + vvp1.toUpperCase().replace("'", "''") + "','" + vvp2.toUpperCase().replace("'", "''") + "','" + vvc.toUpperCase().replace("'", "''") + "','" + sng.toUpperCase().replace("'", "''") + "','" + sfoley.toUpperCase().replace("'", "''") + "','" + dorso_lumbar_ex_fisico.toUpperCase().replace("'", "''") + "','" + piel_ex_fisico.toUpperCase().replace("'", "''") + "')";
         this.cnn.setSentenciaSQL(query);
         this.cnn.conectar();
         this.cnn.cerrarConexion();
-        String query_curval = "select id_ex_fisico from schema_uo.ex_fisico order by id_ex_fisico desc limit 1 ";
+        String query_curval = "select id_ex_fisico from schema_uhd.ex_fisico order by id_ex_fisico desc limit 1 ";
         this.cnn.setSentenciaSQL(query_curval);
         this.cnn.setEsSelect(true);
         this.cnn.conectar();
@@ -679,7 +679,7 @@ public class Negocio {
     public void ingresa_DoctoAdjunto(int id_duo, int id_documento) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("insert into schema_uo.duo_documento(id_duo,id_documento) values(" + id_duo + "," + id_documento + ")");
+        this.cnn.setSentenciaSQL("insert into schema_uhd.duo_documento(id_duo,id_documento) values(" + id_duo + "," + id_documento + ")");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -687,7 +687,7 @@ public class Negocio {
     public void ingresa_EnfCronica(int id_duo, int id_enfermedad) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("insert into schema_uo.duo_enfermedad_cro(id_duo,id_enfermedad_cro) values(" + id_duo + "," + id_enfermedad + ")");
+        this.cnn.setSentenciaSQL("insert into schema_uhd.duo_enfermedad_cro(id_duo,id_enfermedad_cro) values(" + id_duo + "," + id_enfermedad + ")");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -695,7 +695,7 @@ public class Negocio {
     public void ingresa_PrestacionesDuo(int duo, int prestacion) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO  schema_uo.prestacion_duo   (duop_duo,duop_prestacion, duop_estado)    VALUES ('" + duo + "', '" + prestacion + "','1'); ");
+        this.cnn.setSentenciaSQL("INSERT INTO  schema_uhd.prestacion_duo   (duop_duo,duop_prestacion, duop_estado)    VALUES ('" + duo + "', '" + prestacion + "','1'); ");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -703,7 +703,7 @@ public class Negocio {
     public void ingresa_duo(cDuo duo) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO schema_uo.duo  (fecha_duo, hora_duo,    estado_duo, id_cama, id_prevision,   fecha_hora_ing_duo, rut_usuario, rut_paciente,    id_derivador, id_categorizacion,   tipo_duo_id, duo_tiene_enfermeria,programa_duo) VALUES (  '" + duo.getFecha_duo() + "','" + duo.getHora_duo() + "','1','" + duo.getCama() + "','" + duo.getId_prevision() + "',CURRENT_TIMESTAMP,  '" + duo.getRut_usuario() + "','" + duo.getRut_paciente() + "','" + duo.getDerivador_id() + "','0','1','0' ,'" + duo.getPrograma() + "' );");
+        this.cnn.setSentenciaSQL("INSERT INTO schema_uhd.duo  (fecha_duo, hora_duo,    estado_duo, id_cama, id_prevision,   fecha_hora_ing_duo, rut_usuario, rut_paciente,    id_derivador, id_categorizacion,   tipo_duo_id, duo_tiene_enfermeria,programa_duo) VALUES (  '" + duo.getFecha_duo() + "','" + duo.getHora_duo() + "','1','" + duo.getCama() + "','" + duo.getId_prevision() + "',CURRENT_TIMESTAMP,  '" + duo.getRut_usuario() + "','" + duo.getRut_paciente() + "','" + duo.getDerivador_id() + "','0','1','0' ,'" + duo.getPrograma() + "' );");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -711,7 +711,7 @@ public class Negocio {
     public void ingresa_diagnostico_duo(cDiagnostico diag) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO  schema_uo.diagnostico_duo  ( descripcion_diagnostico_duo, tipo_diagnostico_duo, id_duo ) VALUES ( '" + diag.getDescripcion_diagnostico() + "', '" + diag.getTipo_diagnostico() + "', '" + diag.getId_duo() + "');");
+        this.cnn.setSentenciaSQL("INSERT INTO  schema_uhd.diagnostico_duo  ( descripcion_diagnostico_duo, tipo_diagnostico_duo, id_duo ) VALUES ( '" + diag.getDescripcion_diagnostico() + "', '" + diag.getTipo_diagnostico() + "', '" + diag.getId_duo() + "');");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -719,7 +719,7 @@ public class Negocio {
     public void elimina_diagnostico_duo(int id_diagnostico) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("Delete from schema_uo.diagnostico_duo where  id_diagnostico_duo='" + id_diagnostico + "' ");
+        this.cnn.setSentenciaSQL("Delete from schema_uhd.diagnostico_duo where  id_diagnostico_duo='" + id_diagnostico + "' ");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -727,7 +727,7 @@ public class Negocio {
     public void modifica_cama_duo(int duo_id, int cama_nueva) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE  schema_uo.duo   SET  id_cama = '" + cama_nueva + "'   WHERE  id_duo ='" + duo_id + "'");
+        this.cnn.setSentenciaSQL("UPDATE  schema_uhd.duo   SET  id_cama = '" + cama_nueva + "'   WHERE  id_duo ='" + duo_id + "'");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -779,7 +779,7 @@ public class Negocio {
         cUsuario aux = new cUsuario();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT  rut_usuario, perfil_usuario, pass_usuario,  nombre_usuario, apellidop_usuario,apellidom_usuario,  BB.descripcion_perfil  FROM schema_uo.usuario AA JOIN schema_uo.perfil BB ON   (AA.perfil_usuario=BB.id_perfil)   where rut_usuario='" + rut + "'  and pass_usuario='" + pass + "' and estado_usuario=1 ; ");
+        this.cnn.setSentenciaSQL("SELECT  rut_usuario, perfil_usuario, pass_usuario,  nombre_usuario, apellidop_usuario,apellidom_usuario,  BB.descripcion_perfil  FROM schema_uhd.usuario AA JOIN schema_uhd.perfil BB ON   (AA.perfil_usuario=BB.id_perfil)   where rut_usuario='" + rut + "'  and pass_usuario='" + pass + "' and estado_usuario=1 ; ");
         this.cnn.conectar();
 
         try {
@@ -804,7 +804,7 @@ public class Negocio {
         cUsuario aux = new cUsuario();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT  rut_usuario, perfil_usuario, pass_usuario,  nombre_usuario, apellidop_usuario,apellidom_usuario,estado_usuario,  BB.descripcion_perfil  FROM schema_uo.usuario AA JOIN schema_uo.perfil BB ON   (AA.perfil_usuario=BB.id_perfil)   where rut_usuario='" + rut + "'  ");
+        this.cnn.setSentenciaSQL("SELECT  rut_usuario, perfil_usuario, pass_usuario,  nombre_usuario, apellidop_usuario,apellidom_usuario,estado_usuario,  BB.descripcion_perfil  FROM schema_uhd.usuario AA JOIN schema_uhd.perfil BB ON   (AA.perfil_usuario=BB.id_perfil)   where rut_usuario='" + rut + "'  ");
         this.cnn.conectar();
 
         try {
@@ -830,11 +830,11 @@ public class Negocio {
         int id_categorizacion = 0;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("insert into schema_uo.visita_categorizacion (d1_visita_categorizacion,d2_visita_categorizacion,d3_visita_categorizacion,d4_visita_categorizacion,d5_visita_categorizacion,d6_visita_categorizacion,r1_visita_categorizacion,r2_visita_categorizacion,r3_visita_categorizacion,r4_visita_categorizacion,r5_visita_categorizacion,r6_visita_categorizacion,r7_visita_categorizacion,r8_visita_categorizacion,cat_visita_categorizacion) values(" + d1 + "," + d2 + "," + d3 + "," + d4 + "," + d5 + "," + d6 + "," + r1 + "," + r2 + "," + r3 + "," + r4 + "," + r5 + "," + r6 + "," + r7 + "," + r8 + ",'" + cat.trim() + "')");
+        this.cnn.setSentenciaSQL("insert into schema_uhd.visita_categorizacion (d1_visita_categorizacion,d2_visita_categorizacion,d3_visita_categorizacion,d4_visita_categorizacion,d5_visita_categorizacion,d6_visita_categorizacion,r1_visita_categorizacion,r2_visita_categorizacion,r3_visita_categorizacion,r4_visita_categorizacion,r5_visita_categorizacion,r6_visita_categorizacion,r7_visita_categorizacion,r8_visita_categorizacion,cat_visita_categorizacion) values(" + d1 + "," + d2 + "," + d3 + "," + d4 + "," + d5 + "," + d6 + "," + r1 + "," + r2 + "," + r3 + "," + r4 + "," + r5 + "," + r6 + "," + r7 + "," + r8 + ",'" + cat.trim() + "')");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT  id_visita_categorizacion FROM  schema_uo.visita_categorizacion order by    id_visita_categorizacion desc limit 1  ;");
+        this.cnn.setSentenciaSQL("SELECT  id_visita_categorizacion FROM  schema_uhd.visita_categorizacion order by    id_visita_categorizacion desc limit 1  ;");
         this.cnn.conectar();
 
         try {
@@ -853,11 +853,11 @@ public class Negocio {
         int id_visita = 0;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("insert into schema_uo.visita (obs_visita,fecha_visita,hora_visita,rut_usuario,id_cama,id_visita_categorizacion,tipo_visita,id_duo) values('" + obs + "','" + fecha + "','" + hora + "','" + rut_usu + "'," + id_cama + "," + id_cat + "," + tipo + "," + id_duo + ")");
+        this.cnn.setSentenciaSQL("insert into schema_uhd.visita (obs_visita,fecha_visita,hora_visita,rut_usuario,id_cama,id_visita_categorizacion,tipo_visita,id_duo) values('" + obs + "','" + fecha + "','" + hora + "','" + rut_usu + "'," + id_cama + "," + id_cat + "," + tipo + "," + id_duo + ")");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT id_visita  FROM   schema_uo.visita order by id_visita desc limit 1 ;");
+        this.cnn.setSentenciaSQL("SELECT id_visita  FROM   schema_uhd.visita order by id_visita desc limit 1 ;");
         this.cnn.conectar();
 
         try {
@@ -875,7 +875,7 @@ public class Negocio {
     public void modifica_ultima_sesion(String rut_usuario) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE  schema_uo.usuario set ultima_sesion=current_timestamp where rut_usuario='" + rut_usuario + "'   ");
+        this.cnn.setSentenciaSQL("UPDATE  schema_uhd.usuario set ultima_sesion=current_timestamp where rut_usuario='" + rut_usuario + "'   ");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -883,7 +883,7 @@ public class Negocio {
     public void modifica_clave(String rut_usuario, String clave_usuario) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE  schema_uo.usuario  set pass_usuario='" + clave_usuario + "' where rut_usuario='" + rut_usuario + "'   ");
+        this.cnn.setSentenciaSQL("UPDATE  schema_uhd.usuario  set pass_usuario='" + clave_usuario + "' where rut_usuario='" + rut_usuario + "'   ");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -891,7 +891,7 @@ public class Negocio {
     public void ingresa_usuario(cUsuario usu) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO   schema_uo.usuario (  rut_usuario,  perfil_usuario,  pass_usuario,   nombre_usuario, apellidop_usuario,   apellidom_usuario,estado_usuario  )  VALUES (   '" + usu.getRut_usuario() + "', " + usu.getPerfil_usuario() + ",  '" + usu.getPass_usuario() + "',  '" + usu.getNombre_usuario() + "',    '" + usu.getApellidop_usuario() + "','" + usu.getApellidom_usuario() + "','1');");
+        this.cnn.setSentenciaSQL("INSERT INTO   schema_uhd.usuario (  rut_usuario,  perfil_usuario,  pass_usuario,   nombre_usuario, apellidop_usuario,   apellidom_usuario,estado_usuario  )  VALUES (   '" + usu.getRut_usuario() + "', " + usu.getPerfil_usuario() + ",  '" + usu.getPass_usuario() + "',  '" + usu.getNombre_usuario() + "',    '" + usu.getApellidop_usuario() + "','" + usu.getApellidom_usuario() + "','1');");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -899,7 +899,7 @@ public class Negocio {
     public void modifica_usuario(cUsuario usu) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE  schema_uo.usuario  \nSET  perfil_usuario = '" + usu.getPerfil_usuario() + "', \n  nombre_usuario = '" + usu.getNombre_usuario() + "', \n  apellidop_usuario =  '" + usu.getApellidop_usuario() + "', \n  apellidom_usuario = '" + usu.getApellidom_usuario() + "', \n  estado_usuario = '" + usu.getEstado_usuario() + "' \nWHERE  rut_usuario = '" + usu.getRut_usuario() + "' ");
+        this.cnn.setSentenciaSQL("UPDATE  schema_uhd.usuario  \nSET  perfil_usuario = '" + usu.getPerfil_usuario() + "', \n  nombre_usuario = '" + usu.getNombre_usuario() + "', \n  apellidop_usuario =  '" + usu.getApellidop_usuario() + "', \n  apellidom_usuario = '" + usu.getApellidom_usuario() + "', \n  estado_usuario = '" + usu.getEstado_usuario() + "' \nWHERE  rut_usuario = '" + usu.getRut_usuario() + "' ");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -907,7 +907,7 @@ public class Negocio {
     public void modifica_password_usuario(cUsuario usu) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE   schema_uo.usuario  \nSET pass_usuario = '" + usu.getPass_usuario() + "' \nWHERE  rut_usuario ='" + usu.getRut_usuario() + "' ");
+        this.cnn.setSentenciaSQL("UPDATE   schema_uhd.usuario  \nSET pass_usuario = '" + usu.getPass_usuario() + "' \nWHERE  rut_usuario ='" + usu.getRut_usuario() + "' ");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -915,7 +915,7 @@ public class Negocio {
     public void modifica_duo_x_alta_adm(int duo, int estado, int prevision) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE   schema_uo.duo   SET  estado_duo = '" + estado + "', id_prevision = '" + prevision + "',  fecha_hora_alta_adm_duo = CURRENT_TIMESTAMP  WHERE id_duo = '" + duo + "';");
+        this.cnn.setSentenciaSQL("UPDATE   schema_uhd.duo   SET  estado_duo = '" + estado + "', id_prevision = '" + prevision + "',  fecha_hora_alta_adm_duo = CURRENT_TIMESTAMP  WHERE id_duo = '" + duo + "';");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -923,7 +923,7 @@ public class Negocio {
     public void ingresa_historial_consultorio_pertenencia(cHistorial_Consultorio his) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO  schema_uo.historial_consultorio_pertenencia  ( his_paciente_rut, his_consultorio_anterior, his_consultorio_nuevo,   his_fecha, his_usuario, his_ip) VALUES (   '" + his.getHis_paciente_rut() + "', '" + his.getHis_consultorio_anterior() + "', '" + his.getHis_consultorio_nuevo() + "',   CURRENT_TIMESTAMP, '" + his.getHis_usuario() + "', '" + his.getHis_ip() + "');");
+        this.cnn.setSentenciaSQL("INSERT INTO  schema_uhd.historial_consultorio_pertenencia  ( his_paciente_rut, his_consultorio_anterior, his_consultorio_nuevo,   his_fecha, his_usuario, his_ip) VALUES (   '" + his.getHis_paciente_rut() + "', '" + his.getHis_consultorio_anterior() + "', '" + his.getHis_consultorio_nuevo() + "',   CURRENT_TIMESTAMP, '" + his.getHis_usuario() + "', '" + his.getHis_ip() + "');");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -931,7 +931,7 @@ public class Negocio {
     public void ingresa_hito_paciente(cHito hit) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("  INSERT INTO schema_uo.hito_paciente  ( hit_tipo,hit_fecha, hit_paciente_rut,   hit_detalle, hit_estado, hit_usuario,hit_ip ) VALUES (   '" + hit.getTipo() + "',CURRENT_TIMESTAMP, '" + hit.getRut_paciente() + "', '" + hit.getDetalle() + "',   '1', '" + hit.getUsuario_rut() + "', '" + hit.getIp() + "' );");
+        this.cnn.setSentenciaSQL("  INSERT INTO schema_uhd.hito_paciente  ( hit_tipo,hit_fecha, hit_paciente_rut,   hit_detalle, hit_estado, hit_usuario,hit_ip ) VALUES (   '" + hit.getTipo() + "',CURRENT_TIMESTAMP, '" + hit.getRut_paciente() + "', '" + hit.getDetalle() + "',   '1', '" + hit.getUsuario_rut() + "', '" + hit.getIp() + "' );");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -1012,7 +1012,7 @@ public class Negocio {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("select ip_descripcion from schema_uo.ip_prohibida  where ip_descripcion='" + ip + "' and ip_estado='1' limit 1");
+        this.cnn.setSentenciaSQL("select ip_descripcion from schema_uhd.ip_prohibida  where ip_descripcion='" + ip + "' and ip_estado='1' limit 1");
         this.cnn.conectar();
 
         try {
@@ -1035,16 +1035,16 @@ public class Negocio {
 
         try {
             this.cnn.setEsSelect(false);
-            this.cnn.setSentenciaSQL("INSERT INTO  schema_uo.epicrisis_anulada  (id_epicrisis,resumen_epicrisis,examen_epicrisis,diagnostico_epicrisis,   indicacion_epicrisis,fecha_epicrisis,hora_epicrisis,rut_usuario,   id_duo,fecha_hora_epicrisis,ip_epicrisis,usuario_responsable )   SELECT  id_epicrisis,resumen_epicrisis,examen_epicrisis,   diagnostico_epicrisis,indicacion_epicrisis,fecha_epicrisis,   hora_epicrisis,rut_usuario,id_duo,   fecha_hora_epicrisis,ip_epicrisis,'" + usuario + "'  FROM  schema_uo.epicrisis WHERE id_duo='" + id_duo + "';");
+            this.cnn.setSentenciaSQL("INSERT INTO  schema_uhd.epicrisis_anulada  (id_epicrisis,resumen_epicrisis,examen_epicrisis,diagnostico_epicrisis,   indicacion_epicrisis,fecha_epicrisis,hora_epicrisis,rut_usuario,   id_duo,fecha_hora_epicrisis,ip_epicrisis,usuario_responsable )   SELECT  id_epicrisis,resumen_epicrisis,examen_epicrisis,   diagnostico_epicrisis,indicacion_epicrisis,fecha_epicrisis,   hora_epicrisis,rut_usuario,id_duo,   fecha_hora_epicrisis,ip_epicrisis,'" + usuario + "'  FROM  schema_uhd.epicrisis WHERE id_duo='" + id_duo + "';");
             this.cnn.conectar();
             this.cnn.cerrarConexion();
             this.configurarConexion("");
             this.cnn.setEsSelect(false);
-            this.cnn.setSentenciaSQL("DELETE FROM  schema_uo.epicrisis  EP   WHERE   EP.id_duo='" + id_duo + "' ");
+            this.cnn.setSentenciaSQL("DELETE FROM  schema_uhd.epicrisis  EP   WHERE   EP.id_duo='" + id_duo + "' ");
             this.cnn.conectar();
             this.cnn.cerrarConexion();
             this.cnn.setEsSelect(false);
-            this.cnn.setSentenciaSQL("UPDATE  schema_uo.duo  SET  estado_duo = '21',  fecha_hora_alta_med_duo = null WHERE  id_duo = '" + id_duo + "' ;");
+            this.cnn.setSentenciaSQL("UPDATE  schema_uhd.duo  SET  estado_duo = '21',  fecha_hora_alta_med_duo = null WHERE  id_duo = '" + id_duo + "' ;");
             this.cnn.conectar();
             this.cnn.cerrarConexion();
             sw = true;
@@ -1063,9 +1063,9 @@ public class Negocio {
 
         try {
             this.cnn.setEsSelect(false);
-            this.cnn.setSentenciaSQL("INSERT INTO   schema_uo.ing_enfermeria_anulada( id_ing_enfermeria, fecha_hora_ing_enfermeria,  otro_comorbilidad_ing_enfermeria, farmaco_ing_enfermeria,  obs_ing_enfermeria, rut_usuario_ing_enfermeria,  id_examen_fisico_ing_enfermeria, id_duo_ing_enfermeria,  otro_ex_docto_ing_enfermeria,usuario_responsable)  (SELECT id_ing_enfermeria, fecha_hora_ing_enfermeria,  otro_comorbilidad_ing_enfermeria, farmaco_ing_enfermeria,  obs_ing_enfermeria,rut_usuario_ing_enfermeria,  id_examen_fisico_ing_enfermeria, id_duo_ing_enfermeria,  otro_ex_docto_ing_enfermeria, '" + usuario + "' FROM  schema_uo.ing_enfermeria where id_duo_ing_enfermeria='" + id_duo + "');");
+            this.cnn.setSentenciaSQL("INSERT INTO   schema_uhd.ing_enfermeria_anulada( id_ing_enfermeria, fecha_hora_ing_enfermeria,  otro_comorbilidad_ing_enfermeria, farmaco_ing_enfermeria,  obs_ing_enfermeria, rut_usuario_ing_enfermeria,  id_examen_fisico_ing_enfermeria, id_duo_ing_enfermeria,  otro_ex_docto_ing_enfermeria,usuario_responsable)  (SELECT id_ing_enfermeria, fecha_hora_ing_enfermeria,  otro_comorbilidad_ing_enfermeria, farmaco_ing_enfermeria,  obs_ing_enfermeria,rut_usuario_ing_enfermeria,  id_examen_fisico_ing_enfermeria, id_duo_ing_enfermeria,  otro_ex_docto_ing_enfermeria, '" + usuario + "' FROM  schema_uhd.ing_enfermeria where id_duo_ing_enfermeria='" + id_duo + "');");
             this.cnn.conectar();
-            this.cnn.setSentenciaSQL("UPDATE  schema_uo.duo   SET   duo_tiene_enfermeria = '0', ip_ing_enf = ''  WHERE  id_duo = '999999999'");
+            this.cnn.setSentenciaSQL("UPDATE  schema_uhd.duo   SET   duo_tiene_enfermeria = '0', ip_ing_enf = ''  WHERE  id_duo = '999999999'");
             this.cnn.conectar();
         } catch (Exception var8) {
             sw = false;
@@ -1113,7 +1113,7 @@ public class Negocio {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO   schema_uo.kin_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
+        this.cnn.setSentenciaSQL("INSERT INTO   schema_uhd.kin_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
 
         try {
             this.cnn.conectar();
@@ -1131,7 +1131,7 @@ public class Negocio {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO   schema_uo.fonouriologa_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
+        this.cnn.setSentenciaSQL("INSERT INTO   schema_uhd.fonouriologa_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
 
         try {
             this.cnn.conectar();
@@ -1149,7 +1149,7 @@ public class Negocio {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO   schema_uo.nutricionista_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
+        this.cnn.setSentenciaSQL("INSERT INTO   schema_uhd.nutricionista_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
 
         try {
             this.cnn.conectar();
@@ -1167,7 +1167,7 @@ public class Negocio {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO   schema_uo.terapeuta_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
+        this.cnn.setSentenciaSQL("INSERT INTO   schema_uhd.terapeuta_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
 
         try {
             this.cnn.conectar();
@@ -1190,7 +1190,7 @@ public class Negocio {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO   schema_uo.kin_eva_traumatologia  \n(tra_id_duo,tra_estado, tra_usuario,tra_fecha_ingreso,  \n  tra_observacion_inicial, tra_historial, tra_dolor,  \n  tra_prueba_especial, tra_palpacion, tra_marcha,  \n  tra_plano_frontal, tra_plano_sagital, tra_plano_posterior,  \n  tra_movimiento_pasivo,tra_movimiento_activo,tra_observacion,  \n  tra_dermatoma, tra_miotoma, tra_reflejo_osteotendineo,  \n  tra_test_neurodinamico, tra_diagnostico_imagen, tra_diagnostico_kinesico  \n)  VALUES ( '" + tra.getId_duo() + "', '1', '" + tra.getRut_usuario() + "',CURRENT_TIMESTAMP,  \n  '" + tra.getObservacion_inicial() + "','" + tra.getHistorial_usuario() + "','" + tra.getDolor() + "',  \n  '" + tra.getPrueba_especial() + "', '" + tra.getPalpacion() + "', '" + tra.getMarcha() + "',  \n  '" + tra.getPlano_frontal() + "', '" + tra.getPlano_sagital() + "', '" + tra.getPlano_posterior() + "',  \n  '" + tra.getMovimiento_pasivo() + "','" + tra.getMovimiento_activo() + "','" + tra.getObservacion() + "',  \n  '" + tra.getDermatoma() + "', '" + tra.getMiotoma() + "', '" + tra.getReflejo_osteotendineo() + "',  \n  '" + tra.getTest_neurodinamico() + "', '" + tra.getDiagnostico_imagen() + "','" + tra.getDiagnostico_kinesico() + "');");
+        this.cnn.setSentenciaSQL("INSERT INTO   schema_uhd.kin_eva_traumatologia  \n(tra_id_duo,tra_estado, tra_usuario,tra_fecha_ingreso,  \n  tra_observacion_inicial, tra_historial, tra_dolor,  \n  tra_prueba_especial, tra_palpacion, tra_marcha,  \n  tra_plano_frontal, tra_plano_sagital, tra_plano_posterior,  \n  tra_movimiento_pasivo,tra_movimiento_activo,tra_observacion,  \n  tra_dermatoma, tra_miotoma, tra_reflejo_osteotendineo,  \n  tra_test_neurodinamico, tra_diagnostico_imagen, tra_diagnostico_kinesico  \n)  VALUES ( '" + tra.getId_duo() + "', '1', '" + tra.getRut_usuario() + "',CURRENT_TIMESTAMP,  \n  '" + tra.getObservacion_inicial() + "','" + tra.getHistorial_usuario() + "','" + tra.getDolor() + "',  \n  '" + tra.getPrueba_especial() + "', '" + tra.getPalpacion() + "', '" + tra.getMarcha() + "',  \n  '" + tra.getPlano_frontal() + "', '" + tra.getPlano_sagital() + "', '" + tra.getPlano_posterior() + "',  \n  '" + tra.getMovimiento_pasivo() + "','" + tra.getMovimiento_activo() + "','" + tra.getObservacion() + "',  \n  '" + tra.getDermatoma() + "', '" + tra.getMiotoma() + "', '" + tra.getReflejo_osteotendineo() + "',  \n  '" + tra.getTest_neurodinamico() + "', '" + tra.getDiagnostico_imagen() + "','" + tra.getDiagnostico_kinesico() + "');");
 
         try {
             this.cnn.conectar();
@@ -1236,7 +1236,7 @@ public class Negocio {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO  schema_uo.registro_social\n( reg_usuario, reg_fecha_ingresa, reg_estado, reg_estado_civil,\n  reg_situacion_laboral, reg_institucionalizado, reg_nombre_institucion,\n  reg_vive,reg_hijos, reg_hijos_cantidad,\n  reg_situacion, reg_plan,  reg_duo,     reg_hospital_origen, reg_asistente_social,reg_fecha_egreso, reg_destino,reg_diagnostico )  VALUES (\n  '" + reg.getRut_usuario() + "', CURRENT_TIMESTAMP, '1', '" + reg.getEstado_civil() + "',\n  '" + reg.getSituacion_laboral() + "', '" + reg.getInstitucionalizado() + "', '" + reg.getInstitucion_nombre() + "',\n  '" + reg.getVive() + "','" + reg.getHijos() + "', '" + reg.getHijos_cantidad() + "',\n  '" + reg.getSituacion() + "', '" + reg.getPlan() + "', '" + reg.getId_duo() + "',  '" + reg.getHospital_origen_desc() + "','" + reg.getNombre_asistente() + "','" + reg.getFecha_egreso() + "','" + reg.getDestino() + "','" + reg.getDiagnostico() + "' ); ");
+        this.cnn.setSentenciaSQL("INSERT INTO  schema_uhd.registro_social\n( reg_usuario, reg_fecha_ingresa, reg_estado, reg_estado_civil,\n  reg_situacion_laboral, reg_institucionalizado, reg_nombre_institucion,\n  reg_vive,reg_hijos, reg_hijos_cantidad,\n  reg_situacion, reg_plan,  reg_duo,     reg_hospital_origen, reg_asistente_social,reg_fecha_egreso, reg_destino,reg_diagnostico )  VALUES (\n  '" + reg.getRut_usuario() + "', CURRENT_TIMESTAMP, '1', '" + reg.getEstado_civil() + "',\n  '" + reg.getSituacion_laboral() + "', '" + reg.getInstitucionalizado() + "', '" + reg.getInstitucion_nombre() + "',\n  '" + reg.getVive() + "','" + reg.getHijos() + "', '" + reg.getHijos_cantidad() + "',\n  '" + reg.getSituacion() + "', '" + reg.getPlan() + "', '" + reg.getId_duo() + "',  '" + reg.getHospital_origen_desc() + "','" + reg.getNombre_asistente() + "','" + reg.getFecha_egreso() + "','" + reg.getDestino() + "','" + reg.getDiagnostico() + "' ); ");
 
         try {
             this.cnn.conectar();
@@ -1254,7 +1254,7 @@ public class Negocio {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL(" UPDATE  schema_uo.registro_social  SET  reg_usuario = '" + reg.getRut_usuario() + "',  reg_estado_civil = '" + reg.getEstado_civil() + "',  reg_situacion_laboral = '" + reg.getSituacion_laboral() + "',  reg_institucionalizado = '" + reg.getInstitucionalizado() + "',  reg_nombre_institucion = '" + reg.getInstitucion_nombre() + "',  reg_vive = '" + reg.getVive() + "',  reg_hijos = '" + reg.getHijos() + "',  reg_hijos_cantidad = '" + reg.getHijos_cantidad() + "',  reg_situacion = '" + reg.getSituacion() + "',  reg_plan =  '" + reg.getPlan() + "',   reg_hospital_origen = '" + reg.getHospital_origen_desc() + "',  reg_asistente_social = '" + reg.getNombre_asistente() + "',  reg_fecha_egreso = '" + reg.getFecha_egreso() + "',  reg_destino = '" + reg.getDestino() + "' ,   reg_diagnostico = '" + reg.getDiagnostico() + "'   WHERE  reg_id = '" + reg.getId_registro() + "' ;");
+        this.cnn.setSentenciaSQL(" UPDATE  schema_uhd.registro_social  SET  reg_usuario = '" + reg.getRut_usuario() + "',  reg_estado_civil = '" + reg.getEstado_civil() + "',  reg_situacion_laboral = '" + reg.getSituacion_laboral() + "',  reg_institucionalizado = '" + reg.getInstitucionalizado() + "',  reg_nombre_institucion = '" + reg.getInstitucion_nombre() + "',  reg_vive = '" + reg.getVive() + "',  reg_hijos = '" + reg.getHijos() + "',  reg_hijos_cantidad = '" + reg.getHijos_cantidad() + "',  reg_situacion = '" + reg.getSituacion() + "',  reg_plan =  '" + reg.getPlan() + "',   reg_hospital_origen = '" + reg.getHospital_origen_desc() + "',  reg_asistente_social = '" + reg.getNombre_asistente() + "',  reg_fecha_egreso = '" + reg.getFecha_egreso() + "',  reg_destino = '" + reg.getDestino() + "' ,   reg_diagnostico = '" + reg.getDiagnostico() + "'   WHERE  reg_id = '" + reg.getId_registro() + "' ;");
 
         try {
             this.cnn.conectar();
@@ -1272,7 +1272,7 @@ public class Negocio {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO schema_uo.registro_social_seguimiento\n(  seg_usuario, seg_duo_id,seg_fecha_ingreso,\n  seg_fecha, seg_descripcion, seg_estado\n)  VALUES (  '" + seg.getRut_usuario() + "', '" + seg.getId_registro_id() + "', CURRENT_TIMESTAMP,\n  '" + seg.getFecha_seguimiento() + "','" + seg.getDescripcion() + "','1' );");
+        this.cnn.setSentenciaSQL("INSERT INTO schema_uhd.registro_social_seguimiento\n(  seg_usuario, seg_duo_id,seg_fecha_ingreso,\n  seg_fecha, seg_descripcion, seg_estado\n)  VALUES (  '" + seg.getRut_usuario() + "', '" + seg.getId_registro_id() + "', CURRENT_TIMESTAMP,\n  '" + seg.getFecha_seguimiento() + "','" + seg.getDescripcion() + "','1' );");
 
         try {
             this.cnn.conectar();
@@ -1290,7 +1290,7 @@ public class Negocio {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE  schema_uo.registro_social_seguimiento  \nSET seg_estado = '0' WHERE  seg_id = '" + id_seguimiento + "' ");
+        this.cnn.setSentenciaSQL("UPDATE  schema_uhd.registro_social_seguimiento  \nSET seg_estado = '0' WHERE  seg_id = '" + id_seguimiento + "' ");
 
         try {
             this.cnn.conectar();
@@ -1309,9 +1309,9 @@ public class Negocio {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
         if (neu.getLesion_evaluada() == 1) {
-            this.cnn.setSentenciaSQL("INSERT INTO \n  schema_uo.kin_eva_neurologia\n( neu_id_duo,neu_estado, neu_usuario,\n  neu_fecha_ingreso, neu_lesion_evaluada, neu_lesion, neu_ashworth,neu_tipo_lesion,\n  neu_dato1,neu_dato2, neu_dato3,neu_dato4, \n  neu_dato5, neu_dato6, neu_dato7, neu_dato8, \n  neu_dato9, neu_dato10,neu_dato11,\n  neu_opcion1, neu_opcion2, neu_opcion3,\n  neu_opcion4, neu_opcion5, neu_opcion6,\n  neu_opcion1_desc, neu_opcion2_desc, neu_opcion3_desc,\n  neu_opcion4_desc, neu_opcion5_desc, neu_opcion6_desc\n)  VALUES (\n  '" + neu.getId_duo() + "', '1', '" + neu.getRut_usuario() + "',  CURRENT_TIMESTAMP,  '" + neu.getLesion_evaluada() + "', '" + neu.getLesion() + "', '" + neu.getAshworth() + "', '" + neu.getLesion_tipo() + "',\n   '" + neu.getReflejo_osteorendineo_desc() + "', '" + neu.getAsia() + "',  '" + neu.getEvaluacion_sensitiva() + "', '" + neu.getSensibilidad() + "',\n  '" + neu.getMotor_index() + "', '" + neu.getContraccion() + "', '" + neu.getSilla_ruedas() + "', '" + neu.getNivel_sentivo() + "',\n   '" + neu.getNivel_motor() + "', '" + neu.getNivel_neurologico() + "', '" + neu.getMarcha() + "',\n  '" + neu.getOp1() + "', '" + neu.getOp2() + "', '" + neu.getOp3() + "',\n  '" + neu.getOp4() + "','" + neu.getOp5() + "','" + neu.getOp6() + "',\n  '" + neu.getOp1_desc() + "','" + neu.getOp2_desc() + "','" + neu.getOp3_desc() + "',\n  '" + neu.getOp4_desc() + "','" + neu.getOp5_desc() + "', '" + neu.getOp6_desc() + "' );");
+            this.cnn.setSentenciaSQL("INSERT INTO \n  schema_uhd.kin_eva_neurologia\n( neu_id_duo,neu_estado, neu_usuario,\n  neu_fecha_ingreso, neu_lesion_evaluada, neu_lesion, neu_ashworth,neu_tipo_lesion,\n  neu_dato1,neu_dato2, neu_dato3,neu_dato4, \n  neu_dato5, neu_dato6, neu_dato7, neu_dato8, \n  neu_dato9, neu_dato10,neu_dato11,\n  neu_opcion1, neu_opcion2, neu_opcion3,\n  neu_opcion4, neu_opcion5, neu_opcion6,\n  neu_opcion1_desc, neu_opcion2_desc, neu_opcion3_desc,\n  neu_opcion4_desc, neu_opcion5_desc, neu_opcion6_desc\n)  VALUES (\n  '" + neu.getId_duo() + "', '1', '" + neu.getRut_usuario() + "',  CURRENT_TIMESTAMP,  '" + neu.getLesion_evaluada() + "', '" + neu.getLesion() + "', '" + neu.getAshworth() + "', '" + neu.getLesion_tipo() + "',\n   '" + neu.getReflejo_osteorendineo_desc() + "', '" + neu.getAsia() + "',  '" + neu.getEvaluacion_sensitiva() + "', '" + neu.getSensibilidad() + "',\n  '" + neu.getMotor_index() + "', '" + neu.getContraccion() + "', '" + neu.getSilla_ruedas() + "', '" + neu.getNivel_sentivo() + "',\n   '" + neu.getNivel_motor() + "', '" + neu.getNivel_neurologico() + "', '" + neu.getMarcha() + "',\n  '" + neu.getOp1() + "', '" + neu.getOp2() + "', '" + neu.getOp3() + "',\n  '" + neu.getOp4() + "','" + neu.getOp5() + "','" + neu.getOp6() + "',\n  '" + neu.getOp1_desc() + "','" + neu.getOp2_desc() + "','" + neu.getOp3_desc() + "',\n  '" + neu.getOp4_desc() + "','" + neu.getOp5_desc() + "', '" + neu.getOp6_desc() + "' );");
         } else {
-            this.cnn.setSentenciaSQL("INSERT INTO \n  schema_uo.kin_eva_neurologia\n( neu_id_duo,neu_estado, neu_usuario, neu_fecha_ingreso, neu_lesion_evaluada, neu_lesion, neu_ashworth,\n  neu_dato1,neu_dato2, neu_dato3,neu_dato4, \n  neu_dato5, neu_dato6, neu_dato7, neu_dato8, \n  neu_dato9, neu_dato10,neu_dato11,\n  neu_trofismo, neu_reflejo_osteorendineo, neu_propiocepcion,\n  neu_reaccion_equilibrio,neu_reaccion_enderezamiento, neu_reaccion_apoyo,\n  neu_opcion1, neu_opcion2, neu_opcion3,\n  neu_opcion4, neu_opcion5, neu_opcion6,\n  neu_opcion1_desc, neu_opcion2_desc, neu_opcion3_desc,\n  neu_opcion4_desc, neu_opcion5_desc, neu_opcion6_desc\n) VALUES (  '" + neu.getId_duo() + "', '1', '" + neu.getRut_usuario() + "',  CURRENT_TIMESTAMP,  '" + neu.getLesion_evaluada() + "', '" + neu.getLesion() + "', '" + neu.getAshworth() + "',\n  '" + neu.getMotoneurona() + "', '" + neu.getExtrapiramiral() + "', '" + neu.getPostura() + "', '" + neu.getFuerza() + "',\n  '" + neu.getTono_muscular() + "', '" + neu.getTrofismo_adicional() + "', '" + neu.getEess() + "', '" + neu.getEeii() + "',\n  '" + neu.getPropiocepcion_adicional() + "','" + neu.getTransicion() + "', '" + neu.getMarcha() + "',\n  '" + neu.getTrofismo() + "', '" + neu.getReflejo_osteorendineo() + "','" + neu.getPropiocepcion() + "',\n '" + neu.getReaccion_equilibrio() + "','" + neu.getReaccion_enderezamiento() + "', '" + neu.getReaccion_apoyo() + "',\n  '" + neu.getOp1() + "', '" + neu.getOp2() + "', '" + neu.getOp3() + "',\n  '" + neu.getOp4() + "','" + neu.getOp5() + "','" + neu.getOp6() + "',\n  '" + neu.getOp1_desc() + "','" + neu.getOp2_desc() + "','" + neu.getOp3_desc() + "',\n  '" + neu.getOp4_desc() + "','" + neu.getOp5_desc() + "', '" + neu.getOp6_desc() + "' );");
+            this.cnn.setSentenciaSQL("INSERT INTO \n  schema_uhd.kin_eva_neurologia\n( neu_id_duo,neu_estado, neu_usuario, neu_fecha_ingreso, neu_lesion_evaluada, neu_lesion, neu_ashworth,\n  neu_dato1,neu_dato2, neu_dato3,neu_dato4, \n  neu_dato5, neu_dato6, neu_dato7, neu_dato8, \n  neu_dato9, neu_dato10,neu_dato11,\n  neu_trofismo, neu_reflejo_osteorendineo, neu_propiocepcion,\n  neu_reaccion_equilibrio,neu_reaccion_enderezamiento, neu_reaccion_apoyo,\n  neu_opcion1, neu_opcion2, neu_opcion3,\n  neu_opcion4, neu_opcion5, neu_opcion6,\n  neu_opcion1_desc, neu_opcion2_desc, neu_opcion3_desc,\n  neu_opcion4_desc, neu_opcion5_desc, neu_opcion6_desc\n) VALUES (  '" + neu.getId_duo() + "', '1', '" + neu.getRut_usuario() + "',  CURRENT_TIMESTAMP,  '" + neu.getLesion_evaluada() + "', '" + neu.getLesion() + "', '" + neu.getAshworth() + "',\n  '" + neu.getMotoneurona() + "', '" + neu.getExtrapiramiral() + "', '" + neu.getPostura() + "', '" + neu.getFuerza() + "',\n  '" + neu.getTono_muscular() + "', '" + neu.getTrofismo_adicional() + "', '" + neu.getEess() + "', '" + neu.getEeii() + "',\n  '" + neu.getPropiocepcion_adicional() + "','" + neu.getTransicion() + "', '" + neu.getMarcha() + "',\n  '" + neu.getTrofismo() + "', '" + neu.getReflejo_osteorendineo() + "','" + neu.getPropiocepcion() + "',\n '" + neu.getReaccion_equilibrio() + "','" + neu.getReaccion_enderezamiento() + "', '" + neu.getReaccion_apoyo() + "',\n  '" + neu.getOp1() + "', '" + neu.getOp2() + "', '" + neu.getOp3() + "',\n  '" + neu.getOp4() + "','" + neu.getOp5() + "','" + neu.getOp6() + "',\n  '" + neu.getOp1_desc() + "','" + neu.getOp2_desc() + "','" + neu.getOp3_desc() + "',\n  '" + neu.getOp4_desc() + "','" + neu.getOp5_desc() + "', '" + neu.getOp6_desc() + "' );");
         }
 
         try {
@@ -1330,7 +1330,7 @@ public class Negocio {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO  schema_uo.kin_eva_respiratoria   ( res_estado,res_usuario, res_fecha_ingreso, res_duo,\n  res_oxigeno, res_oxigeno_det, res_via_venosa,res_via_urinaria,\n  res_via_urinaria_det,  res_vigil,  res_estado_conciencia,\n  res_alteracion_lenguaje,res_estimulo_verbal, res_estimulo_visual, res_ubicacion_temporal, res_ubicacion_espacial,\n  res_postura, res_eess,res_eeii,\n  res_deformidad,res_estado_nutricional,res_coloracion_piel,res_cianosis,\n  res_ep_normal,res_ep_escara,res_ep_cicatriz,res_ep_hematoma,res_ep_petequia,res_ep_edema,\n  res_ep_normal_det, res_ep_escara_det, res_ep_cicatriz_det, res_ep_hematoma_det, res_ep_petequia_det,res_ep_edema_det,\n  res_patron_respiratorio,res_respirador,\n  res_dificultad_respiratoria,res_musculatura_accesoria,res_musculatura_accesoria_det,\n  res_aleteo_nasal,res_aleteo_costal, res_temperatura,\n  res_elasticidad,res_elasticidad_det, res_restriccion_miofascial,\n  res_llene_capilar, res_edema,res_dolor,res_eva,\n  res_desalineacion, res_frecuencia_cardiaca, res_frecuencia_respiratoria, res_saturacion,\n  res_aus_pi_ls,res_aus_pi_li,res_aus_pd_ls, res_aus_pd_lm, res_aus_pd_li,\n  res_sibilancia, res_roncus, res_estertor_traqueal, res_crepitacion_fina,res_crepicitacion_gruesa,\n  res_ra_pi_ls,res_ra_pi_li,res_ra_pd_ls, res_ra_pd_lm,res_ra_pd_li,\n  res_tos_presencia, res_tos_produccion,\n  res_secrecion_cantidad, res_secrecion_coloracion,res_secrecion_tipo )    VALUES ( '1','" + res.getRut_usuario() + "',CURRENT_TIMESTAMP,'" + res.getId_duo() + "' ,\n  '" + res.getOxigeno() + "', '" + res.getOxigeno_det() + "', '" + res.getVia_venosa() + "', '" + res.getVia_urinaria() + "', '" + res.getVia_urinaria_det() + "', '" + res.getVigil() + "', '" + res.getEstado_conciencia() + "',\n  '" + res.getAlteracion_lenguaje() + "','" + res.getEstimulo_verbal() + "','" + res.getEstimulo_visual() + "', '" + res.getUbicacion_temporal() + "', '" + res.getUbicacion_espacial() + "',\n  '" + res.getPostura() + "','" + res.getEESS() + "','" + res.getEEII() + "',\n  '" + res.getDeformidad() + "','" + res.getEstado_nutricional() + "','" + res.getColoracion_piel() + "', " + res.getCianosis() + ",\n '" + res.getEp_normal() + "','" + res.getEp_escara() + "','" + res.getEp_cicatriz() + "','" + res.getEp_hematoma() + "','" + res.getEp_petequia() + "','" + res.getEp_edema() + "',\n  '" + res.getEp_normal_det() + "', '" + res.getEp_escara_det() + "', '" + res.getEp_cicatriz_det() + "', '" + res.getEp_hematoma_det() + "','" + res.getEp_petequia_det() + "','" + res.getEp_edema_det() + "',\n  '" + res.getPatron_respiratorio() + "','" + res.getRespirador() + "',\n  '" + res.getDificultad_respiratoria() + "','" + res.getMusculatura_accesoria() + "','" + res.getMusculatura_accesoria_det() + "',\n  '" + res.getAleteo_nasal() + "','" + res.getAleteo_costal() + "', '" + res.getTemperatura() + "',\n  '" + res.getElasticidad() + "','" + res.getElasticidad_det() + "','" + res.getRestriccion_miofascial() + "',\n  '" + res.getLlene_capilar() + "', '" + res.getEdema() + "','" + res.getDolor() + "','" + res.getEVA() + "',\n  '" + res.getDesalineacion() + "', '" + res.getFrecuencia_cardiaca() + "', '" + res.getFrecuencia_respiratoria() + "', '" + res.getSaturacion() + "',\n  '" + res.getAus_pi_ls() + "','" + res.getAus_pi_li() + "','" + res.getAus_pd_ls() + "', '" + res.getAus_pd_lm() + "', '" + res.getAus_pd_li() + "',\n  '" + res.getSibilancia() + "','" + res.getRoncus() + "', '" + res.getEstertor_traqueal() + "', '" + res.getCrepitacion_fina() + "','" + res.getCrepitacion_gruesa() + "',\n  '" + res.getRa_pi_ls() + "','" + res.getRa_pi_li() + "','" + res.getRa_pd_ls() + "','" + res.getRa_pd_lm() + "','" + res.getRa_pd_li() + "',\n  '" + res.getTos_presencia() + "', '" + res.getTos_produccion() + "',\n'" + res.getSecrecion_cantidad() + "','" + res.getSecrecion_coloracion() + "','" + res.getSecrecion_tipo() + "');");
+        this.cnn.setSentenciaSQL("INSERT INTO  schema_uhd.kin_eva_respiratoria   ( res_estado,res_usuario, res_fecha_ingreso, res_duo,\n  res_oxigeno, res_oxigeno_det, res_via_venosa,res_via_urinaria,\n  res_via_urinaria_det,  res_vigil,  res_estado_conciencia,\n  res_alteracion_lenguaje,res_estimulo_verbal, res_estimulo_visual, res_ubicacion_temporal, res_ubicacion_espacial,\n  res_postura, res_eess,res_eeii,\n  res_deformidad,res_estado_nutricional,res_coloracion_piel,res_cianosis,\n  res_ep_normal,res_ep_escara,res_ep_cicatriz,res_ep_hematoma,res_ep_petequia,res_ep_edema,\n  res_ep_normal_det, res_ep_escara_det, res_ep_cicatriz_det, res_ep_hematoma_det, res_ep_petequia_det,res_ep_edema_det,\n  res_patron_respiratorio,res_respirador,\n  res_dificultad_respiratoria,res_musculatura_accesoria,res_musculatura_accesoria_det,\n  res_aleteo_nasal,res_aleteo_costal, res_temperatura,\n  res_elasticidad,res_elasticidad_det, res_restriccion_miofascial,\n  res_llene_capilar, res_edema,res_dolor,res_eva,\n  res_desalineacion, res_frecuencia_cardiaca, res_frecuencia_respiratoria, res_saturacion,\n  res_aus_pi_ls,res_aus_pi_li,res_aus_pd_ls, res_aus_pd_lm, res_aus_pd_li,\n  res_sibilancia, res_roncus, res_estertor_traqueal, res_crepitacion_fina,res_crepicitacion_gruesa,\n  res_ra_pi_ls,res_ra_pi_li,res_ra_pd_ls, res_ra_pd_lm,res_ra_pd_li,\n  res_tos_presencia, res_tos_produccion,\n  res_secrecion_cantidad, res_secrecion_coloracion,res_secrecion_tipo )    VALUES ( '1','" + res.getRut_usuario() + "',CURRENT_TIMESTAMP,'" + res.getId_duo() + "' ,\n  '" + res.getOxigeno() + "', '" + res.getOxigeno_det() + "', '" + res.getVia_venosa() + "', '" + res.getVia_urinaria() + "', '" + res.getVia_urinaria_det() + "', '" + res.getVigil() + "', '" + res.getEstado_conciencia() + "',\n  '" + res.getAlteracion_lenguaje() + "','" + res.getEstimulo_verbal() + "','" + res.getEstimulo_visual() + "', '" + res.getUbicacion_temporal() + "', '" + res.getUbicacion_espacial() + "',\n  '" + res.getPostura() + "','" + res.getEESS() + "','" + res.getEEII() + "',\n  '" + res.getDeformidad() + "','" + res.getEstado_nutricional() + "','" + res.getColoracion_piel() + "', " + res.getCianosis() + ",\n '" + res.getEp_normal() + "','" + res.getEp_escara() + "','" + res.getEp_cicatriz() + "','" + res.getEp_hematoma() + "','" + res.getEp_petequia() + "','" + res.getEp_edema() + "',\n  '" + res.getEp_normal_det() + "', '" + res.getEp_escara_det() + "', '" + res.getEp_cicatriz_det() + "', '" + res.getEp_hematoma_det() + "','" + res.getEp_petequia_det() + "','" + res.getEp_edema_det() + "',\n  '" + res.getPatron_respiratorio() + "','" + res.getRespirador() + "',\n  '" + res.getDificultad_respiratoria() + "','" + res.getMusculatura_accesoria() + "','" + res.getMusculatura_accesoria_det() + "',\n  '" + res.getAleteo_nasal() + "','" + res.getAleteo_costal() + "', '" + res.getTemperatura() + "',\n  '" + res.getElasticidad() + "','" + res.getElasticidad_det() + "','" + res.getRestriccion_miofascial() + "',\n  '" + res.getLlene_capilar() + "', '" + res.getEdema() + "','" + res.getDolor() + "','" + res.getEVA() + "',\n  '" + res.getDesalineacion() + "', '" + res.getFrecuencia_cardiaca() + "', '" + res.getFrecuencia_respiratoria() + "', '" + res.getSaturacion() + "',\n  '" + res.getAus_pi_ls() + "','" + res.getAus_pi_li() + "','" + res.getAus_pd_ls() + "', '" + res.getAus_pd_lm() + "', '" + res.getAus_pd_li() + "',\n  '" + res.getSibilancia() + "','" + res.getRoncus() + "', '" + res.getEstertor_traqueal() + "', '" + res.getCrepitacion_fina() + "','" + res.getCrepitacion_gruesa() + "',\n  '" + res.getRa_pi_ls() + "','" + res.getRa_pi_li() + "','" + res.getRa_pd_ls() + "','" + res.getRa_pd_lm() + "','" + res.getRa_pd_li() + "',\n  '" + res.getTos_presencia() + "', '" + res.getTos_produccion() + "',\n'" + res.getSecrecion_cantidad() + "','" + res.getSecrecion_coloracion() + "','" + res.getSecrecion_tipo() + "');");
 
         try {
             this.cnn.conectar();
@@ -1349,7 +1349,7 @@ public class Negocio {
         boolean sw = true;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("   INSERT INTO  schema_uo.receta ( rec_tipo, rec_fecha,rec_usuario,   rec_fecha_ingreso, rec_estado, rec_ip,   rec_dia_hospitalizacion,\n  rec_diagnostico,rec_regimen, rec_reposo, rec_kinesiologia,\n  rec_aislamiento,rec_contencion, rec_dispositivo,\n  rec_hgt )  VALUES ( '" + rec.getTipo() + "', '" + rec.getFecha() + "', '" + rec.getRut_usuario() + "',   CURRENT_TIMESTAMP,'1', '" + rec.getIp() + "','" + rec.getDia_hospitalizacion() + "',  '" + rec.getDiagnostico() + "','" + rec.getRegimen() + "','" + rec.getReposo() + "', '" + rec.getKinesiologia() + "','" + rec.getAislamiento() + "','" + rec.getContencion() + "','" + rec.getDispositivo() + "' ,'" + rec.getHgt() + "'); ");
+        this.cnn.setSentenciaSQL("   INSERT INTO  schema_uhd.receta ( rec_tipo, rec_fecha,rec_usuario,   rec_fecha_ingreso, rec_estado, rec_ip,   rec_dia_hospitalizacion,\n  rec_diagnostico,rec_regimen, rec_reposo, rec_kinesiologia,\n  rec_aislamiento,rec_contencion, rec_dispositivo,\n  rec_hgt )  VALUES ( '" + rec.getTipo() + "', '" + rec.getFecha() + "', '" + rec.getRut_usuario() + "',   CURRENT_TIMESTAMP,'1', '" + rec.getIp() + "','" + rec.getDia_hospitalizacion() + "',  '" + rec.getDiagnostico() + "','" + rec.getRegimen() + "','" + rec.getReposo() + "', '" + rec.getKinesiologia() + "','" + rec.getAislamiento() + "','" + rec.getContencion() + "','" + rec.getDispositivo() + "' ,'" + rec.getHgt() + "'); ");
 
         try {
             this.cnn.conectar();
@@ -1363,7 +1363,7 @@ public class Negocio {
         if (sw) {
             this.configurarConexion("");
             this.cnn.setEsSelect(true);
-            this.cnn.setSentenciaSQL(" SELECT  rec_id  FROM  schema_uo.receta     WHERE rec_usuario = '" + rec.getRut_usuario() + "' AND   rec_fecha='" + rec.getFecha() + "' and rec_ip='" + rec.getIp() + "'   order by rec_id DESC limit 1 ; ");
+            this.cnn.setSentenciaSQL(" SELECT  rec_id  FROM  schema_uhd.receta     WHERE rec_usuario = '" + rec.getRut_usuario() + "' AND   rec_fecha='" + rec.getFecha() + "' and rec_ip='" + rec.getIp() + "'   order by rec_id DESC limit 1 ; ");
             this.cnn.conectar();
 
             try {
@@ -1384,7 +1384,7 @@ public class Negocio {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL(" INSERT INTO  schema_uo.receta_detalle \n (rec_usuario,rec_fecha_ingreso, rec_fecha,\n  rec_tipo, rec_medicamento, rec_medida,\n  rec_cantidad, rec_frecuencia, rec_duracion,\n  rec_indicacion,rec_indicacion_no,rec_estado, rec_duo, rec_duracion_desc,rec_paciente,rec_receta  )  VALUES (\n  '" + rec.getRut_usuario() + "',CURRENT_TIMESTAMP,  '" + rec.getFecha() + "',\n   '" + rec.getTipo() + "',  '" + rec.getMedicamento_desc() + "',  '" + rec.getMedida() + "',\n   '" + rec.getCantidad() + "',  '" + rec.getFrecuencia() + "', '0',    '" + rec.getIndicacion() + "','" + rec.getIndicacion_no() + "', '1' ,'" + rec.getId_duo() + "','" + rec.getDuracion_desc() + "','" + rec.getRut_paciente() + "','" + rec.getId_receta() + "' ); ");
+        this.cnn.setSentenciaSQL(" INSERT INTO  schema_uhd.receta_detalle \n (rec_usuario,rec_fecha_ingreso, rec_fecha,\n  rec_tipo, rec_medicamento, rec_medida,\n  rec_cantidad, rec_frecuencia, rec_duracion,\n  rec_indicacion,rec_indicacion_no,rec_estado, rec_duo, rec_duracion_desc,rec_paciente,rec_receta  )  VALUES (\n  '" + rec.getRut_usuario() + "',CURRENT_TIMESTAMP,  '" + rec.getFecha() + "',\n   '" + rec.getTipo() + "',  '" + rec.getMedicamento_desc() + "',  '" + rec.getMedida() + "',\n   '" + rec.getCantidad() + "',  '" + rec.getFrecuencia() + "', '0',    '" + rec.getIndicacion() + "','" + rec.getIndicacion_no() + "', '1' ,'" + rec.getId_duo() + "','" + rec.getDuracion_desc() + "','" + rec.getRut_paciente() + "','" + rec.getId_receta() + "' ); ");
 
         try {
             this.cnn.conectar();
