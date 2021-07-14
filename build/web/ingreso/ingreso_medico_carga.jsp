@@ -173,7 +173,6 @@
     </a>
 </div>
 <form id="Form1" >
-    <fieldset>
         <legend>Ingreso del Paciente: </legend>
         <table bgcolor="#cccccc"  style="FONT-FAMILY: Arial, Helvetica, sans-serif; FONT-SIZE: 12px;" BORDER="0" width="720">
             <input type="hidden" id="rut" value="<%=String.valueOf(request.getParameter("rut"))%>">
@@ -223,15 +222,9 @@
                 </td>
             </tr>
         </table>
-        <div id="Resultado" style=" overflow:auto;
-             padding-right: 15px; padding-top: 5px; padding-left: 15px; padding-bottom: 15px;
-             border-right: #6699CC 1px solid; border-top: #999999 1px solid;
-             border-left: #6699CC 1px solid; border-bottom: #6699CC 1px solid;
-             scrollbar-arrow-color : #999999; scrollbar-face-color : #666666;
-             scrollbar-track-color :#3333333 ;
-             height:370px; left: 100; top: 10; width: 95%">
+        <div id="Resultado">
             <!-- Este DIV contendra la respuesta enviada por el Servlet -->
-            <fieldset>
+          
                 <legend>INGRESO MEDICO</legend>
                 <table border="0" style="FONT-FAMILY: Arial, Helvetica, sans-serif; FONT-SIZE: 12px;">
                     <tr>
@@ -267,7 +260,6 @@
                         </td>
                     </tr>
                 </table>
-            </fieldset>
 
             <fieldset>
                 <legend>Enfermedades Crónicas</legend>
@@ -335,6 +327,4 @@
             <input type="button" id="BtnIngresar" style="" onclick="Enviar()" class="DR" value="Ingresar Paciente a Cama" >
       
         </fieldset>
-
-    </fieldset>
 </form>

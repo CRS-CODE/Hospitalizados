@@ -1360,7 +1360,7 @@ public class NegocioQ extends Negocio {
                 + "                            ON (schema_uhd.sala.id_sala=C.id_sala) \n"
                 + "                            left JOIN agenda.paciente  \n"
                 + "                            ON (agenda.paciente.rut=D.rut_paciente)\n"
-                + "                            where C.id_sala in (11,12,25) and C.estado_cama=1 order by schema_uhd.sala.posicion ,c.\"posicionCama\"");
+                + "                            where C.id_sala in (1) and C.estado_cama=1 order by schema_uhd.sala.posicion ,c.\"posicionCama\"");
         this.cnn.conectar();
         try {
             while (cnn.getRst().next()) {
@@ -1883,7 +1883,7 @@ public class NegocioQ extends Negocio {
         String hora = "";
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("SELECT to_char(current_timestamp,'DD/MM/YYYY HH24:MI:SS')as hora FROM schema_uhd.duo limit 1 ;");
+        this.cnn.setSentenciaSQL("SELECT to_char(current_timestamp,'DD/MM/YYYY HH24:MI:SS')as hora ;");
         this.cnn.conectar();
 
         try {

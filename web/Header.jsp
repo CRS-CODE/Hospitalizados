@@ -70,7 +70,7 @@
         see_mantencion.add(10);
         see_mantencion.add(11);
         see_mantencion.add(12);
-        
+
         ArrayList psicologo = new ArrayList();
         psicologo.add(18);
 
@@ -92,7 +92,7 @@
         <script src="<%=neg.getLocal()%>js/jquery/jquery.js"></script>
         <script src="<%=neg.getLocal()%>js/jquery/jquery-ui.js"></script>
         <%            // <script src="<%=neg.getLocal() ajax.js"></script>
-        %>
+           %>
 
         <jsp:include page="css/boton_html.jsp" />
 
@@ -124,23 +124,14 @@
                         <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>HOSP. DOMICILIARIA</span></a>
                         </li>
 
-                        <%    if (see_admision_urgencia.contains(obtiene_perfil) || see_duo_x_ingresar.add(obtiene_perfil) || see_admision_suam.contains(obtiene_perfil)) {
-                        %>
                         <li><a href="#"><span>INGRESO</span></a>
                             <ul>
-                                <%        }
-                                %>
-                                <%
-                                    if (see_admision_urgencia.contains(obtiene_perfil)) {
-                                %>
+
                                 <li><a href="<%=neg.getLocal()%>admision_ugu.jsp" class="dir">Admision</a></li>
-                                    <% }
-                                        if (see_admision_urgencia.contains(obtiene_perfil) || see_duo_x_ingresar.add(obtiene_perfil) || see_admision_suam.contains(obtiene_perfil)) {
-                                    %>
+
                             </ul>
                         </li>
-                        <%    }
-                        %>
+
                         </li>
                         <li><a href="<%=neg.getLocal()%>index_barthel/registers_index_barthel.jsp"><span>INDICE BARTHEL</span></a>
                         </li>
@@ -156,9 +147,9 @@
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Nutrición</span></a> 
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Kinesiologia</span></a> 
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Terapeuta Ocupacional</span></a> 
-                              <% if (psicologo.contains(obtiene_perfil)){%>
+                                    <% if (psicologo.contains(obtiene_perfil)) {%>
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Psicólogo/a</span></a>
-                              <%}%>     
+                                    <%}%>     
                                 <li> <a href="<%=neg.getLocal()%>asistencia_social/social_ingreso.jsp"><span>Trabajadora Social</span></a>
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Fonoaudiologa</span></a> 
 

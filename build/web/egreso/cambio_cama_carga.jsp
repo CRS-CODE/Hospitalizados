@@ -25,7 +25,7 @@
             Iterator it_sala = null;
 
             if (recibe_modo == 1) {
-                lista_cama = neg.lista_cama_desocupada("11,12,25,13,14,1,2,3,4");
+                lista_cama = neg.lista_cama_desocupada("1");
                 it_sala = lista_cama.iterator();
             } else if (recibe_modo == 2) {
                 lista_cama = neg.lista_grilla_camas();

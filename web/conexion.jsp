@@ -4,10 +4,10 @@
 <%
     // POSTGRES
 
-  String usuarioBD = "hospitalizados";
-  String passwordBD = "crsdb2020";
+  String usuarioBD = "postgres";
+  String passwordBD = "crsdb2008";
   String drv = "org.postgresql.Driver";
-  String dsn = "jdbc:postgresql://10.8.4.163:5432/crsm";
+  String dsn = "jdbc:postgresql://localhost:5432/crsm";
 
   Connection cn = null;
   Statement st = null;

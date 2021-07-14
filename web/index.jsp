@@ -11,7 +11,7 @@
     <html><head>
             <LINK REL="SHORTCUT ICON" HREF="Iconos/flag_chile.ico">
 
-            <title>Entrada al sistema - Modulo UO.</title>
+            <title>Entrada al sistema - Modulo UHD.</title>
             <LINK REL="stylesheet" TYPE="text/css" HREF="css/style.css"></head>
         <script type="text/javascript" src="js/valida_rut.js"></script>
         <body onload="javascript:document.index.user.focus();">
@@ -25,7 +25,7 @@
                                     <table width="50%">
                                         <tr><td>
                                                 <fieldset>
-                                                    <legend onclick="">Entrada al sistema UHCE</legend>
+                                                    <legend onclick="">Entrada al sistema UHD</legend>
                                                     <div align="center">
                                                         <table border="0" CELLSPACING="5" CELLPADDING="0">
                                                             <tr><td colspan="2" align="center"  class="ari999bold11">Ingrese Rut de usuario y Contraseña.</td></tr>
@@ -82,7 +82,7 @@
                                 </form>
 
                             </div>
-                            <div id="footer">Sistemas Zauron// Modulo Gestión de Camas Version 3.0 (07/05/2012)<img src="Iconos/Logo_uo.png">_____________________________________________________CRS Maipú 2012.</div>
+                            <div id="footer">Sistema de Gestión de Camas Domiciliaria Version 1.0 (25/06/2021)<img src="Iconos/Logo_uo.png">_____________________________________________________CRS Maipú 2021.</div>
                         </td></tr></table>
             </center>
         </body>

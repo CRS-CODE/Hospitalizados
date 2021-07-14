@@ -44,10 +44,8 @@
     int contador = 0;
     ArrayList lista_camas = neg.lista_grilla_camas();
     ArrayList salas = new ArrayList();
-    salas.add("11");
-    salas.add("12");
-    salas.add("25");
-    String nombre_sala[] = new String[9];
+    salas.add("1");
+    String nombre_sala[] = new String[1];
     String fecha_hora = neg.obtiene_fecha_hora();
     String dia = fecha_hora.substring(0, 2);
     String mes = fecha_hora.substring(3, 5);
@@ -81,13 +79,9 @@
     Iterator it_res = lista_camas.iterator();
     while (it_res.hasNext()) {
         cDuo aux = (cDuo) it_res.next();
-        if (aux.getSala() == 11) {
+        if (aux.getSala() == 1) {
             nombre_sala[0] = "" + aux.getSala_descripcion();
-        } else if (aux.getSala() == 12) {
-            nombre_sala[1] = "" + aux.getSala_descripcion();
-        } else if (aux.getSala() == 25) {
-            nombre_sala[2] = "" + aux.getSala_descripcion();
-        }
+        } 
     }
     int CamasDisponibles = 0;
     int CamasReservada = 0;
@@ -171,15 +165,10 @@
                                     String sala_actual = aux.getSala() + "";
                                     if (sala_actual.equalsIgnoreCase(salas.get(indice_sala).toString())) {
                                         cantidad_camas_x_sala++;
-                                        if (aux.getSala() == 11 && (cantidad_camas_x_sala == 2 || cantidad_camas_x_sala == 5 || cantidad_camas_x_sala == 7 || cantidad_camas_x_sala == 13)) {
+                                        if (aux.getSala() == 1 && cantidad_camas_x_sala == 9 ) {
                                             out.write("<tr>");
                                         }
-                                        if (aux.getSala() == 12 && (cantidad_camas_x_sala == 5 || cantidad_camas_x_sala == 9 || cantidad_camas_x_sala == 13)) {
-                                            out.write("<tr>");
-                                        }
-                                        if (aux.getSala() == 25 && (cantidad_camas_x_sala == 2 || cantidad_camas_x_sala == 3 || cantidad_camas_x_sala == 5 || cantidad_camas_x_sala == 9 || cantidad_camas_x_sala == 13)) {
-                                            out.write("<tr>");
-                                        }
+                                       
                                         if (aux.getId_duo() == 0) { // si la cama esta vacia
                             %>
 

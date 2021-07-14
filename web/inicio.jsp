@@ -14,7 +14,7 @@
  
  <body>
 <legend>INICIO</legend>
-<h3>Bienvenido al Sistema Unidad de Hospitalización.-</h3>
+<h3>Bienvenido al Sistema Unidad HOSP. DOMICILIARIA.-</h3>
 
 <br><br><br><br>
 

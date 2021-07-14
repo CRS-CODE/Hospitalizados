@@ -44,7 +44,7 @@
         ArrayList comuna = neg.buscarComuna();
         ArrayList consultorio = neg.lista_consultorio_pertenecia();
         ArrayList derivador = neg.lista_derivador();
-        ArrayList cama = neg.lista_cama_desocupada("11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28"); // 1 es el area para camas disponibles normales , puede ser tambien -(1,2)-
+        ArrayList cama = neg.lista_cama_desocupada("1"); // 1 es el area para camas disponibles normales , puede ser tambien -(1,2)-
         ArrayList pueblo = neg.lista_pueblo();
         ArrayList nacion = neg.lista_nacion();
 
