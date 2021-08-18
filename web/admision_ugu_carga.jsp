@@ -17,9 +17,7 @@
 <%@page import="CapaNegocio.NegocioQ"%>
 <%@page contentType="text/html" pageEncoding="iso-8859-1"%>
 <%
-
     NegocioQ neg = new NegocioQ();
-
     String obtiene_rut = request.getParameter("user");
     String div = request.getParameter("div");
     String rutsin = request.getParameter("sindiv");
@@ -39,8 +37,6 @@
     } else {
 
         String hora_Registro = neg.obtiene_fecha_hora();
-        //String obtiene_rut = "16.623.070-5";
-        /* informacion para llenar el formulario*/
         ArrayList comuna = neg.buscarComuna();
         ArrayList consultorio = neg.lista_consultorio_pertenecia();
         ArrayList derivador = neg.lista_derivador();
@@ -87,13 +83,6 @@
         if (pac.getRut_paciente().equals("")) {
             existe = 0;
             cPaciente pac_fon = new cPaciente();
-            // 15122015 servicio deprecado 
-            //   try {
-
-            // pac_fon = n_fon.getConsultaPrevision(obtiene_rut);
-            //  } catch (Exception ex) {
-            //      pac_fon = new cPaciente();
-            //  }
             a_nombres = pac_fon.getNombres_paciente() + "";
             a_apellidop = pac_fon.getApellidop_paciente();
             a_apellidom = pac_fon.getApellidom_paciente();
@@ -140,8 +129,13 @@
 
         //  out.write(""+pac.getCodigo_fonasa()+"<br>"+pac.getTramo_prevision()+"<br>"+pac.getPrais());
 %>
+ <script>
+    function valida_form(){
+        alert('pase');
+    }
+</script>
 
-<form  id="form1" name="form1" action="<% out.write(neg.getLocal());%>ingreso_uh" onsubmit="return valida_form()" method="POST"   >
+<form  id="Form1" name="Form1" method="POST"   >
     <input type="hidden" name="modo" id="modo" value="1">
     <input type="hidden" name="existe" id="existe" value="<%=existe%>">
     <input type="hidden" name="verificado_fonasa" id="verificado_fonasa" value="0">
@@ -354,13 +348,14 @@
        
         <fieldset class="buttons">
             <br><br>
-            <input class="btn btn-primary" type="submit" value="GUARDAR DATOS" name="btn_guarda_datos" />
+            <input type="button" class="btn btn-primary" onclick="javascript: return valida_form()" value="GUARDAR DATOS" name="btn_guarda_datos" />
 
             <br><br>
         </fieldset>
     </fieldset>
 
 </form>
+ 
                    
 <% 
         }

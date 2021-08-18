@@ -70,9 +70,7 @@
         see_mantencion.add(10);
         see_mantencion.add(11);
         see_mantencion.add(12);
-        
-        ArrayList psicologo = new ArrayList();
-        psicologo.add(18);
+       
 
 
 %>
@@ -156,9 +154,7 @@
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Nutrición</span></a> 
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Kinesiologia</span></a> 
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Terapeuta Ocupacional</span></a> 
-                              <% if (psicologo.contains(obtiene_perfil)){%>
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Psicólogo/a</span></a>
-                              <%}%>     
                                 <li> <a href="<%=neg.getLocal()%>asistencia_social/social_ingreso.jsp"><span>Trabajadora Social</span></a>
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Fonoaudiologa</span></a> 
 

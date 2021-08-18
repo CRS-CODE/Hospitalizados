@@ -247,7 +247,7 @@
                                 <br><br>
 
                                 <select  name="cbo_consultorio_pertenencia" id="cbo_consultorio_pertenencia">
-                                    <option value="-2" >Seleccione...</option>
+                                    <option value="-1" >Seleccione...</option>
                                     <%
                                                 cConsultorio cons = new cConsultorio();
                                                 String cbo_opcion_seleccionada = "";
