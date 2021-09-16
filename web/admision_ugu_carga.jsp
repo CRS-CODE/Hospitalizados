@@ -129,13 +129,8 @@
 
         //  out.write(""+pac.getCodigo_fonasa()+"<br>"+pac.getTramo_prevision()+"<br>"+pac.getPrais());
 %>
- <script>
-    function valida_form(){
-        alert('pase');
-    }
-</script>
 
-<form  id="Form1" name="Form1" method="POST"   >
+<form  id="form1" name="form1" action="<% out.write(neg.getLocal());%>ingreso_uh" onsubmit="return valida_form()" method="POST"   >
     <input type="hidden" name="modo" id="modo" value="1">
     <input type="hidden" name="existe" id="existe" value="<%=existe%>">
     <input type="hidden" name="verificado_fonasa" id="verificado_fonasa" value="0">
@@ -346,9 +341,9 @@
             </tr>
         </table>
        
-        <fieldset class="buttons">
+      <fieldset class="buttons">
             <br><br>
-            <input type="button" class="btn btn-primary" onclick="javascript: return valida_form()" value="GUARDAR DATOS" name="btn_guarda_datos" />
+            <input class="btn btn-primary" type="submit" value="GUARDAR DATOS" name="btn_guarda_datos" />
 
             <br><br>
         </fieldset>

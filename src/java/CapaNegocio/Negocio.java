@@ -57,7 +57,7 @@ public class Negocio {
     }
 
     public String getLocal() {
-      //  String local = "http://10.8.4.163:8080/modulo_uhce/";
+       // String local = "http://10.8.4.163:8080/modulo_uhce/";
        String local = "http://localhost:8080/modulo_uhce/";
         return local;
     }

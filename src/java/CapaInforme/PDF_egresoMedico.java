@@ -236,7 +236,8 @@ public class PDF_egresoMedico extends HttpServlet {
 
                 celda = new PdfPCell(new Paragraph("" + duo.getFecha_hora_ing_enf().substring(duo.getFecha_hora_ing_enf().length() - 8, duo.getFecha_hora_ing_enf().length()), ft1));
                 tabla2.addCell(celda);
-                int day = duo.getDias_reales_cama() > 0 ? duo.getDias_reales_cama() : duo.getDias_cama();
+                int dayReales = duo.getDias_reales_cama() == 0 ?  1 : duo.getDias_reales_cama();
+                int day = dayReales > 0 ? dayReales : duo.getDias_cama();
                 celda = new PdfPCell(new Paragraph("" + day, ft1));
                 //celda.setBorder(0);
                 tabla2.addCell(celda);
