@@ -234,6 +234,8 @@
                         <td colspan="4" width="150px">
                             <textarea rows="15" cols="90" name="anamnesis" id="anamnesis" title="Anamnesis" onblur="onBlurAnamnesis();" onfocus="onFocusAnamnesis()" style=" color: gray  "   >Anamnesis...</textarea>
                         </td>
+                    </tr>
+                    <tr>
                         <td colspan="5">
                             <center>
                                 <b>CONSULTORIO PERTENECIENTE</b>

@@ -127,7 +127,7 @@ public class XLS_DuosDadoAltaDatosEpicrisis extends HttpServlet {
             Sheet sheet0 = wb.createSheet("DATOS");
             //Esta es el Header y el Footer
             HSSFHeader cabecera = (HSSFHeader) sheet0.getHeader();
-            cabecera.setLeft("Ministerio de Salud\nCentro de referencia de Salud Maipú\nSistemas Zauron");
+            cabecera.setLeft("Ministerio de Salud\nCentro de referencia de Salud Maipú");
 
             HSSFFooter pie = (HSSFFooter) sheet0.getFooter();
             pie.setCenter("Pagina " + HSSFFooter.page() + " de " + HSSFFooter.numPages());//N° de Pagina

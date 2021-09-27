@@ -52,13 +52,13 @@ public class Negocio {
         this.cnn.setDriver("org.postgresql.Driver");
         this.cnn.setNombreTabla(tabla);
         this.cnn.setUser("postgres");
-        this.cnn.setPassword("crsdb2020");
-        this.cnn.setNombreBaseDatos("jdbc:postgresql://10.8.4.163:5432/crsm");
+        this.cnn.setPassword("crsdb2008");
+        this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5432/crsm");
     }
 
     public String getLocal() {
-        String local = "http://10.8.4.163:8080/modulo_uhd/";
-       //String local = "http://localhost:8080/modulo_uhce/";
+       // String local = "http://localhost:8080/modulo_uhd/";
+       String local = "http://localhost:8080/modulo_uhce/";
         return local;
     }
 
