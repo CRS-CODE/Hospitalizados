@@ -58,6 +58,7 @@ public class cDuo extends cPaciente {
     private int dif_hh_enf;
     private int dif_dd_enf;
     private Date fecha;
+    private boolean tengoEgreso;
     
  
 
@@ -113,6 +114,16 @@ public class cDuo extends cPaciente {
         return fecha;
     }
 
+    public boolean isTengoEgreso() {
+        return tengoEgreso;
+    }
+
+    public void setTengoEgreso(boolean tengoEgreso) {
+        this.tengoEgreso = tengoEgreso;
+    }
+
+    
+    
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }

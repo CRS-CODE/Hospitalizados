@@ -204,6 +204,10 @@
         <servlet-name>PDF_egresoMedico</servlet-name>
         <servlet-class>CapaInforme.PDF_egresoMedico</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PDF_sesion_social</servlet-name>
+        <servlet-class>CapaInforme.PDF_sesion_social</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>valida_usuario</servlet-name>
         <url-pattern>/valida_usuario</url-pattern>
@@ -360,7 +364,7 @@
         <servlet-name>PDF_HISTORIAL</servlet-name>
         <url-pattern>/PDF_HISTORIAL</url-pattern>
     </servlet-mapping>
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>PDF_sesion_psicolo</servlet-name>
         <url-pattern>/PDF_sesion_psicolo</url-pattern>
     </servlet-mapping>
@@ -407,6 +411,10 @@
     <servlet-mapping>
         <servlet-name>PDF_egresoMedico</servlet-name>
         <url-pattern>/PDF_egresoMedico</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PDF_sesion_social</servlet-name>
+        <url-pattern>/PDF_sesion_social</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -280,6 +280,16 @@
 
                             </td>
                             <td valign="top"><<-Ir Psicologia</td>
+                              <td align='right' >
+                                <%                                    out.write("<form name='form_sesion_social" + duo.getId_duo() + "' id='form_sesion_social" + duo.getId_duo() + "' action='" + neg.getLocal() + "social/datos_social.jsp' method='POST' >");
+                                    out.write("<input type='hidden' name='txt_duo' value='" + duo.getId_duo() + "' >");
+                                    out.write(" <img title='Visita Terapeuta Social' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_sesion_social" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
+                                    out.write("</form>");
+
+                                %>
+
+                            </td>
+                            <td valign="top"><<-Ir Trabajadora Social</td>
 
                         </tr>
                       

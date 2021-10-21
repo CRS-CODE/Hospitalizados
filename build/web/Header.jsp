@@ -60,17 +60,23 @@
         see_visita.add(15);
         see_visita.add(16);
         see_visita.add(17);
+        see_visita.add(18);
 
         ArrayList see_informe = new ArrayList();
         see_informe.add(10);
         see_informe.add(11);
         see_informe.add(12);
         see_informe.add(1);
+        see_informe.add(13);
+        see_informe.add(14);
+        see_informe.add(15);
+        see_informe.add(16);
+        see_informe.add(17);
+        see_informe.add(18);
         ArrayList see_mantencion = new ArrayList();
         see_mantencion.add(10);
         see_mantencion.add(11);
         see_mantencion.add(12);
-       
 
 
 %>
@@ -155,16 +161,17 @@
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Kinesiologia</span></a> 
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Terapeuta Ocupacional</span></a> 
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Psicólogo/a</span></a>
-                                <li> <a href="<%=neg.getLocal()%>asistencia_social/social_ingreso.jsp"><span>Trabajadora Social</span></a>
+                                <li> <a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Trabajadora Social</span></a>
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Fonoaudiologa</span></a> 
 
 
                             </ul>
                         </li>
+                         <li> <a href="<%=neg.getLocal()%>asistencia_social/social_ingreso.jsp"><span>Anterior Trabajadora Social</span></a>
                         <%  }
                         %>
 
-
+                      
                         <li><a href="<%=neg.getLocal()%>receta.jsp"><span>INDICACIONES</span></a>
                         </li>
 

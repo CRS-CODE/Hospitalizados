@@ -1025,13 +1025,16 @@ public class NegocioQ extends Negocio {
 
                 duo.setFecha_hora_alta_adm_duo(cnn.getRst().getString("fecha_hora_alta_adm_duo"));
                 duo.setFecha_hora_alta_med_duo(cnn.getRst().getString("fecha_hora_alta_med_duo"));
+                 duo.setTengoEgreso(true);
 
                 if (duo.getFecha_hora_alta_adm_duo() == null) {
                     duo.setFecha_hora_alta_adm_duo("---");
+                    duo.setTengoEgreso(false);
                 }
 
                 if (duo.getFecha_hora_alta_med_duo() == null) {
                     duo.setFecha_hora_alta_med_duo("---");
+                     duo.setTengoEgreso(false);
                 }
 
                 duo.setTiene_enfermeria(cnn.getRst().getInt("duo_tiene_enfermeria"));
@@ -3933,6 +3936,43 @@ public class NegocioQ extends Negocio {
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
         this.cnn.setSentenciaSQL("SELECT  ses_id, ses_estado, ses_usuario, \n TO_CHAR(ses_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_ingreso, TO_CHAR(ses_fecha_hora,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_hora, \n TO_CHAR(ses_fecha_hora,'DD/MM/YYYY')as ses_fecha,\n TO_CHAR(ses_fecha_hora,'HH24:MI:SS')as ses_hora,\n ses_detalle, ses_duo,\n USU.nombre_usuario,USU.apellidop_usuario,USU.apellidom_usuario\n FROM  schema_uo.terapeuta_sesion\n SES INNER JOIN schema_uo.usuario USU ON(SES.ses_usuario=USU.rut_usuario)\n WHERE  ses_duo='" + id_duo + "' and ses_estado='1'  order by SES.ses_fecha_hora desc ;");
+        this.cnn.conectar();
+
+        cSesionKine ses;
+        try {
+            for (; this.cnn.getRst().next(); lista.add(ses)) {
+                ses = new cSesionKine();
+                ses.setId_sesion_kine(this.cnn.getRst().getInt("ses_id"));
+                ses.setId_duo(this.cnn.getRst().getInt("ses_duo"));
+                ses.setFecha_ingreso_sesion(this.cnn.getRst().getString("ses_fecha_ingreso"));
+                ses.setFecha_hora(this.cnn.getRst().getString("ses_fecha_hora"));
+                ses.setFecha(this.cnn.getRst().getString("ses_fecha"));
+                ses.setHora(this.cnn.getRst().getString("ses_hora"));
+                ses.setDetalle(this.cnn.getRst().getString("ses_detalle"));
+                ses.setRut_usuario(this.cnn.getRst().getString("ses_usuario"));
+                ses.setNombre_usuario(this.cnn.getRst().getString("nombre_usuario"));
+                ses.setApellidop_usuario(this.cnn.getRst().getString("apellidop_usuario"));
+                ses.setApellidom_usuario(this.cnn.getRst().getString("apellidom_usuario"));
+                ses.setEstado_sesion(this.cnn.getRst().getInt("ses_estado"));
+                if (ses.getEstado_sesion() == 0) {
+                    ses.setEstado_desc_sesion("Anulado");
+                } else {
+                    ses.setEstado_desc_sesion("Activo");
+                }
+            }
+        } catch (SQLException var4) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
+        }
+
+        return lista;
+    }
+    
+    /*code*/
+    public ArrayList lista_sesion_social(int id_duo) {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT  ses_id, ses_estado, ses_usuario, \n TO_CHAR(ses_fecha_ingreso,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_ingreso, TO_CHAR(ses_fecha_hora,'DD/MM/YYYY HH24:MI:SS')as ses_fecha_hora, \n TO_CHAR(ses_fecha_hora,'DD/MM/YYYY')as ses_fecha,\n TO_CHAR(ses_fecha_hora,'HH24:MI:SS')as ses_hora,\n ses_detalle, ses_duo,\n USU.nombre_usuario,USU.apellidop_usuario,USU.apellidom_usuario\n FROM  schema_uo.social_sesion\n SES INNER JOIN schema_uo.usuario USU ON(SES.ses_usuario=USU.rut_usuario)\n WHERE  ses_duo='" + id_duo + "' and ses_estado='1'  order by SES.ses_fecha_hora desc ;");
         this.cnn.conectar();
 
         cSesionKine ses;

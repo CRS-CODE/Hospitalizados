@@ -51,14 +51,14 @@ public class Negocio {
         this.cnn = new Conexion();
         this.cnn.setDriver("org.postgresql.Driver");
         this.cnn.setNombreTabla(tabla);
-        this.cnn.setUser("postgres");
-        this.cnn.setPassword("crsdb2008");
-        this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5432/crsm");
+        this.cnn.setUser("hospitalizados");
+        this.cnn.setPassword("crsdb2020");
+        this.cnn.setNombreBaseDatos("jdbc:postgresql://10.8.4.163:5432/crsm");
     }
 
     public String getLocal() {
-       // String local = "http://10.8.4.163:8080/modulo_uhce/";
-       String local = "http://localhost:8080/modulo_uhce/";
+        String local = "http://10.8.4.163:8080/modulo_uhce/";
+       //String local = "http://localhost:8080/modulo_uhce/";
         return local;
     }
 
@@ -1168,6 +1168,24 @@ public class Negocio {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
         this.cnn.setSentenciaSQL("INSERT INTO   schema_uo.terapeuta_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
+
+        try {
+            this.cnn.conectar();
+            sw = true;
+        } catch (Exception var7) {
+            sw = false;
+        } finally {
+            this.cnn.cerrarConexion();
+        }
+
+        return sw;
+    }
+    
+     public boolean ingresa_sesion_social(cSesionKine ses) {
+        boolean sw = false;
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("INSERT INTO   schema_uo.social_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
 
         try {
             this.cnn.conectar();

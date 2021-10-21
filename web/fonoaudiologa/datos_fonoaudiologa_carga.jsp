@@ -20,7 +20,6 @@
 
     int id_duo = Integer.parseInt(request.getParameter("duo"));
     ArrayList lista_sesion_fono = neg.lista_sesion_fonouriologa(id_duo);
-   
 
     String titulo = " style=' background-color: #4169E1 ; color: white '  ";
     String datos = " style=' background-color: #87CEFA ; color: black '  ";
@@ -46,10 +45,10 @@
     see_pdf.add(15);
     see_pdf.add(16);
     see_pdf.add(17);
+    see_pdf.add(18);
 
     ArrayList see_registrar = new ArrayList();
 
-    
     see_registrar.add(17);
 
 
@@ -92,18 +91,16 @@
                             int contador = 0;
                             if (lista_sesion_fono.size() == 0) {
                                 out.write("<h3>Sin registro</h3>");
-                            } else {
-                                if (it_lista_sesion_kine.hasNext()) {
-                                    cSesionKine ses = (cSesionKine) it_lista_sesion_kine.next();
-                                    contador++;
+                            } else if (it_lista_sesion_kine.hasNext()) {
+                                cSesionKine ses = (cSesionKine) it_lista_sesion_kine.next();
+                                contador++;
 
-                                    out.write("<tr><td>");
-                                    out.write("<form  action='../PDF_sesion_fono' method='POST' target='_blank' > "
-                                            + "   <input type='hidden' value='" + id_duo + "' name='txt_duo'> "
-                                            + "   <button name='boton' type='submit'><img src='../Imagenes/pdf.png'> " + ses.getFecha() + "</button>  "
-                                            + " </form>  ");
-                                    out.write("</td>");
-                                }
+                                out.write("<tr><td>");
+                                out.write("<form  action='../PDF_sesion_fono' method='POST' target='_blank' > "
+                                        + "   <input type='hidden' value='" + id_duo + "' name='txt_duo'> "
+                                        + "   <button name='boton' type='submit'><img src='../Imagenes/pdf.png'> " + ses.getFecha() + "</button>  "
+                                        + " </form>  ");
+                                out.write("</td>");
                             }
 
 
@@ -112,7 +109,7 @@
             </fieldset>
 
         </td>
-        
+
     </tr>
 </table>
 
@@ -138,7 +135,7 @@
                         <input class="btn btn-primary" type="submit" value="Registrar Sesión Fonoaudiologa" name="btn_ses" />
                     </form> 
                 </TD>
-              
+
 
             </TR>
         </TABLE>
