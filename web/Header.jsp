@@ -166,14 +166,10 @@
                         <li><a href="<%=neg.getLocal()%>uh_paciente.jsp"><span>HISTORIAL</span></a>
                         </li>
 
-                        <%
-                            if (see_informe.contains(obtiene_perfil)) {
-                        %>
+                       
                         <li><a href="<%=neg.getLocal()%>uh_informe.jsp"><span>INFORMES</span></a>
                         </li>
-                        <%    }
-                        %>
-
+                       
                         <%  if (see_mantencion.contains(obtiene_perfil)) {
                         %>
                         <li><a href="#"><span>MANTENCION</span></a>

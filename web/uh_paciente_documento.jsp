@@ -26,8 +26,7 @@
 <%@page import="CapaNegocio.Negocio"%>
 <%
     int obtiene_perfil = Integer.parseInt(session1.getAttribute("usuario_perfil").toString());
-    ArrayList psicologo = new ArrayList();
-    psicologo.add(18);
+    
     String rut_paciente = request.getParameter("user");
     Negocio controller = new Negocio();
     //  out.write("Documentos del Paciente " + rut_paciente + "<br>");
@@ -87,7 +86,7 @@
             out.write("<td>Tramo " + not.getTramo() + "&nbsp;</td>");
             out.write("<td>   <font style=' font-size:   xx-small ' >" + not.getPrevision_descri().replace(" ", "<br>") + " " + not.getPrais_descri().replace(" ", "<br>") + "  </font> </td>");
 
-            if (obtiene_perfil == 10 || obtiene_perfil == 12 || obtiene_perfil == 15) {
+            
                 out.write("<td>");
 
 %>
@@ -100,15 +99,14 @@
     <p style=' font-size:   xx-small ' > Kinesiologia  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_kinesiologia?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>
     <p  style=' font-size:   xx-small ' > Terapeuta  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_terapeuta?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>
     <p  style=' font-size:   xx-small ' > Nutricionista  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_nutricionista?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>
-    <p  style=' font-size:   xx-small ' > Fonoaudiologa  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_fono?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>
-        <%  if (psicologo.contains(obtiene_perfil)) {%>
+    <p  style=' font-size:   xx-small ' > Fonoaudiologa  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_fono?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>     
     <p  style=' font-size:   xx-small ' > Psicòlogo/a  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_psicolo?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>
-        <%}%>
+     
 </form>   
 <%
 
         out.write("</td>");
-    }
+  
     int idIngreso = controller.getIdRegisterDuoIndexBarthel(not.getId_duo(), 1);
     int idEgreso = controller.getIdRegisterDuoIndexBarthel(not.getId_duo(), 2);
     out.write("<td>");
