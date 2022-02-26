@@ -19,8 +19,6 @@
 <%
     NegocioQ neg = new NegocioQ();
     String obtiene_rut = request.getParameter("user");
-    String div = request.getParameter("div");
-    String rutsin = request.getParameter("sindiv");
 
     ArrayList lista_duo = neg.lista_documentos_paciente(obtiene_rut);
     Iterator itt = lista_duo.iterator();
@@ -57,7 +55,11 @@
         cCama cam = new cCama();
         cPueblo pue = new cPueblo();
         cNacion nac = new cNacion();
-        cPaciente pac = neg.obtiene_paciente(obtiene_rut);
+        String rut = obtiene_rut;
+        String rutsinpunto = request.getParameter("rut");
+        String dv = request.getParameter("dv");
+        rut = neg.FormatearRUT(rut);
+        cPaciente pac = neg.buscarpacienteporrut(rut);
         String a_nombres = "";
         String a_apellidop = "";
         String a_apellidom = "";
@@ -129,6 +131,81 @@
 
         //  out.write(""+pac.getCodigo_fonasa()+"<br>"+pac.getTramo_prevision()+"<br>"+pac.getPrais());
 %>
+<script>
+     function validarFechaMenorActual(date) {
+        var dateInsert = new Date();
+        var fecha = date.split("/");
+        dateInsert.setFullYear(fecha[2], fecha[1] - 1, fecha[0]);
+        var today = new Date();
+        if (dateInsert >= today)
+            return false;
+        else
+            return true;
+    }
+    function valida_form() {
+        for (i = 0; i < 100; i++) {
+            if (document.getElementById('direccion').value[i] == '#')
+            {
+                alert('No use Caracteres como # u Otros!!!');
+                document.getElementById('direccion').value = document.getElementById('direccion').value.replace('#', 'N° ');
+            }
+        }
+
+        if (!validaRut12(document.getElementById('rutpaciente').value, 1))
+        {
+            document.getElementById('rutpaciente').focus();
+            return false;
+        }
+
+        if (document.getElementById('nombres').value.length == 0) {
+            alert('Debe ingresar Nombres');
+            document.getElementById('nombres').focus();
+            return false;
+        } else if (document.getElementById('apellidop').value.length == 0) {
+            alert('Debe ingresar apellido Paterno');
+            document.getElementById('apellidop').focus();
+            return false;
+        } else if (document.getElementById('fecha_nac').value.length != 10) {
+            alert('Debe ingresar Fecha Nacimiento (dd/mm/aaaa)');
+            document.getElementById('fecha_nac').focus();
+            return false;
+        } else if (!validarFechaMenorActual(document.getElementById('fecha_nac').value)) {
+            alert('Debe ingresar Una fecha valida menor.');
+            document.getElementById('fecha_nac').focus();
+            return false;
+        }else if (document.getElementById('direccion').value.length == 0) {
+            alert('Debe ingresar Dirección');
+            document.getElementById('direccion').focus();
+            return false;
+        } else if (document.getElementById('id_comuna').value == -1) {
+            alert('Debe seleccionar comuna');
+            return false;
+        } else if (document.getElementById('id_consultorio_pertenencia').value == 0) {
+            alert('Debe seleccionar Consultorio Pertenencia');
+            return false;
+        } else if (document.getElementById('id_pueblo').value == -2) {
+            alert('Debe seleccionar pueblo');
+            return false;
+        } else if (document.getElementById('prevision').value == -1) {
+            alert('Debe seleccionar previsión');
+            return false;
+        } else if (document.getElementById('fecha_duo').value.length == 0) {
+            alert('Debe seleccionar Fecha Duo');
+            return false;
+        } else if (document.getElementById('id_derivado').value == -2) {
+            alert('Debe seleccionar Derivador');
+            return false;
+        } else if (document.getElementById('id_cama').value == -2) {
+            alert('Debe seleccionar Cama');
+            return false;
+        }
+
+        if (confirm("CONFIRMACION ! Esta Seguro que desea ingresar esta Información ? \n \n ")) {
+        } else {
+            return false;
+        }
+    }
+</script>
 
 <form  id="form1" name="form1" action="<% out.write(neg.getLocal());%>ingreso_uh" onsubmit="return valida_form()" method="POST"   >
     <input type="hidden" name="modo" id="modo" value="1">
@@ -149,7 +226,7 @@
                 </td>
                 <td>F. Nacimiento:</td>
                 <td>
-                    <input name="fecha_nac" id="fecha_nac" type="text" size="20" value="<%=a_fecha_nacimiento%>"  >
+                    <input name="fecha_nac" id="fecha_nac" type="text" size="20" value="<%=a_fecha_nacimiento%>"  max="2022-01-16" required >
                     <img src="Imagenes/calender.png" id="f_trigger_a" style="cursor:pointer" onclick="document.getElementById('fecha_nac').focus()">
                 </td>
                 <td>Sexo:</td>
@@ -340,8 +417,8 @@
                 </td>
             </tr>
         </table>
-       
-      <fieldset class="buttons">
+
+        <fieldset class="buttons">
             <br><br>
             <input class="btn btn-primary" type="submit" value="GUARDAR DATOS" name="btn_guarda_datos" />
 
@@ -350,8 +427,8 @@
     </fieldset>
 
 </form>
- 
-                   
-<% 
-        }
+
+
+<%
+    }
 %>

@@ -208,6 +208,14 @@
         <servlet-name>PDF_sesion_social</servlet-name>
         <servlet-class>CapaInforme.PDF_sesion_social</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ingresar_sic</servlet-name>
+        <servlet-class>CapaServlet.ingresar_sic</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>sicPDF</servlet-name>
+        <servlet-class>CapaInforme.sicPDF</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>valida_usuario</servlet-name>
         <url-pattern>/valida_usuario</url-pattern>
@@ -415,6 +423,14 @@
     <servlet-mapping>
         <servlet-name>PDF_sesion_social</servlet-name>
         <url-pattern>/PDF_sesion_social</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ingresar_sic</servlet-name>
+        <url-pattern>/ingresar_sic</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>sicPDF</servlet-name>
+        <url-pattern>/sicPDF</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

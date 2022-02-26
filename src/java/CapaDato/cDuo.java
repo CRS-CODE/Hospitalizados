@@ -59,8 +59,8 @@ public class cDuo extends cPaciente {
     private int dif_dd_enf;
     private Date fecha;
     private boolean tengoEgreso;
-    
- 
+    private String riesgo_caida;
+    private String riesgo_up;
 
     public cDuo() {
         this.id_duo = -1;
@@ -114,6 +114,24 @@ public class cDuo extends cPaciente {
         return fecha;
     }
 
+    public String getRiesgo_caida() {
+        return riesgo_caida;
+    }
+
+    public void setRiesgo_caida(String riesgo_caida) {
+        this.riesgo_caida = riesgo_caida;
+    }
+
+    public String getRiesgo_up() {
+        return riesgo_up;
+    }
+
+    public void setRiesgo_up(String riesgo_up) {
+        this.riesgo_up = riesgo_up;
+    }
+    
+    
+
     public boolean isTengoEgreso() {
         return tengoEgreso;
     }
@@ -122,8 +140,6 @@ public class cDuo extends cPaciente {
         this.tengoEgreso = tengoEgreso;
     }
 
-    
-    
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
@@ -136,8 +152,6 @@ public class cDuo extends cPaciente {
         this.dias_reales_cama = dias_reales_cama;
     }
 
-    
-    
     /**
      * @return the id_duo
      */

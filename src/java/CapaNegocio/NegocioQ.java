@@ -14,6 +14,7 @@ import CapaDato.cComuna;
 import CapaDato.cConsultorio;
 import CapaDato.cContacto;
 import CapaDato.cDas;
+import CapaDato.cDato;
 import CapaDato.cDau;
 import CapaDato.cDiagnostico;
 import CapaDato.cDocumento;
@@ -51,6 +52,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -118,16 +120,27 @@ public class NegocioQ extends Negocio {
                 + "    COALESCE( to_char (age(CURRENT_TIMESTAMP, fecha_nacimiento),'yy'),'') as edad ,\n"
                 + "    COALESCE((SELECT BB.cat_visita_categorizacion \n"
                 + "     FROM schema_uo.visita AA  \n"
+                + "    \n"
                 + "    JOIN schema_uo.visita_categorizacion BB ON \n"
                 + "     (AA.id_visita_categorizacion=BB.id_visita_categorizacion) \n"
-                + "     where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as ultima_cat\n"
+                + "     where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as ultima_cat,\n"
+                + "     \n"
+                + "      COALESCE((SELECT descripcion \n"
+                + "     FROM schema_uo.visita AA  \n"
+                + "    join schema_uo.riesgo_upp UPP on  UPP.id_riesgo = AA.id_riesgo_upp \n"
+                + "     where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as riesgo_upp,\n"
+                + "     \n"
+                + "      COALESCE((SELECT descripcion\n"
+                + "     FROM schema_uo.visita AA    \n"
+                + "     join  schema_uo.riesgo_caida CA on CA.id_riesgo = AA.id_riesgo_caida\n"
+                + "     where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as riesgo_caida\n"
                 + "     FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama \n"
                 + "      and D.estado_duo in (2,1, 3, 21)\n"
                 + "      left JOIN schema_uo.sala   \n"
                 + "       ON (schema_uo.sala.id_sala=C.id_sala) \n"
                 + "       left JOIN agenda.paciente  \n"
                 + "       ON (agenda.paciente.rut=D.rut_paciente) \n"
-                + "       where C.id_sala in (11) and C.estado_cama=1 order by schema_uo.sala.posicion ");
+                + "       where C.id_sala in (11) and C.estado_cama=1 order by C.\"posicionCama\"  ");
         this.cnn.conectar();
         try {
             while (cnn.getRst().next()) {
@@ -142,6 +155,8 @@ public class NegocioQ extends Negocio {
                 duo.setDias_cama(cnn.getRst().getInt("dias_cama"));
                 duo.setEdad(cnn.getRst().getString("edad"));
                 duo.setCategorizacion_descripcion(cnn.getRst().getString("ultima_cat"));
+                duo.setRiesgo_caida(cnn.getRst().getString("riesgo_caida"));
+                duo.setRiesgo_up(cnn.getRst().getString("riesgo_upp"));
 
                 vi.add(duo);
             }
@@ -157,21 +172,33 @@ public class NegocioQ extends Negocio {
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
         this.cnn.setSentenciaSQL("  SELECT c.descripcion_cama, COALESCE( D.rut_paciente, '') as rut_paciente,COALESCE(lower(apellido_paterno),'') as  paciente_apellidop ,\n"
-                + "        COALESCE(lower(apellido_moderno),'')as paciente_apellidom,COALESCE( lower(nombre),'') as paciente_nombres,\n"
-                + "         COALESCE(to_char(D.fecha_duo,'DD/MM/YYYY'),'') as fecha_duo ,COALESCE(D.hora_duo,'00:00 ') as hora_duo,\n"
-                + "           EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo))+1 as dias_cama,COALESCE(to_char (age(CURRENT_TIMESTAMP, fecha_nacimiento),'yy'),'') as edad ,\n"
-                + "           COALESCE((SELECT BB.cat_visita_categorizacion\n"
-                + "           FROM schema_uo.visita AA \n"
-                + "           JOIN schema_uo.visita_categorizacion BB ON\n"
-                + "           (AA.id_visita_categorizacion=BB.id_visita_categorizacion)\n"
-                + "          where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as ultima_cat\n"
-                + "             FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama\n"
-                + "              and D.estado_duo in (2,1, 3, 21)\n"
-                + "                left JOIN schema_uo.sala  \n"
-                + "                 ON (schema_uo.sala.id_sala=C.id_sala)\n"
-                + "                left JOIN agenda.paciente \n"
-                + "                     ON (agenda.paciente.rut=D.rut_paciente)\n"
-                + "                    where C.id_sala in (12) and C.estado_cama=1 order by schema_uo.sala.posicion");
+                + "   COALESCE(lower(apellido_moderno ),'')as paciente_apellidom,COALESCE( lower(nombre),'') as paciente_nombres,\n"
+                + "   COALESCE(to_char(D.fecha_duo,'DD/MM/YYYY'),'') as fecha_duo ,COALESCE(D.hora_duo,'00:00 ') as hora_duo, \n"
+                + "    EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo))+1 as dias_cama ,\n"
+                + "    COALESCE( to_char (age(CURRENT_TIMESTAMP, fecha_nacimiento),'yy'),'') as edad ,\n"
+                + "    COALESCE((SELECT BB.cat_visita_categorizacion \n"
+                + "     FROM schema_uo.visita AA  \n"
+                + "    \n"
+                + "    JOIN schema_uo.visita_categorizacion BB ON \n"
+                + "     (AA.id_visita_categorizacion=BB.id_visita_categorizacion) \n"
+                + "     where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as ultima_cat,\n"
+                + "     \n"
+                + "      COALESCE((SELECT descripcion \n"
+                + "     FROM schema_uo.visita AA  \n"
+                + "    join schema_uo.riesgo_upp UPP on  UPP.id_riesgo = AA.id_riesgo_upp \n"
+                + "     where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as riesgo_upp,\n"
+                + "     \n"
+                + "      COALESCE((SELECT descripcion\n"
+                + "     FROM schema_uo.visita AA    \n"
+                + "     join  schema_uo.riesgo_caida CA on CA.id_riesgo = AA.id_riesgo_caida\n"
+                + "     where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as riesgo_caida\n"
+                + "     FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama \n"
+                + "      and D.estado_duo in (2,1, 3, 21)\n"
+                + "      left JOIN schema_uo.sala   \n"
+                + "       ON (schema_uo.sala.id_sala=C.id_sala) \n"
+                + "       left JOIN agenda.paciente  \n"
+                + "       ON (agenda.paciente.rut=D.rut_paciente) \n"
+                + "       where C.id_sala in (12) and C.estado_cama=1 order by C.\"posicionCama\" ");
         this.cnn.conectar();
         try {
             while (cnn.getRst().next()) {
@@ -186,6 +213,8 @@ public class NegocioQ extends Negocio {
                 duo.setDias_cama(cnn.getRst().getInt("dias_cama"));
                 duo.setEdad(cnn.getRst().getString("edad"));
                 duo.setCategorizacion_descripcion(cnn.getRst().getString("ultima_cat"));
+                duo.setRiesgo_caida(cnn.getRst().getString("riesgo_caida"));
+                duo.setRiesgo_up(cnn.getRst().getString("riesgo_upp"));
                 vi.add(duo);
             }
         } catch (SQLException ex) {
@@ -200,21 +229,33 @@ public class NegocioQ extends Negocio {
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
         this.cnn.setSentenciaSQL(" SELECT c.descripcion_cama, COALESCE( D.rut_paciente, '') as rut_paciente,COALESCE(lower(apellido_paterno),'') as  paciente_apellidop ,\n"
-                + "        COALESCE(lower(apellido_moderno),'')as paciente_apellidom,COALESCE( lower(nombre),'') as paciente_nombres,\n"
-                + "         COALESCE(to_char(D.fecha_duo,'DD/MM/YYYY'),'') as fecha_duo ,COALESCE(D.hora_duo,'00:00 ') as hora_duo,\n"
-                + "           EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo))+1 as dias_cama,COALESCE(to_char (age(CURRENT_TIMESTAMP, fecha_nacimiento),'yy'),'') as edad ,\n"
-                + "           COALESCE((SELECT BB.cat_visita_categorizacion\n"
-                + "           FROM schema_uo.visita AA \n"
-                + "           JOIN schema_uo.visita_categorizacion BB ON\n"
-                + "           (AA.id_visita_categorizacion=BB.id_visita_categorizacion)\n"
-                + "          where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as ultima_cat\n"
-                + "             FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama\n"
-                + "              and D.estado_duo in (2,1, 3, 21)\n"
-                + "                left JOIN schema_uo.sala  \n"
-                + "                 ON (schema_uo.sala.id_sala=C.id_sala)\n"
-                + "                left JOIN agenda.paciente \n"
-                + "                     ON (agenda.paciente.rut=D.rut_paciente)\n"
-                + "                    where C.id_sala in (25) and C.estado_cama=1 order by C.\"posicionCama\" asc  ");
+                + "   COALESCE(lower(apellido_moderno ),'')as paciente_apellidom,COALESCE( lower(nombre),'') as paciente_nombres,\n"
+                + "   COALESCE(to_char(D.fecha_duo,'DD/MM/YYYY'),'') as fecha_duo ,COALESCE(D.hora_duo,'00:00 ') as hora_duo, \n"
+                + "    EXTRACT(DAY FROM (CURRENT_DATE+CURRENT_TIME)-(d.fecha_duo+d.hora_duo))+1 as dias_cama ,\n"
+                + "    COALESCE( to_char (age(CURRENT_TIMESTAMP, fecha_nacimiento),'yy'),'') as edad ,\n"
+                + "    COALESCE((SELECT BB.cat_visita_categorizacion \n"
+                + "     FROM schema_uo.visita AA  \n"
+                + "    \n"
+                + "    JOIN schema_uo.visita_categorizacion BB ON \n"
+                + "     (AA.id_visita_categorizacion=BB.id_visita_categorizacion) \n"
+                + "     where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as ultima_cat,\n"
+                + "     \n"
+                + "      COALESCE((SELECT descripcion \n"
+                + "     FROM schema_uo.visita AA  \n"
+                + "    join schema_uo.riesgo_upp UPP on  UPP.id_riesgo = AA.id_riesgo_upp \n"
+                + "     where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as riesgo_upp,\n"
+                + "     \n"
+                + "      COALESCE((SELECT descripcion\n"
+                + "     FROM schema_uo.visita AA    \n"
+                + "     join  schema_uo.riesgo_caida CA on CA.id_riesgo = AA.id_riesgo_caida\n"
+                + "     where id_duo=D.id_duo order by AA.fecha_hora_visita DESC limit 1),'') as riesgo_caida\n"
+                + "     FROM schema_uo.cama C left JOIN schema_uo.duo D ON D.id_cama = C.id_cama \n"
+                + "      and D.estado_duo in (2,1, 3, 21)\n"
+                + "      left JOIN schema_uo.sala   \n"
+                + "       ON (schema_uo.sala.id_sala=C.id_sala) \n"
+                + "       left JOIN agenda.paciente  \n"
+                + "       ON (agenda.paciente.rut=D.rut_paciente) \n"
+                + "       where C.id_sala in (25) and C.estado_cama=1 order by C.\"posicionCama\"  ");
         this.cnn.conectar();
         try {
             while (cnn.getRst().next()) {
@@ -229,6 +270,8 @@ public class NegocioQ extends Negocio {
                 duo.setDias_cama(cnn.getRst().getInt("dias_cama"));
                 duo.setEdad(cnn.getRst().getString("edad"));
                 duo.setCategorizacion_descripcion(cnn.getRst().getString("ultima_cat"));
+                duo.setRiesgo_caida(cnn.getRst().getString("riesgo_caida"));
+                duo.setRiesgo_up(cnn.getRst().getString("riesgo_upp"));
 
                 vi.add(duo);
             }
@@ -1025,7 +1068,7 @@ public class NegocioQ extends Negocio {
 
                 duo.setFecha_hora_alta_adm_duo(cnn.getRst().getString("fecha_hora_alta_adm_duo"));
                 duo.setFecha_hora_alta_med_duo(cnn.getRst().getString("fecha_hora_alta_med_duo"));
-                 duo.setTengoEgreso(true);
+                duo.setTengoEgreso(true);
 
                 if (duo.getFecha_hora_alta_adm_duo() == null) {
                     duo.setFecha_hora_alta_adm_duo("---");
@@ -1034,7 +1077,7 @@ public class NegocioQ extends Negocio {
 
                 if (duo.getFecha_hora_alta_med_duo() == null) {
                     duo.setFecha_hora_alta_med_duo("---");
-                     duo.setTengoEgreso(false);
+                    duo.setTengoEgreso(false);
                 }
 
                 duo.setTiene_enfermeria(cnn.getRst().getInt("duo_tiene_enfermeria"));
@@ -2247,6 +2290,77 @@ public class NegocioQ extends Negocio {
         this.cnn.cerrarConexion();
 
         return recetas;
+    }
+
+    /*new codigo*/
+    public List<cDato> getRiesgoUpp() {
+        List<cDato> listRiesgo = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT id_riesgo, descripcion, status\n"
+                + "  FROM schema_uo.riesgo_upp where status = 1 order by descripcion");
+        this.cnn.conectar();
+        try {
+
+            while (cnn.getRst().next()) {
+                cDato dato = new cDato();
+                dato.setId(cnn.getRst().getInt("id_riesgo"));
+                dato.setDescription(cnn.getRst().getString("descripcion"));
+                listRiesgo.add(dato);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.cnn.cerrarConexion();
+
+        return listRiesgo;
+    }
+
+    public List<cDato> getRiesgoCaida() {
+        List<cDato> listRiesgo = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT id_riesgo, descripcion, status\n"
+                + "  FROM schema_uo.riesgo_caida where status = 1 order by descripcion;");
+        this.cnn.conectar();
+        try {
+
+            while (cnn.getRst().next()) {
+                cDato dato = new cDato();
+                dato.setId(cnn.getRst().getInt("id_riesgo"));
+                dato.setDescription(cnn.getRst().getString("descripcion"));
+                listRiesgo.add(dato);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.cnn.cerrarConexion();
+
+        return listRiesgo;
+    }
+
+    public String getAltaAdministrativa(int idDuo) {
+        String epi = " ";
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT "
+                + "  obs_alta_adm "
+                + "FROM \n"
+                + "  schema_uo.alta_adm where id_duo = " + idDuo + " ;");
+        this.cnn.conectar();
+        try {
+
+            while (cnn.getRst().next()) {
+
+                epi = cnn.getRst().getString("obs_alta_adm");
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.cnn.cerrarConexion();
+
+        return (epi);
     }
 
     public cEpicrisis getEpicrisis(int idDuo) {
@@ -3966,7 +4080,7 @@ public class NegocioQ extends Negocio {
 
         return lista;
     }
-    
+
     /*code*/
     public ArrayList lista_sesion_social(int id_duo) {
         ArrayList lista = new ArrayList();

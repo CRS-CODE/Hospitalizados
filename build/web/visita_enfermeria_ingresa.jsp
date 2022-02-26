@@ -35,7 +35,8 @@
     String fecha_hora_at_dma = request.getParameter("txt_fecha");
     int hora = Integer.parseInt(request.getParameter("txt_hora"));
     int minuto = Integer.parseInt(request.getParameter("txt_minuto"));
-
+    int riesgo_upp =Integer.parseInt(request.getParameter("riesgo_upp"));
+    int riesgo_caida =Integer.parseInt(request.getParameter("riesgo_caida"));
     Date fecha_del_dia = new Date();
     Locale hora_local = new Locale("es", "CHL");
     Locale currentLocale = new Locale("es", "CL");
@@ -129,7 +130,7 @@
                 // out.write("paso al ingersa " + hora + " " + minuto + "  || " + hora1);
 
                 int obtiene_id_cat = neg.ingresa_categorizacion_enfermeria(d1, d2, d3, d4, d5, d6, r1, r2, r3, r4, r5, r6, r7, r8, cat.trim());
-                grabo = neg.ingresa_visita_enfermeria(observaciones, fecha1, hora1, rut_usuario, id_cama, obtiene_id_cat, 2, obtiene_duo);
+                grabo = neg.ingresa_visita_enfermeria(observaciones, fecha1, hora1, rut_usuario, id_cama, obtiene_id_cat, 2, obtiene_duo, riesgo_caida, riesgo_upp);
 
                 if (grabo > 0) {
                     out.print("<h2>La Visita Correspondiente al dia de Hoy Se ha grabado Satisfactoriamente!!</h2><br>");

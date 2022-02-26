@@ -4,6 +4,7 @@
     Author     : Informatica
 --%>
 
+<%@page import="CapaDato.cDato"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="CapaDato.cDuo"%>
 <%@page import="java.text.DateFormat"%>
@@ -121,6 +122,39 @@
             <textarea name="txa_detalle" id="txa_detalle" cols="40" rows="5"  ></textarea>
         </div>
     </div>
+    <div class="fila">
+        <div class="col_titulo" style="" ><b>Riesgo UPP:</b></div> 
+    </div>
+      <div>
+        <select name="riesgo_upp" id="riesgo_upp"   >
+            <option value="-1">Seleccione...</option>
+            <%    //
+               for (cDato dato : neg.getRiesgoUpp()) {
+
+                    out.write("<option value='" + dato.getId() + "' >" + dato.getDescription() + "</option>");
+
+                }
+            %>
+
+        </select>
+    </div>
+
+    <div class="fila">
+        <div class="col_titulo" style="" ><b>Riesgo de Caida:</b></div> 
+    </div>
+    <div>
+        <select name="riesgo_caida" id="riesgo_caida"   >
+            <option value="-1">Seleccione...</option>
+            <%    //
+               for (cDato dato : neg.getRiesgoCaida()) {
+
+                    out.write("<option value='" + dato.getId() + "' >" + dato.getDescription() + "</option>");
+
+                }
+            %>
+
+        </select>
+    </div>
 
     <div class="fila">
         <div class="col_titulo" style="" ><b>Ingrese fecha:</b></div>
@@ -130,14 +164,13 @@
                 String estado_fecha = "  readonly='readonly'  ";
                 if (obtiene_perfil == 12 || obtiene_perfil == 10) {
                     estado_fecha = "";
-                  %>
-                  <script>
-                        $(function() {
-    $( "#txt_fecha" ).datepicker();
-  });
-                  </script>
-                  <%
-                    
+            %>
+            <script>
+                $(function () {
+                    $("#txt_fecha").datepicker();
+                });
+            </script>
+            <%
                 }
             %>
             <input type="text" name="txt_fecha" id="txt_fecha" value="<%=formateaDMY.format(fecha_del_dia)%>"  <%=estado_fecha%>   >  

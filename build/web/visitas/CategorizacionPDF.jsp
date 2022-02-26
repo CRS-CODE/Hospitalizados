@@ -184,14 +184,30 @@
     tabla_encabezado.getDefaultCell().setPadding(2);
     tabla_encabezado.getDefaultCell().setColspan(1);
     tabla_encabezado.addCell(new Phrase(SPACE_NORMAL, duo.getHora_duo(), TEXT_NORMAL));
+    
+     tabla_encabezado.getDefaultCell().setVerticalAlignment(10);
+    tabla_encabezado.getDefaultCell().setHorizontalAlignment(5);
+    tabla_encabezado.getDefaultCell().setPadding(2);
+    tabla_encabezado.getDefaultCell().setColspan(8);
+    tabla_encabezado.addCell(new Phrase(SPACE_NORMAL, "OBS: " + hv.getObs_visita(), TEXT_NORMAL));
+    
+    
+    tabla_encabezado.getDefaultCell().setMinimumHeight(10);
+    tabla_encabezado.getDefaultCell().setColspan(5);
+    tabla_encabezado.getDefaultCell().setColspan(8);
+    tabla_encabezado.addCell(new Phrase(SPACE_NORMAL, "Riesgo Caida: " + hv.getDescription_caida()+ "   " +  " Riesgo UPP: " + hv.getDescription_upp(), TEXT_NORMAL));
+
+    
+    /**/
+    
+    
+    /**/
 
     tabla_encabezado.getDefaultCell().setBorder(0);
     tabla_encabezado.getDefaultCell().setMinimumHeight(70.99f);
     tabla_encabezado.getDefaultCell().setPadding(2);
     tabla_encabezado.getDefaultCell().setColspan(5);
-    tabla_encabezado.getDefaultCell().setVerticalAlignment(10);
-    tabla_encabezado.getDefaultCell().setHorizontalAlignment(50);
-    tabla_encabezado.addCell(new Phrase(SPACE_NORMAL, "OBS: " + hv.getObs_visita(), TEXT_NORMAL));
+   
 
     tabla_encabezado.getDefaultCell().setMinimumHeight(10);
     tabla_encabezado.getDefaultCell().setColspan(5);

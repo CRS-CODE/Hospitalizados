@@ -127,6 +127,7 @@
                     <textarea cols="45" rows="6" name="observaciones" id="observaciones"></textarea>
                 </td>
             </tr>
+           
             <tr>
 
             </tr>

@@ -39,8 +39,8 @@ DHTML_modalMessage = function()
 	this.url = '';							// Default url is blank
 	this.htmlOfModalMessage = '';			// Default message is blank
 	this.layoutCss = 'modal-message.css';	// Default CSS file
-	this.height = 200;						// Default height of modal message
-	this.width = 400;						// Default width of modal message
+	/*this.height = 200;						// Default height of modal message
+	this.width = 400;	*/					// Default width of modal message
 	this.cssClassOfMessageBox = false;		// Default alternative css class for the message box
 	this.shadowDivVisible = true;			// Shadow div is visible by default
 	this.shadowOffset = 5;					// Default shadow offset.
@@ -292,10 +292,10 @@ DHTML_modalMessage.prototype = {
      *
      * @private	
      */	
-    __resizeDivs : function()
+   __resizeDivs : function()
     {
     	
-    	var topOffset = Math.max(document.body.scrollTop,document.documentElement.scrollTop);
+    	var topOffset = 0;
 
 		if(this.cssClassOfMessageBox)
 			this.divs_content.className=this.cssClassOfMessageBox;
@@ -305,11 +305,11 @@ DHTML_modalMessage.prototype = {
     	if(!this.divs_transparentDiv)return;
     	
     	// Preserve scroll position
-    	var st = Math.max(document.body.scrollTop,document.documentElement.scrollTop);
-    	var sl = Math.max(document.body.scrollLeft,document.documentElement.scrollLeft);
+    	var st =0;
+    	var sl = 0;
     	
     	window.scrollTo(sl,st);
-    	setTimeout('window.scrollTo(' + sl + ',' + st + ');',10);
+    	setTimeout('window.scrollTo(' + sl + ',' + st + ');',1);
 
     	this.__repositionTransparentDiv();
     	
@@ -335,7 +335,7 @@ DHTML_modalMessage.prototype = {
     	
 		
     	this.divs_content.style.left = Math.ceil((bodyWidth - tmpWidth) / 2) + 'px';;
-    	this.divs_content.style.top = (Math.ceil((bodyHeight - tmpHeight) / 2) +  topOffset) + 'px';
+    	this.divs_content.style.top = '5px';
     	
  		if(this.MSIE){
  			this.iframe.style.left = this.divs_content.style.left;

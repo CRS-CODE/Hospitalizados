@@ -229,7 +229,7 @@
              border-left: #6699CC 1px solid; border-bottom: #6699CC 1px solid;
              scrollbar-arrow-color : #999999; scrollbar-face-color : #666666;
              scrollbar-track-color :#3333333 ;
-             height:370px; left: 100; top: 10; width: 95%">
+             left: 100; top: 10; width: 95%">
             <!-- Este DIV contendra la respuesta enviada por el Servlet -->
             <fieldset>
                 <legend>INGRESO MEDICO</legend>

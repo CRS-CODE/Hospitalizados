@@ -93,8 +93,6 @@
     see_cambio_cama.add(10);
     see_cambio_cama.add(12);
 
-   
-
 
 %>
 <script>
@@ -268,7 +266,7 @@
                             </td>
                             <td valign="top" ><<-Ir Fonoaudiologa</td>
                         </tr>
-                        
+
                         <tr>
                             <td align='right' >
                                 <%                                    out.write("<form name='form_sesion_psicologo" + duo.getId_duo() + "' id='form_sesion_psicologo" + duo.getId_duo() + "' action='" + neg.getLocal() + "psicologo/datos_psicologo.jsp' method='POST' >");
@@ -280,7 +278,7 @@
 
                             </td>
                             <td valign="top"><<-Ir Psicologia</td>
-                              <td align='right' >
+                            <td align='right' >
                                 <%                                    out.write("<form name='form_sesion_social" + duo.getId_duo() + "' id='form_sesion_social" + duo.getId_duo() + "' action='" + neg.getLocal() + "social/datos_social.jsp' method='POST' >");
                                     out.write("<input type='hidden' name='txt_duo' value='" + duo.getId_duo() + "' >");
                                     out.write(" <img title='Visita Terapeuta Social' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_sesion_social" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
@@ -292,7 +290,7 @@
                             <td valign="top"><<-Ir Trabajadora Social</td>
 
                         </tr>
-                      
+
 
                     </table>
                 </td>
@@ -364,6 +362,16 @@
                             out.write("Duo estado:" + duo.getEstado_duo_descripcion());
                         }
                     %>
+                    <% if (see_alta_medica.contains(obtiene_perfil)) {%>
+                    <form action="<%=neg.getLocal()%>GenerarInterconsulta.jsp" name="form_alta_adm" method="POST"  >
+                        <input type="hidden" name="txt_manda_duo" value="<%=duo.getId_duo()%>"  >
+                        <input type="hidden" name="txt_modo" value="3"  >
+                        <input type="submit" name="btn_alta_adm" class="button" value="GENERAR INTERCONSULTA"  style="width: 200px"  />
+                        &nbsp;
+                    </form>
+                    <% 
+                        }%>
+                        <br>   
 
                     <a class="button" href="../uh_visita.jsp">  VOLVER </a> 
 

@@ -128,7 +128,7 @@ public class ingresa_visita extends HttpServlet {
                 out.print("<h1>El campo categoria presentaba un problema antes de guardar la visita (estaba vacio o contenia más de 2 caracteres);<br> Intentelo Nuevamente</h1><br>");
             } else {
                 int obtiene_id_cat = neg.ingresa_categorizacion_enfermeria(d1, d2, d3, d4, d5, d6, r1, r2, r3, r4, r5, r6, r7, r8, cat.trim());
-                int grabo = neg.ingresa_visita_enfermeria(observaciones, fecha1, hora1, rut_usuario, id_cama, obtiene_id_cat, 2, id_duo);
+                int grabo = neg.ingresa_visita_enfermeria(observaciones, fecha1, hora1, rut_usuario, id_cama, obtiene_id_cat, 2, id_duo,-1,-1);
                 if (grabo > 0) {
                     out.print("<h2>La Visita Correspondiente al dia de Hoy Se ha grabado Satisfactoriamente!!</h2><br>");
                 } else {

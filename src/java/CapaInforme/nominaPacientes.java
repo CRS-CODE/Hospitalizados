@@ -226,6 +226,16 @@ public class nominaPacientes extends HttpServlet {
             cell.setCellValue("Categorizacion");
             cell.setCellStyle(style_Destacado);
             cell = row.createCell((short) 10); //crea la celda tipo
+            
+            cell = row.createCell((short) 10); //crea la celda tipo
+            cell.setCellValue("Riesgo Caida");
+            cell.setCellStyle(style_Destacado);
+            cell = row.createCell((short) 11); //crea la celda tipo
+            
+            cell = row.createCell((short) 11); //crea la celda tipo
+            cell.setCellValue("Riesgo UPP");
+            cell.setCellStyle(style_Destacado);
+            cell = row.createCell((short) 12); //crea la celda tipo
 
             control_fila++;
 
@@ -239,7 +249,7 @@ public class nominaPacientes extends HttpServlet {
                     control_fila, //first row (0-based)
                     control_fila, //last row  (0-based)
                     1, //first column (0-based)
-                    9 //last column  (0-based)
+                    11 //last column  (0-based)
             ));
 
             for (cDuo duo : neg.listadelDiasector1()) {
@@ -295,6 +305,14 @@ public class nominaPacientes extends HttpServlet {
                 cell = row.createCell((short) 9); //crea la celda tipo
                 cell.setCellValue(duo.getCategorizacion_descripcion());
                 cell.setCellStyle(style_Normal);
+                
+                cell = row.createCell((short) 10); //crea la celda tipo
+                cell.setCellValue(duo.getRiesgo_caida());
+                cell.setCellStyle(style_Normal);
+                
+                cell = row.createCell((short) 11); //crea la celda tipo
+                cell.setCellValue(duo.getRiesgo_up());
+                cell.setCellStyle(style_Normal);
 
             }
             control_fila++;
@@ -307,7 +325,7 @@ public class nominaPacientes extends HttpServlet {
                     control_fila, //first row (0-based)
                     control_fila, //last row  (0-based)
                     1, //first column (0-based)
-                    9 //last column  (0-based)
+                    11 //last column  (0-based)
             ));
 
             for (cDuo duo : neg.listadelDiasector2()) {
@@ -364,6 +382,14 @@ public class nominaPacientes extends HttpServlet {
                 cell = row.createCell((short) 9); //crea la celda tipo
                 cell.setCellValue(duo.getCategorizacion_descripcion());
                 cell.setCellStyle(style_Normal);
+                
+                 cell = row.createCell((short) 10); //crea la celda tipo
+                cell.setCellValue(duo.getRiesgo_caida());
+                cell.setCellStyle(style_Normal);
+                
+                cell = row.createCell((short) 11); //crea la celda tipo
+                cell.setCellValue(duo.getRiesgo_up());
+                cell.setCellStyle(style_Normal);
 
             }
             control_fila++;
@@ -378,7 +404,7 @@ public class nominaPacientes extends HttpServlet {
                     control_fila, //first row (0-based)
                     control_fila, //last row  (0-based)
                     1, //first column (0-based)
-                    9 //last column  (0-based)
+                    11 //last column  (0-based)
             ));
 
             for (cDuo duo : neg.listadelDiasector3()) {
@@ -433,6 +459,14 @@ public class nominaPacientes extends HttpServlet {
 
                 cell = row.createCell((short) 9); //crea la celda tipo
                 cell.setCellValue(duo.getCategorizacion_descripcion());
+                cell.setCellStyle(style_Normal);
+                
+                 cell = row.createCell((short) 10); //crea la celda tipo
+                cell.setCellValue(duo.getRiesgo_caida());
+                cell.setCellStyle(style_Normal);
+                
+                cell = row.createCell((short) 11); //crea la celda tipo
+                cell.setCellValue(duo.getRiesgo_up());
                 cell.setCellStyle(style_Normal);
 
             }

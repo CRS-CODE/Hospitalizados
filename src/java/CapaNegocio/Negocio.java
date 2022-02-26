@@ -24,6 +24,7 @@ import CapaDato.cEvaTraumatologia;
 import CapaDato.cExamen;
 import CapaDato.cHistorial_Consultorio;
 import CapaDato.cHito;
+import CapaDato.cInterconsulta;
 import CapaDato.cPaciente;
 import CapaDato.cReceta;
 import CapaDato.cRegistroSeguimiento;
@@ -32,17 +33,30 @@ import CapaDato.cSesionKine;
 import CapaDato.cUsuario;
 import CapaDato.cVisita;
 import java.net.UnknownHostException;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ws.cl.gov.fonasa.certificadorprevisional.CargasTO;
+import ws.cl.gov.fonasa.certificadorprevisional.CertificadorPrevisionalSoapProxy;
+import ws.cl.gov.fonasa.certificadorprevisional.QueryCertificadorPrevisionalTO;
+import ws.cl.gov.fonasa.certificadorprevisional.QueryTO;
+import ws.cl.gov.fonasa.certificadorprevisional.ReplyCertificadorPrevisionalTO;
 
 public class Negocio {
 
     public Conexion cnn;
+    public static int canal = 1;
+    public static int tipoEmisor = 1;
+    public static int tipoUsuario = 1;
+    public static int entidad = 65061030;
+    public static int claveEntidad = 6506;
 
     public Negocio() {
     }
@@ -51,25 +65,329 @@ public class Negocio {
         this.cnn = new Conexion();
         this.cnn.setDriver("org.postgresql.Driver");
         this.cnn.setNombreTabla(tabla);
-        this.cnn.setUser("hospitalizados");
+        this.cnn.setUser("postgres");
         this.cnn.setPassword("crsdb2020");
-        this.cnn.setNombreBaseDatos("jdbc:postgresql://10.8.4.163:5432/crsm");
+        this.cnn.setNombreBaseDatos("jdbc:postgresql://10.8.4.163:5432/crsh");
     }
 
     public String getLocal() {
-        String local = "http://10.8.4.163:8080/modulo_uhce/";
-       //String local = "http://localhost:8080/modulo_uhce/";
+        String local = "http://10.8.4.163:8080/modulo_uhceTest/";
+        // String local = "http://localhost:8080/modulo_uhce/";
         return local;
     }
+
+    /*conexion fonasa*/
+ /*colocar formato a rut*/
+    public String FormatearRUT(String rut) {
+
+        int cont = 0;
+        String format;
+        rut = rut.replace(".", "");
+        rut = rut.replace("-", "");
+        format = "-" + rut.substring(rut.length() - 1);
+        for (int i = rut.length() - 2; i >= 0; i--) {
+            format = rut.substring(i, i + 1) + format;
+            cont++;
+            if (cont == 3 && i != 0) {
+                format = "." + format;
+                cont = 0;
+            }
+        }
+        return format;
+    }
+
+    /*new code*/
+    public Date DeStringADate(String fecha) throws java.text.ParseException {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        String strFecha = fecha;
+        Date fechaDate = null;
+        fechaDate = formato.parse(strFecha);
+        return fechaDate;
+    }
+
+    /*buscar paciente por la rut*/
+    public cPaciente buscarpacienteporrut(String rut) throws ParseException {
+        cPaciente p = new cPaciente();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT  to_char(fecha_nacimiento,'DD/MM/YYYY') as nacimiento ,\n"
+                + " case when  provision= 1 then 'FONASA'||' '|| t.nombre  else case when provision = 2 then 'Isapre' else case when provision = 3 then 'Prais' else 'Sin Prevision' end  end end as prevension ,\n"
+                + "  rut,\n"
+                + "  p.nombre,\n"
+                + "  apellido_paterno,\n"
+                + "  apellido_moderno,\n"
+                + "  fecha_nacimiento,\n"
+                + "  COALESCE(direccion,'') as direccion,\n"
+                + "  COALESCE (email,'') as email,\n"
+                + "  COALESCE (contacto1,'') as contacto1,\n"
+                + "  COALESCE(contacto2,'') as contacto2 ,\n"
+                + "  estatus,\n"
+                + "  genero,\n"
+                + "  fecha_registro,\n"
+                + "  id_comuna,\n"
+                + "  provision,\n"
+                + "  tramo,\n"
+                + "  procedencia,\n"
+                + "  ipusuario,\n"
+                + "  usuario,\n"
+                + "  id_region,"
+                + "  COALESCE(otra_direccion,'') as otra_direccion ,\n"
+                + "  id_provincia, id_nacionalidad, COALESCE(nombresocial,' ') AS nombresocial FROM  agenda.paciente p\n"
+                + "  inner join agenda.tramo t on t.id = p.tramo \n"
+                + "  where upper(rut)=upper('" + rut + "') and estatus = 1;  ");
+        this.cnn.conectar();
+
+        try {
+            if (this.cnn.getRst().next()) {
+                p.setRut_paciente(this.cnn.getRst().getString("rut"));
+                p.setNombres_paciente(this.cnn.getRst().getString("nombre"));
+                p.setApellidop_paciente(this.cnn.getRst().getString("apellido_paterno"));
+                p.setApellidom_paciente(this.cnn.getRst().getString("apellido_moderno"));
+                String fecha = this.cnn.getRst().getString("nacimiento");
+                Date fecha1 = DeStringADate(fecha);
+                p.setFechanacimiento(fecha1);
+                p.setDireccion(this.cnn.getRst().getString("direccion"));
+                p.setMail(this.cnn.getRst().getString("email"));
+                p.setTelefono1(this.cnn.getRst().getString("contacto1"));
+                p.setTelefono2(this.cnn.getRst().getString("contacto2"));
+                p.setEstado_usuario(this.cnn.getRst().getInt("estatus"));
+                p.setSexo(this.cnn.getRst().getInt("genero"));
+                p.setFechacreacion(this.cnn.getRst().getDate("fecha_registro"));
+                p.setPrevision_verificada(this.cnn.getRst().getInt("provision"));
+                p.setTramo(this.cnn.getRst().getInt("tramo"));
+                p.setProcedencia(this.cnn.getRst().getInt("procedencia"));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            this.cnn.cerrarConexion();
+        }
+        return p;
+    }
+
+    public cPaciente consumirWsFonasa(int rut, String dgv, String rutcompleto) throws ParseException {
+       cPaciente p = new cPaciente();
+        try{
+        CertificadorPrevisionalSoapProxy cf = new CertificadorPrevisionalSoapProxy();
+        QueryCertificadorPrevisionalTO query = new QueryCertificadorPrevisionalTO();
+        query.setCanal(canal);
+        query.setClaveEntidad(claveEntidad);
+        query.setDgvBeneficiario(dgv);
+        query.setEntidad(entidad);
+        query.setRutBeneficiario(rut);
+        QueryTO qto = new QueryTO();
+        qto.setTipoEmisor(tipoEmisor);
+        qto.setTipoUsuario(tipoUsuario);
+        query.setQueryTO(qto);
+        ReplyCertificadorPrevisionalTO respuesta = new ReplyCertificadorPrevisionalTO();
+        try {
+            try {
+                respuesta = cf.getCertificadoPrevisional(query);
+
+            } catch (RemoteException e) {
+                respuesta = null;
+                e.printStackTrace();
+                boolean exi = buscarpaciente(rutcompleto);
+                if (exi == true) {
+                    p = buscarpacienteporrut(rutcompleto);
+
+                }
+            }
+            if (respuesta.getReplyTO() != null) {
+                String error = respuesta.getReplyTO().getErrorM();
+                if (error.equals("")) {
+                    int estado = respuesta.getReplyTO().getEstado();
+                    String fecha = respuesta.getReplyTO().getFecha();
+                    int ruttr = respuesta.getAfiliadoTO().getRutafili();
+                    int rutb = respuesta.getBeneficiarioTO().getRutbenef();
+                    int busco = rut;
+                    CargasTO[] losValores = new CargasTO[respuesta.getNumeroCarga()];
+                    String ap1 = "";
+                    String ap2 = "";
+                    String nombre = "";
+                    String tramo = "";
+                    String fechanacimiento = "";
+                    String genero = "";
+
+                    String isapre = respuesta.getDesIsapre();
+                    String codigoisapre = respuesta.getCdgIsapre();
+
+                    String codigobloqueo = respuesta.getCodcybl();
+                    String descripcionbloqueo = respuesta.getCoddesc();
+
+                    String descripprais = respuesta.getDescprais();
+                    String codigoprais = respuesta.getCodigoprais();
+                    int previcion = 0;
+
+                    String descrip = respuesta.getBeneficiarioTO().getDesNacionalidad();
+                    String telefono = respuesta.getBeneficiarioTO().getTelefono();
+
+                    String direccion = respuesta.getBeneficiarioTO().getDireccion();
+                    int rutc = 0;
+                    respuesta.getListCargas();
+                    if (busco == ruttr) {
+
+                        ap1 = respuesta.getAfiliadoTO().getApell1();
+                        ap2 = respuesta.getAfiliadoTO().getApell2();
+                        nombre = respuesta.getAfiliadoTO().getNombres();
+                        tramo = respuesta.getAfiliadoTO().getTramo();
+                        fechanacimiento = respuesta.getAfiliadoTO().getFecnac();
+                        genero = respuesta.getAfiliadoTO().getGenero();
+
+                    } else if (busco == rutb) {
+
+                        ap1 = respuesta.getBeneficiarioTO().getApell1();
+                        ap2 = respuesta.getBeneficiarioTO().getApell2();
+                        nombre = respuesta.getBeneficiarioTO().getNombres();
+                        tramo = respuesta.getAfiliadoTO().getTramo();
+                        genero = respuesta.getBeneficiarioTO().getGenero();
+                        fechanacimiento = respuesta.getBeneficiarioTO().getFechaNacimiento();
+                    } else {
+
+                        for (int i = 0; i < losValores.length; i++) {
+                            rutc = losValores[i].getRutcarga();
+                            if (busco == rutc) {
+                                ap1 = losValores[i].getApell1();
+                                ap2 = losValores[i].getApell2();
+                                nombre = losValores[i].getNombres();
+                                tramo = respuesta.getAfiliadoTO().getTramo();
+                                genero = losValores[i].getGenero();
+                                fechanacimiento = losValores[i].getFecnac();
+                            }
+                        }
+                    }
+
+                    boolean vacio2 = false;
+                    for (int k = 0; k < codigoprais.length(); k++) {
+                        if (codigoprais.charAt(k) == '1') {
+                            vacio2 = true;
+                        }
+                    }
+
+                    boolean vacio = false;
+                    for (int i = 0; i < tramo.length(); i++) {
+                        if (tramo.charAt(i) != ' ') {
+                            vacio = true;
+                        }
+                    }
+                    boolean vacio1 = false;
+                    for (int k = 0; k < codigoisapre.length(); k++) {
+                        if (codigoisapre.charAt(k) != ' ') {
+                            vacio1 = true;
+                        }
+                    }
+
+                    if (vacio2 == true) {
+                        previcion = 3;
+
+                    } else if (vacio1 == true) {
+                        previcion = 2;
+
+                    } else if (vacio == true) {
+                        previcion = 1;
+
+                    } else {
+                        previcion = 4;
+
+                    }
+
+                    if (error.equalsIgnoreCase("")) {
+                        String FEC_NAC_ano = fechanacimiento.substring(0, 4);
+                        String FEC_NAC_mes = fechanacimiento.substring(5, 7);
+                        String FEC_NAC_dia = fechanacimiento.substring(8, 10);
+                        fecha = FEC_NAC_dia + "/" + FEC_NAC_mes + "/" + FEC_NAC_ano;
+                        Date fecha1 = new Date(Integer.parseInt(fecha.substring(6, 10)) - 1900, Integer.parseInt(fecha.substring(3, 5)) - 1, Integer.parseInt(fecha.substring(0, 2)), 0, 0, 0);
+                        p.setRut_paciente(rutcompleto);
+                        p.setNombres_paciente(nombre);
+                        p.setApellidop_paciente(ap1);
+                        p.setApellidom_paciente(ap2);
+                        p.setFechanacimiento(fecha1);
+                        p.setPrevision_verificada(previcion);
+                        int t = 0;
+                        if (previcion == 1) {
+                            if (tramo.equalsIgnoreCase(tramo)) {
+                                if (tramo.equalsIgnoreCase("A")) {
+                                    t = 1;
+                                } else if (tramo.equalsIgnoreCase("B")) {
+                                    t = 2;
+                                } else if (tramo.equalsIgnoreCase("C")) {
+                                    t = 3;
+                                } else if (tramo.equalsIgnoreCase("D")) {
+                                    t = 4;
+                                }
+                            }
+                        } else {
+                            t = 0;
+                        }
+                        int generoe = 0;
+                        if (genero.equalsIgnoreCase("F")) {
+                            generoe = 1;
+                        } else {
+                            generoe = 2;
+                        }
+                        p.setTramo(t);
+                        p.setSexo(generoe);
+                        p.setTelefono1(telefono);
+                        p.setEstado_usuario(2);
+                        boolean exi = buscarpaciente(rutcompleto);
+                        cPaciente otro = new cPaciente();
+                        if (exi == true) {
+                            otro = buscarpacienteporrut(rutcompleto);
+                            p.setDireccion(otro.getDireccion());
+                            p.setTelefono1(otro.getTelefono1());
+                            p.setTelefono2(otro.getTelefono2());
+                            p.setProcedencia(otro.getProcedencia());
+
+                            p.setMail(otro.getMail());
+
+                        } else {
+                            p.setDireccion("");
+                            p.setTelefono1("");
+                            p.setTelefono2("");
+                            p.setMail("");
+                            p.setNacion(213);
+                        }
+
+                    }
+                }
+            } else {
+                boolean exi = buscarpaciente(rutcompleto);
+                if (exi == true) {
+                    p = buscarpacienteporrut(rutcompleto);
+
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            boolean exi = buscarpaciente(rutcompleto);
+            if (exi == true) {
+                p = buscarpacienteporrut(rutcompleto);
+
+            }
+        }
+        return p;
+       } catch(Exception e){
+           e.printStackTrace();
+            boolean exi = buscarpaciente(rutcompleto);
+            if (exi == true) {
+                p = buscarpacienteporrut(rutcompleto);
+
+            } 
+       }
+       return p;
+    }
+
 
     /*NEW INFO*/
     public HistorialVisita getVisita(int id_visita) {
         HistorialVisita h = null;
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("select * from schema_uo.visita V, schema_uo.visita_categorizacion VC,"
-                + "schema_uo.cama C,schema_uo.usuario U where V.rut_usuario=U.rut_usuario and V.id_cama=C.id_cama and "
-                + "V.id_visita_categorizacion=VC.id_visita_categorizacion and V.id_visita=" + id_visita + "");
+        this.cnn.setSentenciaSQL("select *, upp.descripcion as riesgo_upp,CA.descripcion as riesgo_caida from schema_uo.visita V, schema_uo.visita_categorizacion VC,\n" +
+              "   schema_uo.cama C,schema_uo.usuario U , schema_uo.riesgo_upp UPP , schema_uo.riesgo_caida CA where  V.rut_usuario=U.rut_usuario and V.id_cama=C.id_cama and \n" +
+              "   V.id_visita_categorizacion=VC.id_visita_categorizacion and UPP.id_riesgo = V.id_riesgo_upp and CA.id_riesgo = V.id_riesgo_caida and V.id_visita=" + id_visita + "");
 
         this.cnn.conectar();
 
@@ -102,6 +420,8 @@ public class Negocio {
                 h.setNombre_usuario(this.cnn.getRst().getString("nombre_usuario"));
                 h.setApellidom_usuario(this.cnn.getRst().getString("apellidom_usuario"));
                 h.setApellidop_usuario(this.cnn.getRst().getString("apellidop_usuario"));
+                h.setDescription_upp(this.cnn.getRst().getString("riesgo_upp"));
+                h.setDescription_caida(this.cnn.getRst().getString("riesgo_caida"));
 
             }
         } catch (SQLException var7) {
@@ -119,6 +439,31 @@ public class Negocio {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
         this.cnn.setSentenciaSQL("INSERT INTO   schema_uo.psicolo_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
+
+        try {
+            this.cnn.conectar();
+            sw = true;
+        } catch (Exception var7) {
+            sw = false;
+        } finally {
+            this.cnn.cerrarConexion();
+        }
+
+        return sw;
+    }
+
+    /*new code sic-interconsulta*/
+    public boolean ingresa_sic(cInterconsulta sic) {
+        boolean sw = false;
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("INSERT INTO schema_uo.sic_duo(\n"
+                + "            id_duo,  id_establecimiento, \"user\", fecha_registro, id_razon, \n"
+                + "            especialidad, otra_razon, diagnostico, id_sospecha, especificar_sospecha, \n"
+                + "            subproblema, fundamento_diagnostico, examen_realizado)\n"
+                + "    VALUES (" + sic.getIdDuo() + ", " + sic.getIdEstablecimiento() + ", '" + sic.getUser() + "', CURRENT_TIMESTAMP, " + sic.getIdRazon() + ", \n"
+                + "            '" + sic.getEspecialidad() + "', '" + sic.getOtraRazon() + "', '" + sic.getDiagnostico() + "', " + sic.getIdSospechaProblema() + ", '" + sic.getEspecificarProblema() + "', \n"
+                + "            '" + sic.getSubProblema() + "', '" + sic.getFundamentosDiagnostico() + "', '" + sic.getExamenesRealizados() + "');");
 
         try {
             this.cnn.conectar();
@@ -160,6 +505,107 @@ public class Negocio {
         this.cnn.conectar();
         this.cnn.cerrarConexion();
 
+    }
+
+    /*ver si tiene sic un duo*/
+    public int getIdSic(int idDuo) {
+        int seEncuentra = 0;
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT MAX(id_sic) as id_sic \n"
+                + "  FROM schema_uo.sic_duo where id_duo= " + idDuo + ";");
+        this.cnn.conectar();
+
+        try {
+            if (this.cnn.getRst().next()) {
+                seEncuentra = this.cnn.getRst().getInt("id_sic");
+            }
+        } catch (SQLException var7) {
+            Logger.getLogger(NegocioQ.class.getName()).log(Level.SEVERE, (String) null, var7);
+        }
+
+        this.cnn.cerrarConexion();
+        return seEncuentra;
+    }
+
+    /*ser de sic*/
+    public cInterconsulta getSIC(int id_sic) {
+        cInterconsulta sic = new cInterconsulta();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT id_duo, id_sic, id_establecimiento, \"user\", fecha_registro, id_razon, \n"
+                + "       especialidad, otra_razon, diagnostico, id_sospecha, especificar_sospecha, \n"
+                + "       subproblema, fundamento_diagnostico, examen_realizado, nombre_usuario || ' '|| apellidop_usuario as usuario,nombre_servicio_salud\n"
+                + "  FROM schema_uo.sic_duo sic inner join \n"
+                + "  schema_uo.usuario usu on sic.user = usu.rut_usuario \n"
+                + " inner join  agenda.procedencia pro on id_establecimiento= pro.id_servicio_salud where id_sic=" + id_sic + ";");
+        this.cnn.conectar();
+
+        try {
+            while (this.cnn.getRst().next()) {
+
+                sic.setDiagnostico(this.cnn.getRst().getString("diagnostico"));
+                sic.setEspecialidad(this.cnn.getRst().getString("especialidad"));
+                sic.setEspecificarProblema(this.cnn.getRst().getString("especificar_sospecha"));
+                sic.setExamenesRealizados(this.cnn.getRst().getString("examen_realizado"));
+                sic.setFundamentosDiagnostico(this.cnn.getRst().getString("fundamento_diagnostico"));
+                sic.setIdEstablecimiento(this.cnn.getRst().getInt("id_establecimiento"));
+                sic.setIdInterconsulta(this.cnn.getRst().getInt("id_sic"));
+                sic.setIdRazon(this.cnn.getRst().getInt("id_razon"));
+                sic.setIdSospechaProblema(this.cnn.getRst().getInt("id_sospecha"));
+                sic.setOtraRazon(this.cnn.getRst().getString("otra_razon"));
+                sic.setSubProblema(this.cnn.getRst().getString("subproblema"));
+                sic.setUser(this.cnn.getRst().getString("usuario"));
+                sic.setEstablecimiento(this.cnn.getRst().getString("nombre_servicio_salud"));
+                sic.setFechaRegistro(this.cnn.getRst().getDate("fecha_registro"));
+                sic.setIdDuo(this.cnn.getRst().getInt("id_duo"));
+
+            }
+        } catch (SQLException var7) {
+            Logger.getLogger(NegocioQ.class.getName()).log(Level.SEVERE, (String) null, var7);
+        }
+
+        this.cnn.cerrarConexion();
+        return sic;
+    }
+
+    public List<cInterconsulta> getLisSIC(int id_duo) {
+        List<cInterconsulta> listSIC = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT id_duo, id_sic, id_establecimiento, \"user\", fecha_registro, id_razon, \n"
+                + "       especialidad, otra_razon, diagnostico, id_sospecha, especificar_sospecha, \n"
+                + "       subproblema, fundamento_diagnostico, examen_realizado, nombre_usuario || ' '|| apellidop_usuario as usuario,nombre_servicio_salud\n"
+                + "  FROM schema_uo.sic_duo sic inner join \n"
+                + "  schema_uo.usuario usu on sic.user = usu.rut_usuario \n"
+                + " inner join  agenda.procedencia pro on id_establecimiento= pro.id_servicio_salud where id_duo=" + id_duo + ";");
+        this.cnn.conectar();
+
+        try {
+            while (this.cnn.getRst().next()) {
+                cInterconsulta sic = new cInterconsulta();
+                sic.setDiagnostico(this.cnn.getRst().getString("diagnostico"));
+                sic.setEspecialidad(this.cnn.getRst().getString("especialidad"));
+                sic.setEspecificarProblema(this.cnn.getRst().getString("especificar_sospecha"));
+                sic.setExamenesRealizados(this.cnn.getRst().getString("examen_realizado"));
+                sic.setFundamentosDiagnostico(this.cnn.getRst().getString("fundamento_diagnostico"));
+                sic.setIdEstablecimiento(this.cnn.getRst().getInt("id_establecimiento"));
+                sic.setIdInterconsulta(this.cnn.getRst().getInt("id_sic"));
+                sic.setIdRazon(this.cnn.getRst().getInt("id_razon"));
+                sic.setIdSospechaProblema(this.cnn.getRst().getInt("id_sospecha"));
+                sic.setOtraRazon(this.cnn.getRst().getString("otra_razon"));
+                sic.setSubProblema(this.cnn.getRst().getString("subproblema"));
+                sic.setUser(this.cnn.getRst().getString("usuario"));
+                sic.setEstablecimiento(this.cnn.getRst().getString("nombre_servicio_salud"));
+                sic.setFechaRegistro(this.cnn.getRst().getDate("fecha_registro"));
+                listSIC.add(sic);
+            }
+        } catch (SQLException var7) {
+            Logger.getLogger(NegocioQ.class.getName()).log(Level.SEVERE, (String) null, var7);
+        }
+
+        this.cnn.cerrarConexion();
+        return listSIC;
     }
 
     public int getIdRegisterDuoIndexBarthel(int idDuo, int TypeRegisters) {
@@ -362,7 +808,7 @@ public class Negocio {
         this.cnn.setSentenciaSQL("INSERT INTO "
                 + "  agenda.paciente "
                 + "VALUES ("
-                + "  '" + p.getRut_paciente().toUpperCase() + "',"
+                + "  '" + p.getRut_paciente().toUpperCase()+ "',"
                 + "  '" + p.getNombres_paciente() + "',"
                 + "  '" + p.getApellidop_paciente() + "',"
                 + "  '" + p.getApellidom_paciente() + "',"
@@ -501,30 +947,30 @@ public class Negocio {
                 + " '" + r.getAlergias() + "', '" + r.getDiagnostico() + "', '" + r.getContencion() + "', '" + r.getImagenes() + "',"
                 + " '" + r.getOtros() + "', '" + r.getIndicaciones_enfermeria() + "' , '" + r.getIndicaciones_nutricionista() + "' , "
                 + " '" + r.getIndicaciones_kinesiologo() + "', '" + r.getIndicaciones_otros() + "');");
-        cnn.conectar();
-        cnn.cerrarConexion();
+        this.cnn.conectar();
+        this.cnn.cerrarConexion();
     }
 
     public void ingresarindicaonesReceta(cReceta r) {
         this.configurarConexion("");
-        cnn.setEsSelect(false);
-        cnn.setSentenciaSQL("INSERT INTO schema_uo.indicaciones_receta(\n"
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("INSERT INTO schema_uo.indicaciones_receta(\n"
                 + "             id_indicaciones, id_medicamento, cantidad, id_medida, \n"
                 + "            frecuencia, duracion, indicaciones_especiales,id_via)\n"
                 + "    VALUES ( " + r.getId_receta() + ", " + r.getId_receta_detalle() + ", " + r.getCantidad() + ", " + r.getMedida() + ", \n"
                 + "            '" + r.getFrecuencia() + "', " + r.getDuracion() + ", '" + r.getIndicacion() + "', " + r.getId_via() + ");");
-        cnn.conectar();
-        cnn.cerrarConexion();
+        this.cnn.conectar();
+        this.cnn.cerrarConexion();
     }
 
     public void ingresarSolicitudExamenes(cReceta r) {
         this.configurarConexion("");
-        cnn.setEsSelect(false);
-        cnn.setSentenciaSQL("INSERT INTO schema_uo.solicitudexamenes_indicaciones(\n"
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("INSERT INTO schema_uo.solicitudexamenes_indicaciones(\n"
                 + "            idindicaciones,  id_examenes)\n"
                 + "    VALUES (" + r.getId_duo() + ",  " + r.getId_receta() + "); ");
-        cnn.conectar();
-        cnn.cerrarConexion();
+        this.cnn.conectar();
+        this.cnn.cerrarConexion();
     }
 
     public String upperCaseFirst(String value) {
@@ -581,7 +1027,7 @@ public class Negocio {
                 + "  contacto1 = '" + pac.getTelefono1() + "', "
                 + "  contacto2 = '" + pac.getTelefono2() + "', "
                 + "  email = '" + pac.getMail() + "'  "
-                + "  WHERE   rut = '" + pac.getRut_paciente() + "';");
+                + "  WHERE   upper(rut)=upper('" + pac.getRut_paciente() + "');");
         cnn.conectar();
         cnn.cerrarConexion();
     }
@@ -746,7 +1192,7 @@ public class Negocio {
                 + "  procedencia = '" + pac.getConsultorio() + "', "
                 + "  email = '" + pac.getMail() + "',  "
                 + "  id_nacionalidad = '" + pac.getNacion() + "' "
-                + "  WHERE    rut = '" + pac.getRut_paciente() + "';");
+                + "  WHERE  upper(rut)=upper('" +  pac.getRut_paciente() + "') ;");
         cnn.conectar();
         cnn.cerrarConexion();
     }
@@ -849,11 +1295,11 @@ public class Negocio {
         return id_categorizacion;
     }
 
-    public int ingresa_visita_enfermeria(String obs, String fecha, String hora, String rut_usu, int id_cama, int id_cat, int tipo, int id_duo) {
+    public int ingresa_visita_enfermeria(String obs, String fecha, String hora, String rut_usu, int id_cama, int id_cat, int tipo, int id_duo , int riesgo_caida, int riesgo_upp) {
         int id_visita = 0;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("insert into schema_uo.visita (obs_visita,fecha_visita,hora_visita,rut_usuario,id_cama,id_visita_categorizacion,tipo_visita,id_duo) values('" + obs + "','" + fecha + "','" + hora + "','" + rut_usu + "'," + id_cama + "," + id_cat + "," + tipo + "," + id_duo + ")");
+        this.cnn.setSentenciaSQL("insert into schema_uo.visita (obs_visita,fecha_visita,hora_visita,rut_usuario,id_cama,id_visita_categorizacion,tipo_visita,id_duo, id_riesgo_caida, id_riesgo_upp) values('" + obs + "','" + fecha + "','" + hora + "','" + rut_usu + "'," + id_cama + "," + id_cat + "," + tipo + "," + id_duo + ", "+riesgo_caida+" , "+riesgo_upp+")");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
         this.cnn.setEsSelect(true);
@@ -1180,8 +1626,8 @@ public class Negocio {
 
         return sw;
     }
-    
-     public boolean ingresa_sesion_social(cSesionKine ses) {
+
+    public boolean ingresa_sesion_social(cSesionKine ses) {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);

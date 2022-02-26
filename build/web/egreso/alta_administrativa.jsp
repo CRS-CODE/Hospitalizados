@@ -38,7 +38,7 @@
     {
         messageObj.setSource(url);
         messageObj.setCssClassMessageBox(false);
-        messageObj.setSize(700,440);
+        //messageObj.setSize(700,440);
         messageObj.setShadowDivVisible(true);	// Enable shadow for these boxes
         messageObj.display();
         //fechita id_epicri

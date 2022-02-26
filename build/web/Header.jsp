@@ -88,6 +88,7 @@
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=neg.getLocal()%>css/style.css">
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=neg.getLocal()%>css/style_diseno.css">
         <script type="text/javascript" src="<%=neg.getLocal()%>js/valida_rut.js"></script>
+      
         <LINK REL="SHORTCUT ICON" HREF="<%=neg.getLocal()%>Iconos/flag_chile.ico">
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=neg.getLocal()%>js/menu/menu.css">
 

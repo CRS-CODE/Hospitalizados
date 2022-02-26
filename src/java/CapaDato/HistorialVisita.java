@@ -39,10 +39,47 @@ public class HistorialVisita {
     private String descripcion_cama;
     private int id_duo;
     private int tipo_visita;
+    private int riesgo_upp;
+    private int riesgo_caida;
+    private String description_upp;
+    private String description_caida;
 
+    public int getRiesgo_upp() {
+        return riesgo_upp;
+    }
+
+    public String getDescription_upp() {
+        return description_upp;
+    }
+
+    public void setDescription_upp(String description_upp) {
+        this.description_upp = description_upp;
+    }
+
+    public String getDescription_caida() {
+        return description_caida;
+    }
+
+    public void setDescription_caida(String description_caida) {
+        this.description_caida = description_caida;
+    }
+    public void setRiesgo_upp(int riesgo_upp) {
+        this.riesgo_upp = riesgo_upp;
+    }
+
+    public int getRiesgo_caida() {
+        return riesgo_caida;
+    }
+
+    public void setRiesgo_caida(int riesgo_caida) {
+        this.riesgo_caida = riesgo_caida;
+    }
+    
     /**
      * Creates a new instance of Cama
      */
+    
+    
 
     public int getId_visita_categorizacion() {
         return id_visita_categorizacion;

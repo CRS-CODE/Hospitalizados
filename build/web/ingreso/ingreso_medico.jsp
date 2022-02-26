@@ -32,12 +32,12 @@
 </html>
 <script type="text/javascript">
     messageObj = new DHTML_modalMessage();	// We only create one object of this class
-    messageObj.setShadowOffset(15);	// Large shadow
+    messageObj.setShadowOffset(5);	// Large shadow
     function displayMessage(url)
     {
         messageObj.setSource(url);
         messageObj.setCssClassMessageBox(false);
-        messageObj.setSize(950,600);
+        //messageObj.setSize(1250,730);
         messageObj.setShadowDivVisible(true);	// Enable shadow for these boxes
         messageObj.display();
     }

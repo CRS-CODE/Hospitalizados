@@ -15,12 +15,12 @@
 
 <script>
     function Enviar() {
-        if (!validaRut12(document.getElementById('id_txt_user').value, 1))
+        if (!validaRut12(document.getElementById('rutpaciente').value, 1))
         {
-            document.getElementById('id_txt_user').focus();
+            document.getElementById('rutpaciente').focus();
             return false;
         }
-      
+
         var obj = false;
         if (window.XMLHttpRequest) {
             //Cuidado aqui, el objeto XMLHttpRequest no esta disponible en versiones previas a IE7
@@ -28,7 +28,7 @@
         } else {
             return false;
         }
-        obj.onreadystatechange = function() {
+        obj.onreadystatechange = function () {
             if (obj.readyState == 4 && (obj.status == 200 || window.location.href.indexOf("http") == -1)) {
                 document.getElementById('cargando').innerHTML = '';
                 document.getElementById("Resultado").innerHTML = obj.responseText;
@@ -44,15 +44,109 @@
                 document.getElementById('cargando').innerHTML = '&nbsp;&nbsp; <img src="Imagenes/loading.gif" width="16" height="16" alt="loading"/>Cargando...espere mientras el Sistema consulta Informacion a Fonasa...';
             }
         };
-        valor = document.getElementById('id_txt_user').value;
-        document.getElementById('id_txt_user').value = "";
-        obj.open("GET", "admision_ugu_carga.jsp?user=" + valor, true);
+        var valor = document.getElementById('rutpaciente').value;
+        var sRut = new String(valor);
+        sRut = quitaFormato(sRut);
+        var sDV = sRut.charAt(sRut.length - 1);
+        sRut = sRut.substring(0, sRut.length - 1);
+        var r = sRut;
+        var dv = sDV;
+        obj.open("GET", "admision_ugu_carga.jsp?user=" + valor + "&rut=" + r + "&dv=" + dv, true);
         obj.send(null);
         return (true);
     }
 </script>
 
-<script type="text/javascript">
+
+<script>
+    function formateaRut(Rut)
+    {
+        var sRut = new String(Rut);
+        var sRutFormateado = '';
+        sRut = quitaFormato(sRut);
+        var sDV = sRut.charAt(sRut.length - 1);
+        sRut = sRut.substring(0, sRut.length - 1);
+        document.getElementById('txtRutSinDV').value = sRut;
+        document.getElementById('txtDV').value = sDV;
+        //document.forms[0].txtRutSinDV.value = sRut;
+        //document.forms[0].txtDV.value = sDV;
+
+        while (sRut.length > 3)
+        {
+            sRutFormateado = "." + sRut.substr(sRut.length - 3) + sRutFormateado;
+            sRut = sRut.substring(0, sRut.length - 3);
+        }
+        sRutFormateado = sRut + sRutFormateado;
+        if (sRutFormateado !== "")
+            sRutFormateado += "-";
+        sRutFormateado += sDV;
+        if (document.getElementById('rutpaciente').value !== sRutFormateado)
+            document.getElementById('rutpaciente').value = sRutFormateado;
+    }
+    function quitaFormato(Nro)
+    {
+        var strNro = new String(Nro);
+        while (strNro.indexOf(".") !== - 1)
+            strNro = strNro.replace(".", "");
+        strNro = strNro.replace("-", "");
+        return strNro;
+    }
+
+    function DigitoVerificadorRut(strRut) {
+        var rut = 0;
+        var s = 0;
+        var l_dv = "";
+
+        rut = strRut;
+        for (i = 2; i < 8; i++) {
+            s = s + (rut % 10) * i;
+            rut = (rut - (rut % 10)) / 10;
+        }
+        s = s + (rut % 10) * 2;
+        rut = (rut - (rut % 10)) / 10;
+        s = s + (rut % 10) * 3;
+        rut = (rut - (rut % 10)) / 10;
+        s = 11 - (s % 11);
+        if (s === 10)
+            l_dv = "K";
+        else
+        if (s === 11)
+            l_dv = "0"
+        else
+            l_dv = s + "";
+        return(l_dv);
+    }
+
+    function validaRut() {
+        var sRut = new String(document.getElementById('rutpaciente').value);
+        sRut = quitaFormato(sRut);
+        var sDV = new String(sRut.charAt(sRut.length - 1));
+        sRut = sRut.substring(0, sRut.length - 1);
+        if (sDV.toUpperCase() === DigitoVerificadorRut(sRut))
+        {
+            return true;
+        }
+        if (sDV.toUpperCase() !== DigitoVerificadorRut(sRut))
+        {
+            return false;
+        }
+    }
+
+
+</script>
+
+<script>
+
+    function validarFechaMenorActual(date) {
+        var dateInsert = new Date();
+        var fecha = date.split("/");
+        dateInsert.setFullYear(fecha[2], fecha[1] - 1, fecha[0]);
+        var today = new Date();
+        if (dateInsert >= today)
+            return false;
+        else
+            return true;
+    }
     function valida_form() {
         for (i = 0; i < 100; i++) {
             if (document.getElementById('direccion').value[i] == '#')
@@ -62,9 +156,9 @@
             }
         }
 
-        if (!validaRut12(document.getElementById('id_txt_user').value, 1))
+        if (!validaRut12(document.getElementById('rutpaciente').value, 1))
         {
-            document.getElementById('id_txt_user').focus();
+            document.getElementById('rutpaciente').focus();
             return false;
         }
 
@@ -73,31 +167,32 @@
             document.getElementById('nombres').focus();
             return false;
         } else if (document.getElementById('apellidop').value.length == 0) {
-  alert('Debe ingresar apellido Paterno');
-     document.getElementById('apellidop').focus();
+            alert('Debe ingresar apellido Paterno');
+            document.getElementById('apellidop').focus();
             return false;
-        }  else if (document.getElementById('fecha_nac').value.length != 10) {
+        } else if (document.getElementById('fecha_nac').value.length != 10) {
             alert('Debe ingresar Fecha Nacimiento (dd/mm/aaaa)');
-               document.getElementById('fecha_nac').focus();
+            document.getElementById('fecha_nac').focus();
+            return false;
+        } else if (!validarFechaMenorActual(document.getElementById('fecha_nac').value)) {
+            alert('Debe ingresar Una fecha valida menor.');
+            document.getElementById('fecha_nac').focus();
             return false;
         } else if (document.getElementById('direccion').value.length == 0) {
             alert('Debe ingresar Dirección');
-               document.getElementById('direccion').focus();
+            document.getElementById('direccion').focus();
             return false;
-        } else if (document.getElementById('id_comuna').value == -2) {
+        } else if (document.getElementById('id_comuna').value == -1) {
             alert('Debe seleccionar comuna');
             return false;
-        } else if (document.getElementById('id_consultorio_pertenencia').value == -2) {
+        } else if (document.getElementById('id_consultorio_pertenencia').value == 0) {
             alert('Debe seleccionar Consultorio Pertenencia');
             return false;
         } else if (document.getElementById('id_pueblo').value == -2) {
             alert('Debe seleccionar pueblo');
             return false;
-        } else if (document.getElementById('paciente_prevision').value == -2) {
+        } else if (document.getElementById('prevision').value == -1) {
             alert('Debe seleccionar previsión');
-            return false;
-        } else if (document.getElementById('fecha_duo').value.length == 0) {
-            alert('Debe seleccionar Fecha Duo');
             return false;
         } else if (document.getElementById('id_derivado').value == -2) {
             alert('Debe seleccionar Derivador');
@@ -113,8 +208,7 @@
         }
     }
 </script>
-
-<body onload="document.getElementById('id_txt_user').focus()" >
+<body onload="document.getElementById('rutpaciente').focus()" >
 <legend>ADMISION UGU</legend>
 
 <form name="index" method="GET" onsubmit="Enviar();
@@ -125,10 +219,14 @@
         <tr>
             <td><b>Ingrese Rut&nbsp;&nbsp;&nbsp;</b></td>
             <td>
-                <input value="dfaddsds" name="txtRutSinDV" id="txtRutSinDV" type="hidden">
-                <input value="d" name="txtDV" id="txtDV" type="hidden">
-                <input name="user" class="user" id="id_txt_user"  type="text" size="20" maxlength="12" autocomplete="off" onkeyup="formateaRut(this.value)" value=""   >
-                <br>
+                <div class="col-md-4">
+
+                    <input type="text" id="rutpaciente" name="rutpaciente" style="text-transform:uppercase; cursor:pointer;" onmouseover="showToolTip(event, '¡Escriba su RUT sin puntos ni guiones!');
+                            return false" onkeyup="formateaRut(this.value);" autocomplete=off onclick="javascript:document.getElementById('rutpaciente').select();" maxlength="12" class="form-control" placeholder="Rut Paciente">
+                    <input value="dfaddsds" name="txtRutSinDV" id="txtRutSinDV" type="hidden">
+                    <input value="d" name="txtDV" id="txtDV" type="hidden">
+
+                </div>
             </td>
             <td>
                 &nbsp;
