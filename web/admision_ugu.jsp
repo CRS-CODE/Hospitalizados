@@ -53,7 +53,8 @@
 </script>
 
 <script type="text/javascript">
-    function valida_form() {
+    function valida_ingreso() {
+       
         for (i = 0; i < 100; i++) {
             if (document.getElementById('direccion').value[i] == '#')
             {
@@ -61,43 +62,38 @@
                 document.getElementById('direccion').value = document.getElementById('direccion').value.replace('#', 'N° ');
             }
         }
-
-        if (!validaRut12(document.getElementById('id_txt_user').value, 1))
+       
+        if (!validaRut12(document.getElementById('rut').value, 1))
         {
-            document.getElementById('id_txt_user').focus();
+            document.getElementById('rut').focus();
             return false;
-        }
-
-        if (document.getElementById('nombres').value.length == 0) {
+        }else if (document.getElementById('nombres').value.length == 0) {
             alert('Debe ingresar Nombres');
             document.getElementById('nombres').focus();
             return false;
         } else if (document.getElementById('apellidop').value.length == 0) {
-  alert('Debe ingresar apellido Paterno');
-     document.getElementById('apellidop').focus();
+            alert('Debe ingresar apellido Paterno');
+            document.getElementById('apellidop').focus();
             return false;
-        }  else if (document.getElementById('fecha_nac').value.length != 10) {
+        } else if (document.getElementById('fecha_nac').value.length != 10) {
             alert('Debe ingresar Fecha Nacimiento (dd/mm/aaaa)');
-               document.getElementById('fecha_nac').focus();
+            document.getElementById('fecha_nac').focus();
             return false;
         } else if (document.getElementById('direccion').value.length == 0) {
             alert('Debe ingresar Dirección');
-               document.getElementById('direccion').focus();
+            document.getElementById('direccion').focus();
             return false;
-        } else if (document.getElementById('id_comuna').value == -2) {
+        } else if (document.getElementById('id_comuna').value == -1) {
             alert('Debe seleccionar comuna');
             return false;
-        } else if (document.getElementById('id_consultorio_pertenencia').value == -2) {
+        } else if (document.getElementById('id_consultorio_pertenencia').value == 0) {
             alert('Debe seleccionar Consultorio Pertenencia');
             return false;
         } else if (document.getElementById('id_pueblo').value == -2) {
             alert('Debe seleccionar pueblo');
             return false;
-        } else if (document.getElementById('paciente_prevision').value == -2) {
+        } else if (document.getElementById('prevision').value == -1) {
             alert('Debe seleccionar previsión');
-            return false;
-        } else if (document.getElementById('fecha_duo').value.length == 0) {
-            alert('Debe seleccionar Fecha Duo');
             return false;
         } else if (document.getElementById('id_derivado').value == -2) {
             alert('Debe seleccionar Derivador');
@@ -106,7 +102,6 @@
             alert('Debe seleccionar Cama');
             return false;
         }
-
         if (confirm("CONFIRMACION ! Esta Seguro que desea ingresar esta Información ? \n \n ")) {
         } else {
             return false;
