@@ -339,9 +339,8 @@ public class PDF_egresoMedico extends HttpServlet {
             celda.setBackgroundColor(myColor);
             celda.setColspan(6);
             tabla8.addCell(celda);
-            String observacionAlta = neg.getAltaAdministrativa(id_duo);
 
-            celda = new PdfPCell(new Paragraph("" + epicrisis.getResumen_epicrisis() +" "+observacionAlta, ft1));
+            celda = new PdfPCell(new Paragraph("" + epicrisis.getResumen_epicrisis() , ft1));
             celda.setColspan(6);
             tabla8.addCell(celda);
 

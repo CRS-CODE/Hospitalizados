@@ -65,14 +65,17 @@ public class Negocio {
         this.cnn = new Conexion();
         this.cnn.setDriver("org.postgresql.Driver");
         this.cnn.setNombreTabla(tabla);
-        this.cnn.setUser("postgres");
+        this.cnn.setUser("hospitalizados");
         this.cnn.setPassword("crsdb2020");
-        this.cnn.setNombreBaseDatos("jdbc:postgresql://10.8.4.163:5432/crsh");
+        this.cnn.setNombreBaseDatos("jdbc:postgresql://10.8.4.163:5432/crsm");
+       /* this.cnn.setUser("postgres");
+        this.cnn.setPassword("crsdb2008");
+        this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5432/crsm1");*/
     }
 
     public String getLocal() {
-        String local = "http://10.8.4.163:8080/modulo_uhceTest/";
-        // String local = "http://localhost:8080/modulo_uhce/";
+        String local = "http://10.8.4.163:8080/modulo_uhce/";
+        //String local = "http://localhost:8080/modulo_uhce/";
         return local;
     }
 
@@ -481,6 +484,14 @@ public class Negocio {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
         this.cnn.setSentenciaSQL("INSERT INTO  schema_uo.visita_medica ( vis_usuario, vis_fecha_ingreso, vis_duo,   vis_fecha, vis_evolucion, vis_estado )  VALUES (   '" + vis.getRut_usuario() + "', CURRENT_TIMESTAMP,  '" + vis.getId_duo() + "' ,   '" + vis.getFecha_visita() + "', '" + vis.getObs_visita() + "', '" + 1 + "'  ); ");
+        this.cnn.conectar();
+        this.cnn.cerrarConexion();
+    }
+    
+        public void ingresa_sesion(cVisita vis) {
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("INSERT INTO  schema_uo.sesion ( vis_usuario, vis_fecha_ingreso, vis_duo,   vis_fecha, vis_evolucion, vis_estado )  VALUES (   '" + vis.getRut_usuario() + "', CURRENT_TIMESTAMP,  '" + vis.getId_duo() + "' ,   '" + vis.getFecha_visita() + "', '" + vis.getObs_visita() + "', '" + 1 + "'  ); ");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }

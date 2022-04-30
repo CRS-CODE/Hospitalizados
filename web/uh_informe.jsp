@@ -55,6 +55,7 @@
                                         <option value="XLS_DuosDadoAltaDatosEpicrisis">Duos Dado de Alta con Datos Epicrisis</option>
                                         <option value="Informe/InfDuoxOrigenxls.jsp">Duos por Origen</option>
                                         <option value="XLS_DuosDadoAltaSimpleAsistenciaSocial">Duos Dado de Alta Simple + Registro Social</option>  
+                                        <option value="nominaPorFecha">Nomina Pacientes por Rango de Fecha</option>
                                         <option value="XLS_InformeDas?modo=1">Nomina Das por Fecha Ingreso</option>
                                         <option value="XLS_InformeDas?modo=2">Nomina Das por Fecha Egreso</option>
                                         <option value="ClinicalData">Clinical Data</option>

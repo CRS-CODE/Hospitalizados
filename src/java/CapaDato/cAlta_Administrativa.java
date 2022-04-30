@@ -19,6 +19,7 @@ public class cAlta_Administrativa {
     private int id_destino;
     private String destino_descripcion;
     private String ip_alta_adm;
+    private String nombre_usuario;
 
     public cAlta_Administrativa() {
         this.id_alta_adm = -1;
@@ -32,6 +33,14 @@ public class cAlta_Administrativa {
         this.ip_alta_adm = "";
     }
 
+    public String getNombre_usuario() {
+        return nombre_usuario;
+    }
+
+    public void setNombre_usuario(String nombre_usuario) {
+        this.nombre_usuario = nombre_usuario;
+    }
+    
     /**
      * @return the id_alta_adm
      */

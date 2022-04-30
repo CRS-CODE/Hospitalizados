@@ -85,7 +85,7 @@
             out.write("<td>Tramo " + not.getTramo() + "&nbsp;</td>");
             out.write("<td>   <font style=' font-size:   xx-small ' >" + not.getPrevision_descri().replace(" ", "<br>") + " " + not.getPrais_descri().replace(" ", "<br>") + "  </font> </td>");
 
-            if (obtiene_perfil == 10 || obtiene_perfil == 12 || obtiene_perfil == 15 || obtiene_perfil == 13 || obtiene_perfil == 14 || obtiene_perfil == 16 || obtiene_perfil == 17 || obtiene_perfil == 18) {
+            if (obtiene_perfil == 10 || obtiene_perfil == 12 || obtiene_perfil == 15 || obtiene_perfil == 13 || obtiene_perfil == 14 || obtiene_perfil == 16 || obtiene_perfil == 17 || obtiene_perfil == 18| obtiene_perfil == 19) {
                 out.write("<td>");
 
 %>
@@ -100,7 +100,8 @@
     <p  style=' font-size:   xx-small ' > Nutricionista  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_nutricionista?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>
     <p  style=' font-size:   xx-small ' > Fonoaudiologa  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_fono?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>
     <p  style=' font-size:   xx-small ' > Psicòlogo/a  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_psicolo?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>
-          <p  style=' font-size:   xx-small ' > Psicòlogo/a  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_social?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p> 
+    <p  style=' font-size:   xx-small ' > Psicòlogo/a  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_social?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p> 
+    <p  style=' font-size:   xx-small ' > Químico Farmacéutico <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p> 
 </form>   
 <%
 

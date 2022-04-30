@@ -61,6 +61,7 @@
         see_visita.add(16);
         see_visita.add(17);
         see_visita.add(18);
+        see_visita.add(19);
 
         ArrayList see_informe = new ArrayList();
         see_informe.add(10);
@@ -88,7 +89,7 @@
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=neg.getLocal()%>css/style.css">
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=neg.getLocal()%>css/style_diseno.css">
         <script type="text/javascript" src="<%=neg.getLocal()%>js/valida_rut.js"></script>
-      
+
         <LINK REL="SHORTCUT ICON" HREF="<%=neg.getLocal()%>Iconos/flag_chile.ico">
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=neg.getLocal()%>js/menu/menu.css">
 
@@ -97,7 +98,7 @@
         <script src="<%=neg.getLocal()%>js/jquery/jquery.js"></script>
         <script src="<%=neg.getLocal()%>js/jquery/jquery-ui.js"></script>
         <%            // <script src="<%=neg.getLocal() ajax.js"></script>
-        %>
+           %>
 
         <jsp:include page="css/boton_html.jsp" />
 
@@ -164,15 +165,16 @@
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Psicólogo/a</span></a>
                                 <li> <a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Trabajadora Social</span></a>
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Fonoaudiologa</span></a> 
+                                <li><a href="<%=neg.getLocal()%>sesion.jsp"><span>Químico Farmacéutico</span></a> 
 
 
                             </ul>
                         </li>
-                         <li> <a href="<%=neg.getLocal()%>asistencia_social/social_ingreso.jsp"><span>Anterior Trabajadora Social</span></a>
-                        <%  }
-                        %>
+                        <li> <a href="<%=neg.getLocal()%>asistencia_social/social_ingreso.jsp"><span>Anterior Trabajadora Social</span></a>
+                            <%  }
+                            %>
 
-                      
+
                         <li><a href="<%=neg.getLocal()%>receta.jsp"><span>INDICACIONES</span></a>
                         </li>
 

@@ -2,9 +2,9 @@
 // Source code recreated from a .class file by IntelliJ IDEA
 // (powered by Fernflower decompiler)
 //
-
 package CapaInforme;
 
+import CapaDato.cAlta_Administrativa;
 import CapaDato.cDuo;
 import CapaDato.cVisita;
 import CapaNegocio.NegocioQ;
@@ -40,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class PDF_HISTORIAL extends HttpServlet {
+
     public PDF_HISTORIAL() {
     }
 
@@ -160,8 +161,8 @@ public class PDF_HISTORIAL extends HttpServlet {
                 celda.setColspan(3);
                 tabla3.addCell(celda);
             } else {
-                while(it_ses.hasNext()) {
-                    cVisita vis = (cVisita)it_ses.next();
+                while (it_ses.hasNext()) {
+                    cVisita vis = (cVisita) it_ses.next();
                     if (!vis.getFecha_visita().equals(guarda_fecha)) {
                         celda = new PdfPCell(new Paragraph("Día " + vis.getFecha_visita(), ft1));
                         celda.setColspan(3);
@@ -180,6 +181,25 @@ public class PDF_HISTORIAL extends HttpServlet {
                     tabla3.addCell(celda);
                     guarda_fecha = vis.getFecha_visita();
                 }
+
+                cAlta_Administrativa observacionAlta = neg.getAltaAdministrativa(id_duo);
+                if (observacionAlta.getId_alta_adm() != -1) {
+                    celda = new PdfPCell(new Paragraph(" Datos de Alta Administrativas " , ft1));
+                    celda.setColspan(3);
+                    celda.setBackgroundColor(myColor);
+                    tabla3.addCell(celda);
+
+                    celda = new PdfPCell(new Paragraph("" + observacionAlta.getFecha_hora_alta_adm(), ft5));
+                    celda.setColspan(1);
+                    tabla3.addCell(celda);
+                    celda = new PdfPCell(new Paragraph("" + observacionAlta.getObs_alta_adm(), ft4));
+                    celda.setColspan(1);
+                    tabla3.addCell(celda);
+                    celda = new PdfPCell(new Paragraph("" + observacionAlta.getNombre_usuario(), ft5));
+                    celda.setColspan(1);
+                    tabla3.addCell(celda);
+                }
+
             }
 
             document.add(tabla3);
@@ -193,9 +213,9 @@ public class PDF_HISTORIAL extends HttpServlet {
             document.add(tabla10);
             document.close();
         } catch (DocumentException var44) {
-            Logger.getLogger(PDF_visita_medica.class.getName()).log(Level.SEVERE, (String)null, var44);
+            Logger.getLogger(PDF_visita_medica.class.getName()).log(Level.SEVERE, (String) null, var44);
         } catch (Exception var45) {
-            Logger.getLogger(PDF_visita_medica.class.getName()).log(Level.SEVERE, (String)null, "Ocurrio un Error" + var45);
+            Logger.getLogger(PDF_visita_medica.class.getName()).log(Level.SEVERE, (String) null, "Ocurrio un Error" + var45);
         }
 
     }
@@ -213,6 +233,7 @@ public class PDF_HISTORIAL extends HttpServlet {
     }
 
     public class FooterPiePaginaiText_visita_medica extends PdfPageEventHelper {
+
         public FooterPiePaginaiText_visita_medica() {
         }
 
