@@ -37,14 +37,14 @@
     {
         messageObj.setSource(url);
         messageObj.setCssClassMessageBox(false);
-        messageObj.setSize(950,600);
+        messageObj.setSize(850,690);
         messageObj.setShadowDivVisible(true);	// Enable shadow for these boxes
         messageObj.display();
     }
     function displayStaticMessage(messageContent,cssClass)
     {
         messageObj.setHtmlContent(messageContent);
-        messageObj.setSize(300,150);
+        messageObj.setSize(400,150);
         messageObj.setCssClassMessageBox(cssClass);
         messageObj.setSource(false);	// no html source since we want to use a static message here.
         messageObj.setShadowDivVisible(false);	// Disable shadow for these boxes

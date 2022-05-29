@@ -29,7 +29,7 @@
             } else if (modo.contains("3")) {
                 columna = "apellidom_usuario";
             }
-        String titulo = " style=' background-color: #4169E1 ; color: white '  ";
+        String titulo = " style=' background-color: #f7903b ; color: white '  ";
             ArrayList arra = neg.obtiene_usuario_sistema(columna, valor);
             boolean sw_tiene_usuario = false;
             Iterator it = arra.iterator();

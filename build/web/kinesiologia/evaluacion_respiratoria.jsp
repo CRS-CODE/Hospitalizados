@@ -21,8 +21,8 @@ Author     : Informatica
         String style_2 = " style=' width: 250px ' ";
         String style_3 = " style=' width: 575px ' ";
 
-        String titulo = " style=' background-color: #4169E1 ; color: white '  ";
-        String datos = " style=' background-color: #87CEFA ; color: black '  ";
+        String titulo = " style=' background-color: #f7903b ; color: white '  ";
+        String datos = " style=' background-color: #fcd5b6 ; color: black '  ";
 
         int id_duo = Integer.parseInt(request.getParameter("txt_duo"));
         cDuo duo = neg.obtiene_duo(id_duo);

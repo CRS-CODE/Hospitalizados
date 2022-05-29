@@ -14,8 +14,8 @@
 
 
 <%
-            String titulo = " style=' background-color: #4169E1 ; color: white '  ";
-            String datos = " style=' background-color: #87CEFA ; color: black '  ";
+            String titulo = " style=' background-color: #f7903b ; color: white '  ";
+            String datos = " style=' background-color: #fcd5b6 ; color: black '  ";
 
             int recibe_duo = Integer.parseInt(request.getParameter("duo"));
             int recibe_modo = Integer.parseInt(request.getParameter("modo"));

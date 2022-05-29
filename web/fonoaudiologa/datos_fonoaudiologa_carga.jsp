@@ -22,8 +22,8 @@
     ArrayList lista_sesion_fono = neg.lista_sesion_fonouriologa(id_duo);
    
 
-    String titulo = " style=' background-color: #4169E1 ; color: white '  ";
-    String datos = " style=' background-color: #87CEFA ; color: black '  ";
+    String titulo = " style=' background-color: #f7903b ; color: white '  ";
+    String datos = " style=' background-color: #fcd5b6 ; color: black '  ";
 
     int obtiene_perfil = 0;
     String tipo_perfil = "" + session.getAttribute("usuario_perfil_descripcion");

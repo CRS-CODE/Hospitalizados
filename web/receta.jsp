@@ -61,7 +61,7 @@
             obtiene_duo = Integer.parseInt(request.getParameter("txt_duo"));
         }
 
-        String titulo = " style=' background-color: #4169E1 ; color: white '  '  ";
+        String titulo = " style=' background-color: #f7903b ; color: white '  '  ";
         String datos = " style=' background: #FFFF; color: black; '  ";
         ArrayList diagnosticos = neg.lista_diagnostico(obtiene_duo, " 1,2 ");
         Iterator it_dia = diagnosticos.iterator();
@@ -137,7 +137,7 @@
     tr:nth-child(even){background-color: #f2f2f2}
 
     th {
-        background-color: #337ab7;
+        background-color: #f7903b;
         color: white;
     }
 
@@ -453,7 +453,7 @@
     <% while (it_ses.hasNext()) {
             cReceta vis = (cReceta) it_ses.next();
     %>
-    <table style='width: 100%;  border:solid 0.05px #337ab7 ' >
+    <table style='width: 100%;  border:solid 0.05px #f7903b ' >
 
         <%
             if (!vis.getFecha().equals(guarda_fecha)) {

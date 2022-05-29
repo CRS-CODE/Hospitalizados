@@ -12,10 +12,10 @@
 <script type="text/javascript" src="js/jquery/tooltip.js"></script>
 <script type="text/javascript" src="js/jquery/jquery.form.js"></script>
 <body>
-<legend>ADMISION UHCE</legend>
+<legend>Admision de Paciente</legend>
 <%
-            String titulo = " style=' background-color: #4169E1 ; color: white '  ";
-            String datos = " style=' background-color: #87CEFA ; color: black '  ";
+            String titulo = " style=' background-color: #f7903b ; color: white '  ";
+            String datos = " style=' background-color: #fcd5b6 ; color: black '  ";
 %>
 <table border="1">
     <thead>

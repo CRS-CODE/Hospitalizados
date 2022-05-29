@@ -20,8 +20,8 @@ Author     : Informatica
         response.sendRedirect("../index.jsp?timeout=1");
     } else {
 
-        String titulo = " style=' background-color: #4169E1 ; color: white '  ";
-        String datos = " style=' background-color: #87CEFA ; color: black '  ";
+        String titulo = " style=' background-color: #f7903b ; color: white '  ";
+        String datos = " style=' background-color: #fcd5b6 ; color: black '  ";
 
         String wii_txt = " style='width: 400px ' ";
         String wii_txt2 = " style='width: 370px ' ";

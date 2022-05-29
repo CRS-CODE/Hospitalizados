@@ -19,8 +19,8 @@
             HttpSession session1 = request.getSession();
             NegocioQ neg = new NegocioQ();
 
-            String titulo = " style=' background-color: #4169E1 ; color: white '  ";
-            String datos = " style=' background-color: #87CEFA ; color: black '  ";
+            String titulo = " style=' background-color: #f7903b ; color: white '  ";
+            String datos = " style=' background-color: #fcd5b6 ; color: black '  ";
             // String datos = "  style=' color: #000080 '  ";
             int id_perfil = 0;
             String tipo_perfil = "" + session.getAttribute("usuario_perfil_descripcion");

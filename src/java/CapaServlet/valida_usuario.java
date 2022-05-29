@@ -60,7 +60,7 @@ public class valida_usuario extends HttpServlet {
             if (usu.getPass_usuario().equalsIgnoreCase(rrr)) {
                 response.sendRedirect("clave/pass.jsp?rut=" + usu.getRut_usuario());
             } else {
-                response.sendRedirect("inicio.jsp");
+                response.sendRedirect("uh_visita.jsp");
             }
 
         }

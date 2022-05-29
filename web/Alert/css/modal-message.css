@@ -22,7 +22,7 @@
 	padding:2px;
 	z-index:100;/* Always needed	*/
 	position:absolute;	/* Always needed	*/
-	background-color:#EEE8CD;	/* White background color for the message */
+	background-color:#e6e6e6;	/* White background color for the message */
         width: 100%
 }
 .modalDialog_contentDiv_shadow{

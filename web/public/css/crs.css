@@ -1,0 +1,81 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 27-03-2017, 12:42:18
+    Author     : a
+*/
+
+#dialogoverlay{
+    display: none;
+    opacity: .8;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background: #FFF;
+    width: 100%;
+    z-index: 10;
+}
+#dialogbox{
+    display: none;
+    position: fixed;
+    background: #ff0000;
+    border-radius:8px; 
+    width:300px;
+    z-index: 10;
+}
+#dialogbox > div{ background:#ff0000; margin:2px; }
+#dialogbox > div > #dialogboxhead{ background:#ff4d4d; font-size:15px; font-family: Lucida Grande,Lucida Sans,Arial,sans-serif; font-weight: 700; padding:10px; color:#FFF; }
+#dialogbox > div > #dialogboxbody{ background:#FFFFFF; padding:30px; color:#000000; font-family: Lucida Grande,Lucida Sans,Arial,sans-serif; font-weight: 700; }
+#dialogbox > div > #dialogboxfoot{ background:#FFFFFF;  padding:18px; text-align:right;margin: .1em .0em .0em 0;cursor: pointer;font-weight: bold;color:#ff4d4d; }
+
+
+
+.letra{
+
+    font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-seri; color:#c45d08;
+}
+td{
+    background: #ffffff
+
+}
+
+.text {
+    font-size:12px;
+    font-family:helvetica;
+    font-weight:bold;
+    color:#efeffb;
+    text-transform:uppercase;
+}
+.parpadea {
+
+    animation-name: parpadeo;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+
+    -webkit-animation-name:parpadeo;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+}
+
+@-moz-keyframes parpadeo{  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes parpadeo {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@keyframes parpadeo {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}

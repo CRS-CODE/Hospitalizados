@@ -79,7 +79,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>SISTEMA UNIDAD DE HOSPITALIZACIÒN</title>
+        <title>ATENCION GERIATRICA INTEGRAL DOMICILIARIA</title>
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=neg.getLocal()%>css/style_tabla.css">
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=neg.getLocal()%>css/style.css">
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=neg.getLocal()%>css/style_diseno.css">
@@ -110,7 +110,6 @@
         </script>
 
     </head>
-    <div><img src="<%=neg.getLocal()%>Imagenes/camas.png"></div>
 
     <DIV id=wrapper>
         <DIV id=header>
@@ -119,8 +118,6 @@
                 <!-- Beginning of compulsory code below -->
                 <div id="menu">
                     <ul class="menu">
-                        <li><a href="<%=neg.getLocal()%>inicio.jsp" class="parent"><span>INICIO</span></a>
-                        </li>
                         <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>HOSP. DOMICILIARIA</span></a>
                         </li>
 
@@ -160,6 +157,8 @@
                         %>
 
 
+                        <li><a href="<%=neg.getLocal()%>prestaciones.jsp"><span>VISITAS</span></a>
+                        </li>
                         <li><a href="<%=neg.getLocal()%>receta.jsp"><span>INDICACIONES</span></a>
                         </li>
 

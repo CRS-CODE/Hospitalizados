@@ -9,8 +9,8 @@
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="iso-8859-1"%>
 <%
-    String titulo = " style=' background-color: #4169E1 ; color: white '  ";
-    String datos = " style=' background-color: #87CEFA ; color: black '  ";
+    String titulo = " style=' background-color: #f7903b ; color: white '  ";
+    String datos = " style=' background-color: #fcd5b6 ; color: black '  ";
 
     String rut_paciente = request.getParameter("paciente_rut");
     int opcion = Integer.parseInt(request.getParameter("ingresa")); // si ingresa ==1 ingreso

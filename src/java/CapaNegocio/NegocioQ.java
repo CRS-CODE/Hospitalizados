@@ -33,6 +33,7 @@ import CapaDato.cNacion;
 import CapaDato.cObservacion;
 import CapaDato.cPaciente;
 import CapaDato.cPerfil;
+import CapaDato.cPrestacion;
 import CapaDato.cPueblo;
 import CapaDato.cReceta;
 import CapaDato.cRegistroSeguimiento;
@@ -476,6 +477,33 @@ public class NegocioQ extends Negocio {
                 uni.setId_unidad_medida(cnn.getRst().getInt("id_examenes"));
 
                 lista.add(uni);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.cnn.cerrarConexion();
+        return lista;
+    }
+
+    /*new code*/
+    public ArrayList lista_prestaciones(Integer idPrestacion) {
+
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL(" SELECT pre_id, pre_nombre, pre_estado, pre_codigo\n"
+                + "  FROM schema_uhd.prestacion inner join schema_uhd.prestacion_perfil \n"
+                + "  on pre_id = id_prestacion and id_perfil = " + idPrestacion + " ; ");
+        this.cnn.conectar();
+        try {
+            while (cnn.getRst().next()) {
+                cPrestacion prestacion = new cPrestacion();
+
+                prestacion.setDescripcion(cnn.getRst().getString("pre_nombre"));
+                prestacion.setId(cnn.getRst().getInt("pre_id"));
+                prestacion.setCodigo(cnn.getRst().getString("pre_codigo"));
+
+                lista.add(prestacion);
             }
         } catch (SQLException ex) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
@@ -1834,6 +1862,8 @@ public class NegocioQ extends Negocio {
         this.cnn.cerrarConexion();
         return lista;
     }
+
+ 
 
     public ArrayList lista_riesgo_dependendencia() {
         ArrayList lista = new ArrayList();

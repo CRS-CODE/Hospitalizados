@@ -324,11 +324,11 @@
             <table>
                 <thead>
                     <tr>
-                        <th colspan="3" style="background-color: #3366CC">CATEGORIA DE CUIDADOS UNIVERSALES</th>
+                        <th colspan="3" style="background-color: #3366CC">CATEGORIA DE PACIENTES</th>
                     </tr>
                     <tr>
                         <th title="Dependencia">1.</th>
-                        <th colspan="1">Cuidados en Confort y Bienestar&nbsp;<input id="d1" name="d1" readonly type="text" size="1" maxlength="1" style="font-size: 16px" value="0"></th>
+                        <th colspan="1">BASICO<input id="d1" name="d1" readonly type="text" size="1" maxlength="1" style="font-size: 16px" value="0"></th>
                         <th colspan="1">Ptje.</th>
                     </tr>
                 </thead>

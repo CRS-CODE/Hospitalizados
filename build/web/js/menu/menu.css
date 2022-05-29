@@ -95,7 +95,7 @@ div#menu ul ul {
     /* MODIFICA ANCHO DEL SUBMENU */
     width: 150px;
     padding: 5px 0 0 0;
-    background: rgb(45,45,45);
+    background: rgb(179, 179, 179);
     margin-top:1px;
 }
 div#menu ul ul a {
@@ -112,7 +112,7 @@ div#menu ul ul span {
     padding-right: 15px;
     _padding-right: 20px;
    /* color: rgb(169,169,169); */
-      color:#DEB887;
+      color:#ffffff;
 }
 div#menu ul ul a:hover span {
     color: #fff;

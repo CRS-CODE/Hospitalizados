@@ -1,0 +1,30 @@
+.modal-footer {   border-top: 0px; }
+
+
+.button2 {
+    background-color: #ffcccc;
+    border: none;
+    color: #cd0a0a;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.button3 {
+    background-color: #ccffcc;
+    border: none;
+    color: #4cae4c;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+}

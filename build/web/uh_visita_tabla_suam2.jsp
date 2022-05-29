@@ -97,10 +97,10 @@ Statement st2 = cn.createStatement();
 
 
     <%
-                // String titulo = " style=' background-color: #4169E1 ; color: white '  ";
-                // String datos = " style=' background-color: #87CEFA ; color: yellow '  ";
+                // String titulo = " style=' background-color: #f7903b ; color: white '  ";
+                // String datos = " style=' background-color: #fcd5b6 ; color: yellow '  ";
 
-                String titulo = " style=' background-color: #4169E1 ; color: white ;font-size: 12px  ";
+                String titulo = " style=' background-color: #f7903b ; color: white ;font-size: 12px  ";
               /*  String datos = " style=' background-color: yellow ; color: blue   "; // camilla ocupada
                 String datos_vacia = "  style=' background-color:#FAF0E6; color: black   "; // camilla vacia
 

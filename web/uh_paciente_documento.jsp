@@ -34,9 +34,9 @@
     Iterator it = DuoEpi.iterator();
     cPaciente pac = neg.obtiene_paciente(rut_paciente);
 
-    String titulo = " style=' background-color: #4169E1 ; color: white '  ";
-    String titulo_menos = " style=' background-color: #4169E1 ; color: white;FONT-SIZE:9px; '  ";
-    String datos = " style=' background-color: #87CEFA ; color: black '  ";
+    String titulo = " style=' background-color: #f7903b ; color: white '  ";
+    String titulo_menos = " style=' background-color: #f7903b ; color: white;FONT-SIZE:9px; '  ";
+    String datos = " style=' background-color: #fcd5b6 ; color: black '  ";
 
     if (DuoEpi.size() == 0) {
         out.write("<b>No se encontraron Resultados para " + rut_paciente + "</b>");

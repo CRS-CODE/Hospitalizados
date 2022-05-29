@@ -177,7 +177,7 @@ public class PDF_receta extends HttpServlet {
 
             document.add(tabla1);
             BaseColor myColor = WebColors.getRGBColor("#6699FF");
-            BaseColor myColor2 = WebColors.getRGBColor("#4169E1");
+            BaseColor myColor2 = WebColors.getRGBColor("#f7903b");
 
             /**
              * *************************FIN TABLA 2*************************
