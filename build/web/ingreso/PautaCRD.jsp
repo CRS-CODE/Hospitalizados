@@ -87,7 +87,7 @@ tbody tr:hover { background:#99BCBF;
             <table>
                 <thead>
                     <tr>
-                        <th colspan="3" style="background-color: #3366CC">CATEGORIA DE CUIDADOS UNIVERSALES</th>
+                        <th colspan="3" style="background-color: #e46c0a">CATEGORIA DE CUIDADOS UNIVERSALES</th>
                     </tr>
                     <tr>
                         <th title="Dependencia">1.</th>
@@ -252,7 +252,7 @@ tbody tr:hover { background:#99BCBF;
                 </tbody>
                 <thead>
                     <tr>
-                        <th colspan="3" style="background-color: #3366CC">CATEGORIA DE CUIDADOS TERAPEUTICOS</th>
+                        <th colspan="3" style="background-color: #e46c0a">CATEGORIA DE CUIDADOS TERAPEUTICOS</th>
                     </tr>
                     <tr>
                         <th>7</th>

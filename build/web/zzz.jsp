@@ -130,7 +130,7 @@
     <table>
         <thead>
             <tr>
-                <th colspan="6"  style="background-color: #3366CC">ESCALA DE NORTON </th>
+                <th colspan="6"  style="background-color: #e46c0a">ESCALA DE NORTON </th>
             </tr>
         <th>PTJE. </th>
         <th>ESTADO FISICO</th>
@@ -179,7 +179,7 @@
 <table border="1" >
     <thead> 
         <tr>
-            <th colspan="4" style="background-color: #3366CC" >CLASIFICACION DE RIESGO UPP</th>
+            <th colspan="4" style="background-color: #e46c0a" >CLASIFICACION DE RIESGO UPP</th>
         </tr>
     </thead>
     <tr>
@@ -248,7 +248,7 @@
 <table border="1" >
     <thead>
         <tr>
-            <th  style="background-color: #3366CC" colspan="6" >PREVENCION DE CAIDAS</th>
+            <th  style="background-color: #e46c0a" colspan="6" >PREVENCION DE CAIDAS</th>
         </tr>
         <tr>
             <th>ESCALA DE VALORACIÓN DEL RIESGO DE CAÍDAS</th>

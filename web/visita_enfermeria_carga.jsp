@@ -105,13 +105,7 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <div class="tabla">
-    <div class="fila">
-        <div class="col_titulo" style="" ><b>Categorización:</b></div>
-        <div class="col_titulo" style="">     
-            <input type="text" name="txt_categorizacion" id="txt_categorizacion"  
-                   style=" width: 30px " readonly="readonly"   > 
-        </div>
-    </div>
+ 
 
     <div class="fila">
         <div class="col_titulo" style="" ><b>Ingrese Observación:</b></div> 
