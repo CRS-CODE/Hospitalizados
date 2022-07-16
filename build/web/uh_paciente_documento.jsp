@@ -109,13 +109,6 @@
   
     int idIngreso = controller.getIdRegisterDuoIndexBarthel(not.getId_duo(), 1);
     int idEgreso = controller.getIdRegisterDuoIndexBarthel(not.getId_duo(), 2);
-    out.write("<td>");
-    out.write("<form action=\"visita_enfermeria_historial.jsp\" method=\"post\" target='_blank' onsubmit=\"\"> "
-            + " <input type='hidden' name='txt_duo' value='" + not.getId_duo() + "'  />"
-            + " <input type=\"submit\" class=\"btn btn-primary\" value=\"Ver categorizaciones\" name=\"btn_Categorizacion\" />"
-            + " </form>");
-    out.write("</td>");
-
     //visita medica 14082015
     out.write("<td>");
     out.write("<form action=\"PDF_visita_medica\" method=\"post\" target='_blank' onsubmit=\"\"> "
@@ -123,6 +116,15 @@
             + " <input type=\"submit\" class=\"btn btn-primary\" value=\"Ver visita\" name=\"btn_visita_medica\" />"
             + " </form>");
     out.write("</td>");
+    
+    out.write("<td>");
+    out.write("<form action=\"visita_enfermeria_historial.jsp\" method=\"post\" target='_blank' onsubmit=\"\"> "
+            + " <input type='hidden' name='txt_duo' value='" + not.getId_duo() + "'  />"
+            + " <input type=\"submit\" class=\"btn btn-primary\" value=\"Ver categorizaciones\" name=\"btn_Categorizacion\" />"
+            + " </form>");
+    out.write("</td>");
+
+    
     if (idIngreso != 0) {
         out.write("<td>");
         out.write("<form action=\"PDF_indexBarthel\" method=\"post\" target='_blank' onsubmit=\"\"> "
