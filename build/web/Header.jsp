@@ -62,6 +62,7 @@
         see_visita.add(17);
         see_visita.add(18);
         see_visita.add(19);
+        see_visita.add(20);
 
         ArrayList see_informe = new ArrayList();
         see_informe.add(10);
@@ -74,6 +75,9 @@
         see_informe.add(16);
         see_informe.add(17);
         see_informe.add(18);
+
+        see_informe.add(19);
+        see_informe.add(20);
         ArrayList see_mantencion = new ArrayList();
         see_mantencion.add(10);
         see_mantencion.add(11);
@@ -98,7 +102,7 @@
         <script src="<%=neg.getLocal()%>js/jquery/jquery.js"></script>
         <script src="<%=neg.getLocal()%>js/jquery/jquery-ui.js"></script>
         <%            // <script src="<%=neg.getLocal() ajax.js"></script>
-           %>
+%>
 
         <jsp:include page="css/boton_html.jsp" />
 
@@ -166,6 +170,7 @@
                                 <li> <a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Trabajadora Social</span></a>
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Fonoaudiologa</span></a> 
                                 <li><a href="<%=neg.getLocal()%>sesion.jsp"><span>Químico Farmacéutico</span></a> 
+                                <li><a href="<%=neg.getLocal()%>sesion.jsp"><span>Odontólogo</span></a> 
 
 
                             </ul>
