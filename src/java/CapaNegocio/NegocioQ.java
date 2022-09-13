@@ -111,7 +111,6 @@ public class NegocioQ extends Negocio {
     }
 
     /*Para reporte de nominas por rango de fecha*/
-
     public Vector<cDuo> lisNominaporFecha(String fecha) {
         Vector<cDuo> vi = new Vector<cDuo>();
         this.configurarConexion("");
@@ -119,17 +118,17 @@ public class NegocioQ extends Negocio {
         this.cnn.setSentenciaSQL("SELECT c.descripcion_cama, COALESCE( D.rut_paciente, '') as rut_paciente,COALESCE(lower(p.apellido_paterno),'') as  paciente_apellidop ,\n"
                 + "  COALESCE(lower(p.apellido_moderno),'')as paciente_apellidom,COALESCE( lower(p.nombre),'') as paciente_nombres,\n"
                 + "  COALESCE(to_char(D.fecha_duo,'DD/MM/YYYY'),'') as fecha_duo ,COALESCE(to_char(D.hora_duo,'HH:MM'),'00:00') as hora_duo, \n"
-                + "  EXTRACT(DAY FROM ('"+fecha+" 00:00:00')-(d.fecha_duo+d.hora_duo))+1 as dias_cama ,\n"
+                + "  EXTRACT(DAY FROM ('" + fecha + " 00:00:00')-(d.fecha_duo+d.hora_duo))+1 as dias_cama ,\n"
                 + "  COALESCE( to_char (age(CURRENT_TIMESTAMP, p.fecha_nacimiento),'yy'),'') as edad ,\n"
                 + "  COALESCE((SELECT cat_visita_categorizacion FROM schema_uo.ultimacategorizacion where id_duo = D.id_duo \n"
-                + "  and fecha_hora_visita:: date = '"+fecha+"' ),'') as ultima_cat,\n"
-                + "   COALESCE((SELECT descripcion FROM schema_uo.ultimo_riesgo_upp  where id_duo=D.id_duo and fecha_hora_visita::date = '"+fecha+"' ),'') as riesgo_upp,\n"
-                + "  COALESCE((SELECT descripcion FROM schema_uo.ultimo_riesgo_caida where id_duo=D.id_duo and fecha_hora_visita::date = '"+fecha+"' ),'') as riesgo_caida\n"
+                + "  and fecha_hora_visita:: date = '" + fecha + "' ),'') as ultima_cat,\n"
+                + "   COALESCE((SELECT descripcion FROM schema_uo.ultimo_riesgo_upp  where id_duo=D.id_duo and fecha_hora_visita::date = '" + fecha + "' ),'') as riesgo_upp,\n"
+                + "  COALESCE((SELECT descripcion FROM schema_uo.ultimo_riesgo_caida where id_duo=D.id_duo and fecha_hora_visita::date = '" + fecha + "' ),'') as riesgo_caida\n"
                 + "  FROM schema_uo.duo D inner join  agenda.paciente p\n"
                 + "  ON (p.rut=D.rut_paciente) left JOIN\n"
-                + "  schema_uo.cama C ON D.id_cama = C.id_cama where  (EXTRACT(DAY FROM ('"+fecha+" 00:00:00')-(d.fecha_duo+d.hora_duo))+1) > 0\n"
-                + " and d.estado_duo not IN( 99)   and (d.fecha_hora_alta_med_duo::date >= '"+fecha+"' or d.fecha_hora_alta_med_duo is null)\n"
-                + " and d.fecha_hora_ing_duo::date <='"+fecha+"'\n"
+                + "  schema_uo.cama C ON D.id_cama = C.id_cama where  (EXTRACT(DAY FROM ('" + fecha + " 00:00:00')-(d.fecha_duo+d.hora_duo))+1) > 0\n"
+                + " and d.estado_duo not IN( 99)   and (d.fecha_hora_alta_med_duo::date >= '" + fecha + "' or d.fecha_hora_alta_med_duo is null)\n"
+                + " and d.fecha_hora_ing_duo::date <='" + fecha + "'\n"
                 + "  order by C.\"posicionCama\" asc ");
         this.cnn.conectar();
         try {
@@ -765,6 +764,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
+        this.cnn.cerrarConexion();
 
         return lista;
     }
@@ -836,8 +836,8 @@ public class NegocioQ extends Negocio {
 
         return vis;
     }
-    
-      public cVisita obtiene_visita_sesion(int id_visita_medica) {
+
+    public cVisita obtiene_visita_sesion(int id_visita_medica) {
         cVisita vis = new cVisita();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
@@ -922,9 +922,8 @@ public class NegocioQ extends Negocio {
         this.cnn.cerrarConexion();
         return lista;
     }
-    
-    
-     public ArrayList lista_historial_sesion(int id_duo) {
+
+    public ArrayList lista_historial_sesion(int id_duo) {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
@@ -1677,6 +1676,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
+        this.cnn.cerrarConexion();
 
         return aux;
     }
@@ -4117,6 +4117,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
+        this.cnn.cerrarConexion();
 
         return lista;
     }
@@ -4159,6 +4160,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
+        this.cnn.cerrarConexion();
 
         return lista;
     }
@@ -4195,7 +4197,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
-
+        this.cnn.cerrarConexion();
         return lista;
     }
 
@@ -4232,7 +4234,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
-
+        this.cnn.cerrarConexion();
         return lista;
     }
 
@@ -4268,7 +4270,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
-
+        this.cnn.cerrarConexion();
         return lista;
     }
 
@@ -4289,7 +4291,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
-
+        this.cnn.cerrarConexion();
         return lista;
     }
 
@@ -4342,7 +4344,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
-
+        this.cnn.cerrarConexion();
         return eva;
     }
 
@@ -4365,7 +4367,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
-
+        this.cnn.cerrarConexion();
         return lista;
     }
 
@@ -4387,7 +4389,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var3) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
         }
-
+       this.cnn.cerrarConexion();
         return lista;
     }
 
@@ -4471,7 +4473,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
-
+        this.cnn.cerrarConexion();
         return eva;
     }
 
@@ -4493,7 +4495,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
-
+        this.cnn.cerrarConexion();
         return lista;
     }
 
@@ -4628,7 +4630,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
-
+       this.cnn.cerrarConexion();
         return res;
     }
 
@@ -4655,7 +4657,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
-
+        this.cnn.cerrarConexion();
         return lista;
     }
 
@@ -4678,7 +4680,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
-
+        this.cnn.cerrarConexion();
         return lista;
     }
 
@@ -4743,7 +4745,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
-
+        this.cnn.cerrarConexion();
         return reg;
     }
 
@@ -4765,7 +4767,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var3) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
         }
-
+        this.cnn.cerrarConexion();
         return lista;
     }
 
@@ -4824,7 +4826,7 @@ public class NegocioQ extends Negocio {
                 Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var5);
             }
         }
-
+        this.cnn.cerrarConexion();
         return lista;
     }
 
