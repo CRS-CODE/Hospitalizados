@@ -140,12 +140,7 @@
             document.getElementById('farmacos').focus();
             return false;
         }
-        if (document.getElementById('observacion').value == '')
-        {
-            alert('Debe Ingresar Observación o Historia Actual!!De no tener Ingrese N/A');
-            document.getElementById('observacion').focus();
-            return false;
-        }
+
 
 
         if (confirm('Esta a Punto de Ingresar Al Paciente:  a la Unidad en la \nEsta Seguro?'))
@@ -267,12 +262,7 @@
                 <tr>
                     <td><textarea cols="100" rows="4" id="alergias" name="alergias"></textarea></td>
                 </tr>
-                <tr>
-                    <th class="destacado">Tipo de Aislamiento</th>
-                </tr>
-                <tr>
-                    <td><textarea cols="100" rows="4" id="aislamiento" name="aislamiento"></textarea></td>
-                </tr>
+
                 <tr>
                     <th class="destacado">Plan de enfermeria</th>
                 </tr>
@@ -290,9 +280,10 @@
 
                         <table>
                             <table style="FONT-FAMILY: Arial, Helvetica, sans-serif; FONT-SIZE: 12px;">
-                                <tr><td>PA</td><td><input tabindex="1" type="text" size="30" id="conciencia" name="pa"></td><td>Sat</td><td><input tabindex="11" type="text" size="30" id="sat" name="sat"></td></tr>
-                                <tr><td>FC</td><td><input tabindex="2" type="text" size="30" id="cabeza" name="fa"></td><td>FiO2</td><td><input tabindex="12" type="text" size="30" id="fio2" name="fio2"></td></tr>
-                                <tr><td>Tº</td><td><input tabindex="3" type="text" size="30" id="mucoza" name="t"></td><td>HGT</td><td><input tabindex="13" type="text" size="30" id="hgt" name="hgt"></td></tr>
+                                <tr><td>PA</td><td><input tabindex="1" type="text" size="30" id="pa" name="pa"></td><td>Sat</td><td><input tabindex="11" type="text" size="30" id="sat" name="sat"></td></tr>
+                                <tr><td>FC</td><td><input tabindex="2" type="text" size="30" id="fc" name="fc"></td><td>FiO2</td><td><input tabindex="12" type="text" size="30" id="fio2" name="fio2"></td></tr>
+                                <tr><td>Tº</td><td><input tabindex="3" type="text" size="30" id="t" name="t"></td><td>HGT</td><td><input tabindex="13" type="text" size="30" id="hgt" name="hgt"></td></tr>
+                                <tr><td>Frecuencia Respiratoria</td><td><input tabindex="3" type="text" size="30" id="frecuenciaRespiratoria" name="frecuenciaRespiratoria"></td></tr>
                             </table>
 
                     </td>
@@ -320,7 +311,7 @@
                     <th class="destacado">LPP</th>
                 </tr>
                 <tr>
-                    <td><textarea cols="100" rows="4" id="evolucion" name="evolucion"></textarea></td>
+                    <td><textarea cols="100" rows="4" id="lpp" name="lpp"></textarea></td>
                 </tr>
                 <tr>
                     <th class="destacado">Prestaciones Realizadas</th>
@@ -377,7 +368,7 @@
     <h3 class="destacadorut">Responsable:<%=session.getAttribute("usuario_nombre_completo")%></h3>
     <fieldset class="buttons">
         <input type="button" id="BtnIngresar" style="" onclick="Enviar()" class="DR" value="Ingresar Paciente a Cama" >
-
+        <a class="DR" href="../uh_visita.jsp">  Volver </a> 
     </fieldset>
 
 </form>

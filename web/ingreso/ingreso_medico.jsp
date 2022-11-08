@@ -37,7 +37,7 @@
     {
         messageObj.setSource(url);
         messageObj.setCssClassMessageBox(false);
-        messageObj.setSize(850,690);
+        messageObj.setSize(790,690);
         messageObj.setShadowDivVisible(true);	// Enable shadow for these boxes
         messageObj.display();
     }

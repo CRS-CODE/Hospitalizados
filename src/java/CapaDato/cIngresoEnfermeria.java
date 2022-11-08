@@ -48,39 +48,295 @@ public class cIngresoEnfermeria extends cUsuario {
     private String variable5;
     private String variable6;
     private String variable7;
+    private String PA;
+    private String FC;
+    private String T;
+    private String SAT;
+    private String FI02;
+    private String HGT;
+    private String evolucion_enfermeria;
+    private String elementos_invasivos;
+    private String vvp;
+    private String cup;
+    private String sng;
+    private String sny;
+    private String gtt;
+    private String picc;
+    private String cvc;
+    private String tqt;
+    private String lpp;
+    private String prestaciones_realizadas;
+    private String toma_examenes;
+    private String venoso;
+    private String pcr;
+    private String arterial;
+    private String ecg;
+    private String otro;
+    private String entregafarmacos;
+    private String educacion;
+    private String entregadocumentos;
+    private String frecuenciaRespiratoria;
 
     public cIngresoEnfermeria() {
         this.id_ing_enfermeria = 0;
         this.fecha_hora_ing_enfermeria = "";
         this.otro_comorbilidad_ing_enfermeria = "";
-        this.farmaco_ing_enfermeria =  "";
+        this.farmaco_ing_enfermeria = "";
         this.obs_ing_enfermeria = "";
         this.id_examen_fisico_ing_enfermeria = 0;
-        this.id_duo_ing_enfermeria =0;
-        this.otro_ex_docto_ing_enfermeria =  "";
-        this.conciencia_ex_fisico =  "";
-        this.cabeza_ex_fisico =  "";
+        this.id_duo_ing_enfermeria = 0;
+        this.otro_ex_docto_ing_enfermeria = "";
+        this.conciencia_ex_fisico = "";
+        this.cabeza_ex_fisico = "";
         this.mucosa_ex_fisico = "";
         this.torax_ex_fisico = "";
-        this.abdomen_ex_fisico =  "";
+        this.abdomen_ex_fisico = "";
         this.eess_ex_fisico = "";
         this.eeii_ex_fisico = "";
-        this.z_sacra_ex_fisico =  "";
+        this.z_sacra_ex_fisico = "";
         this.peso_ex_fisico = "";
-        this.talla_ex_fisico =  "";
+        this.talla_ex_fisico = "";
         this.pulso_ex_fisico = "";
-        this.presion_a_ex_fisico =  "";
-        this.temp_ex_fisico =  "";
-        this.satura_ex_fisico =  "";
-        this.vvp1_ex_fisico =  "";
+        this.presion_a_ex_fisico = "";
+        this.temp_ex_fisico = "";
+        this.satura_ex_fisico = "";
+        this.vvp1_ex_fisico = "";
         this.vvp2_ex_fisico = "";
-        this.vvc_ex_fisico =  "";
-        this.sng_ex_fisico =  "";
-        this.s_foley_ex_fisico =  "";
+        this.vvc_ex_fisico = "";
+        this.sng_ex_fisico = "";
+        this.s_foley_ex_fisico = "";
         this.dorso_lumbar_ex_fisico = "";
         this.piel_ex_fisico = "";
+        this.frecuenciaRespiratoria="";
     }
 
+    public String getPA() {
+        return PA;
+    }
+
+    public String getFrecuenciaRespiratoria() {
+        return frecuenciaRespiratoria;
+    }
+
+    public void setFrecuenciaRespiratoria(String frecuenciaRespiratoria) {
+        this.frecuenciaRespiratoria = frecuenciaRespiratoria;
+    }
+    
+    
+
+    public void setPA(String PA) {
+        this.PA = PA;
+    }
+
+    public String getFC() {
+        return FC;
+    }
+
+    public void setFC(String FC) {
+        this.FC = FC;
+    }
+
+    public String getT() {
+        return T;
+    }
+
+    public void setT(String T) {
+        this.T = T;
+    }
+
+    public String getSAT() {
+        return SAT;
+    }
+
+    public void setSAT(String SAT) {
+        this.SAT = SAT;
+    }
+
+    public String getFI02() {
+        return FI02;
+    }
+
+    public void setFI02(String FI02) {
+        this.FI02 = FI02;
+    }
+
+    public String getHGT() {
+        return HGT;
+    }
+
+    public void setHGT(String HGT) {
+        this.HGT = HGT;
+    }
+
+    public String getEvolucion_enfermeria() {
+        return evolucion_enfermeria;
+    }
+
+    public void setEvolucion_enfermeria(String evolucion_enfermeria) {
+        this.evolucion_enfermeria = evolucion_enfermeria;
+    }
+
+    public String getElementos_invasivos() {
+        return elementos_invasivos;
+    }
+
+    public void setElementos_invasivos(String elementos_invasivos) {
+        this.elementos_invasivos = elementos_invasivos;
+    }
+
+    public String getVvp() {
+        return vvp;
+    }
+
+    public void setVvp(String vvp) {
+        this.vvp = vvp;
+    }
+
+    public String getCup() {
+        return cup;
+    }
+
+    public void setCup(String cup) {
+        this.cup = cup;
+    }
+
+    public String getSng() {
+        return sng;
+    }
+
+    public void setSng(String sng) {
+        this.sng = sng;
+    }
+
+    public String getSny() {
+        return sny;
+    }
+
+    public void setSny(String sny) {
+        this.sny = sny;
+    }
+
+    public String getGtt() {
+        return gtt;
+    }
+
+    public void setGtt(String gtt) {
+        this.gtt = gtt;
+    }
+
+    public String getPicc() {
+        return picc;
+    }
+
+    public void setPicc(String picc) {
+        this.picc = picc;
+    }
+
+    public String getCvc() {
+        return cvc;
+    }
+
+    public void setCvc(String cvc) {
+        this.cvc = cvc;
+    }
+
+    public String getTqt() {
+        return tqt;
+    }
+
+    public void setTqt(String tqt) {
+        this.tqt = tqt;
+    }
+
+    public String getLpp() {
+        return lpp;
+    }
+
+    public void setLpp(String lpp) {
+        this.lpp = lpp;
+    }
+
+    public String getPrestaciones_realizadas() {
+        return prestaciones_realizadas;
+    }
+
+    public void setPrestaciones_realizadas(String prestaciones_realizadas) {
+        this.prestaciones_realizadas = prestaciones_realizadas;
+    }
+
+    public String getToma_examenes() {
+        return toma_examenes;
+    }
+
+    public void setToma_examenes(String toma_examenes) {
+        this.toma_examenes = toma_examenes;
+    }
+
+    public String getVenoso() {
+        return venoso;
+    }
+
+    public void setVenoso(String venoso) {
+        this.venoso = venoso;
+    }
+
+    public String getPcr() {
+        return pcr;
+    }
+
+    public void setPcr(String pcr) {
+        this.pcr = pcr;
+    }
+
+    public String getArterial() {
+        return arterial;
+    }
+
+    public void setArterial(String arterial) {
+        this.arterial = arterial;
+    }
+
+    public String getEcg() {
+        return ecg;
+    }
+
+    public void setEcg(String ecg) {
+        this.ecg = ecg;
+    }
+
+    public String getOtro() {
+        return otro;
+    }
+
+    public void setOtro(String otro) {
+        this.otro = otro;
+    }
+
+    public String getEntregafarmacos() {
+        return entregafarmacos;
+    }
+
+    public void setEntregafarmacos(String entregafarmacos) {
+        this.entregafarmacos = entregafarmacos;
+    }
+
+    public String getEducacion() {
+        return educacion;
+    }
+
+    public void setEducacion(String educacion) {
+        this.educacion = educacion;
+    }
+
+    public String getEntregadocumentos() {
+        return entregadocumentos;
+    }
+
+    public void setEntregadocumentos(String entregadocumentos) {
+        this.entregadocumentos = entregadocumentos;
+    }
+
+    
     public String getVariable7() {
         return variable7;
     }
@@ -88,9 +344,6 @@ public class cIngresoEnfermeria extends cUsuario {
     public void setVariable7(String variable7) {
         this.variable7 = variable7;
     }
-    
-    
-    
 
     public String getVariable1() {
         return variable1;
@@ -139,8 +392,6 @@ public class cIngresoEnfermeria extends cUsuario {
     public void setVariable6(String variable6) {
         this.variable6 = variable6;
     }
-    
-    
 
     /**
      * @return the id_ing_enfermeria
@@ -178,7 +429,8 @@ public class cIngresoEnfermeria extends cUsuario {
     }
 
     /**
-     * @param otro_comorbilidad_ing_enfermeria the otro_comorbilidad_ing_enfermeria to set
+     * @param otro_comorbilidad_ing_enfermeria the
+     * otro_comorbilidad_ing_enfermeria to set
      */
     public void setOtro_comorbilidad_ing_enfermeria(String otro_comorbilidad_ing_enfermeria) {
         this.otro_comorbilidad_ing_enfermeria = otro_comorbilidad_ing_enfermeria;
@@ -220,7 +472,8 @@ public class cIngresoEnfermeria extends cUsuario {
     }
 
     /**
-     * @param id_examen_fisico_ing_enfermeria the id_examen_fisico_ing_enfermeria to set
+     * @param id_examen_fisico_ing_enfermeria the
+     * id_examen_fisico_ing_enfermeria to set
      */
     public void setId_examen_fisico_ing_enfermeria(int id_examen_fisico_ing_enfermeria) {
         this.id_examen_fisico_ing_enfermeria = id_examen_fisico_ing_enfermeria;
@@ -248,7 +501,8 @@ public class cIngresoEnfermeria extends cUsuario {
     }
 
     /**
-     * @param otro_ex_docto_ing_enfermeria the otro_ex_docto_ing_enfermeria to set
+     * @param otro_ex_docto_ing_enfermeria the otro_ex_docto_ing_enfermeria to
+     * set
      */
     public void setOtro_ex_docto_ing_enfermeria(String otro_ex_docto_ing_enfermeria) {
         this.otro_ex_docto_ing_enfermeria = otro_ex_docto_ing_enfermeria;
@@ -547,7 +801,5 @@ public class cIngresoEnfermeria extends cUsuario {
     public void setPiel_ex_fisico(String piel_ex_fisico) {
         this.piel_ex_fisico = piel_ex_fisico;
     }
-    
-    
 
 }

@@ -85,7 +85,7 @@
 
     document.open();
 
-    Phrase titulo = new Phrase(SPACE_TITULO, "CATEGORIZACION RIESGO-DEPENDENCIA N°" + id_visita, TEXT_TITULO);
+    Phrase titulo = new Phrase(SPACE_TITULO, "CATEGORIA DE PACIENTES" + id_visita, TEXT_TITULO);
     int cuenta_liquidacion = 0, cuenta = 1;
 
     PdfPTable tabla_encabezado = new PdfPTable(5);
@@ -211,300 +211,64 @@
 
     tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
     tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(7);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "DEPENDENCIA", TEXT_NORMAL_NEGRITA));
+    tabla_cat.getDefaultCell().setColspan(9);
+    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Básico", TEXT_NORMAL_NEGRITA));
+
+    tabla_cat.getDefaultCell().setBackgroundColor(Color.WHITE);
+    tabla_cat.getDefaultCell().setPadding(2);
+    tabla_cat.getDefaultCell().setColspan(9);
+    if (hv.getD1_visita_categorizacion() == 1) {
+        tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Control de signos vitales", TEXT_NORMAL_NEGRITA));
+    }
+
+    if (hv.getD2_visita_categorizacion() == 1) {
+        tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Control de Hemoglucotest", TEXT_NORMAL_NEGRITA));
+    }
+
+    if (hv.getD3_visita_categorizacion() == 1) {
+        tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Educación", TEXT_NORMAL_NEGRITA));
+    }
+
+    if (hv.getD4_visita_categorizacion() == 1) {
+        tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Kinesiología Motora.", TEXT_NORMAL_NEGRITA));
+    }
+
+    if (hv.getD5_visita_categorizacion() == 1) {
+        tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Fonoaudiología.", TEXT_NORMAL_NEGRITA));
+    }
+    if (hv.getD6_visita_categorizacion() == 1) {
+        tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Terapia Ocupacional.", TEXT_NORMAL_NEGRITA));
+    }
 
     tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
     tabla_cat.getDefaultCell().setPadding(2);
     tabla_cat.getDefaultCell().setColspan(9);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "RIESGOS", TEXT_NORMAL_NEGRITA));
+    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Intermedio", TEXT_NORMAL_NEGRITA));
 
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
+    tabla_cat.getDefaultCell().setBackgroundColor(Color.WHITE);
     tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(2);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, " ", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Dep.1", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Dep.2", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Dep.3", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Dep.4", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Dep.5", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Dep.6", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Ptje. Depend.", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Riesgo 1", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Riesgo 2", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Riesgo 3", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Riesgo 4", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Riesgo 5", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Riesgo 6", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Riesgo 7", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Riesgo 8", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Ptje. Riesgo.", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Ptje. Total", TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "C", TEXT_NORMAL_NEGRITA));
-
-    /**
-     * *******************************************************************************
-     */
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.getDefaultCell().setHorizontalAlignment(10);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(hv.getD1_visita_categorizacion()), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(hv.getD2_visita_categorizacion()), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(hv.getD3_visita_categorizacion()), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(hv.getD4_visita_categorizacion()), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(hv.getD5_visita_categorizacion()), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(hv.getD6_visita_categorizacion()), TEXT_NORMAL_NEGRITA));
-
-    int total_d = hv.getD1_visita_categorizacion() + hv.getD2_visita_categorizacion() + hv.getD3_visita_categorizacion() + hv.getD4_visita_categorizacion() + hv.getD5_visita_categorizacion() + hv.getD6_visita_categorizacion();
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(total_d), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(hv.getR1_visita_categorizacion()), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(hv.getR2_visita_categorizacion()), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(hv.getR3_visita_categorizacion()), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(hv.getR4_visita_categorizacion()), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(hv.getR5_visita_categorizacion()), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(hv.getR6_visita_categorizacion()), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(hv.getR7_visita_categorizacion()), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(hv.getR8_visita_categorizacion()), TEXT_NORMAL_NEGRITA));
-
-    int total_r = hv.getR1_visita_categorizacion() + hv.getR2_visita_categorizacion() + hv.getR3_visita_categorizacion() + hv.getR4_visita_categorizacion() + hv.getR5_visita_categorizacion() + hv.getR6_visita_categorizacion() + hv.getR7_visita_categorizacion() + hv.getR8_visita_categorizacion();
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(total_r), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, String.valueOf(total_r + total_d), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setColspan(1);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, hv.getCat_visita_categorizacion(), TEXT_NORMAL_NEGRITA));
-
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.CYAN);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "DEPENDENCIA", TEXT_NORMAL_NEGRITA_BLANCA));
-
-    ambitocrd = neg.getAmbitoCRD(1);
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, ambitocrd.getAbre_ambito_crd(), TEXT_NORMAL_NEGRITA));
-
-    gradocrd = neg.getGradoCRD(1, hv.getD1_visita_categorizacion());
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, gradocrd.getDescripcion_grado_crd(), TEXT_NORMAL_NEGRITA));
-
-    ambitocrd = neg.getAmbitoCRD(2);
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, ambitocrd.getAbre_ambito_crd(), TEXT_NORMAL_NEGRITA));
-
-    gradocrd = neg.getGradoCRD(2, hv.getD2_visita_categorizacion());
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, gradocrd.getDescripcion_grado_crd(), TEXT_NORMAL_NEGRITA));
-
-    ambitocrd = neg.getAmbitoCRD(3);
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, ambitocrd.getAbre_ambito_crd(), TEXT_NORMAL_NEGRITA));
-
-    gradocrd = neg.getGradoCRD(3, hv.getD3_visita_categorizacion());
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, gradocrd.getDescripcion_grado_crd(), TEXT_NORMAL_NEGRITA));// </editor-fold>
-
-    ambitocrd = neg.getAmbitoCRD(4);
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, ambitocrd.getAbre_ambito_crd(), TEXT_NORMAL_NEGRITA));
-
-    gradocrd = neg.getGradoCRD(4, hv.getD4_visita_categorizacion());
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, gradocrd.getDescripcion_grado_crd(), TEXT_NORMAL_NEGRITA));// </editor-fold>
-
-    ambitocrd = neg.getAmbitoCRD(5);
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, ambitocrd.getAbre_ambito_crd(), TEXT_NORMAL_NEGRITA));
-
-    gradocrd = neg.getGradoCRD(5, hv.getD5_visita_categorizacion());
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, gradocrd.getDescripcion_grado_crd(), TEXT_NORMAL_NEGRITA));// </editor-fold>
-
-    ambitocrd = neg.getAmbitoCRD(6);
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, ambitocrd.getAbre_ambito_crd(), TEXT_NORMAL_NEGRITA));
-
-    gradocrd = neg.getGradoCRD(6, hv.getD6_visita_categorizacion());
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, gradocrd.getDescripcion_grado_crd(), TEXT_NORMAL_NEGRITA));// </editor-fold>
-
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.CYAN);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, "RIESGOS", TEXT_NORMAL_NEGRITA_BLANCA));
-
-    ambitocrd = neg.getAmbitoCRD(7);
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, ambitocrd.getAbre_ambito_crd(), TEXT_NORMAL_NEGRITA));
-
-    gradocrd = neg.getGradoCRD(7, hv.getR1_visita_categorizacion());
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, gradocrd.getDescripcion_grado_crd(), TEXT_NORMAL_NEGRITA));// </editor-fold>
-
-    ambitocrd = neg.getAmbitoCRD(8);
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, ambitocrd.getAbre_ambito_crd(), TEXT_NORMAL_NEGRITA));
-
-    gradocrd = neg.getGradoCRD(8, hv.getR2_visita_categorizacion());
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, gradocrd.getDescripcion_grado_crd(), TEXT_NORMAL_NEGRITA));// </editor-fold>
-
-    ambitocrd = neg.getAmbitoCRD(9);
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, ambitocrd.getAbre_ambito_crd(), TEXT_NORMAL_NEGRITA));
-
-    gradocrd = neg.getGradoCRD(9, hv.getR3_visita_categorizacion());
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, gradocrd.getDescripcion_grado_crd(), TEXT_NORMAL_NEGRITA));// </editor-fold>
-
-    ambitocrd = neg.getAmbitoCRD(10);
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, ambitocrd.getAbre_ambito_crd(), TEXT_NORMAL_NEGRITA));
-
-    gradocrd = neg.getGradoCRD(10, hv.getR4_visita_categorizacion());
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, gradocrd.getDescripcion_grado_crd(), TEXT_NORMAL_NEGRITA));// </editor-fold>
-
-    ambitocrd = neg.getAmbitoCRD(11);
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, ambitocrd.getAbre_ambito_crd(), TEXT_NORMAL_NEGRITA));
-
-    gradocrd = neg.getGradoCRD(11, hv.getR5_visita_categorizacion());
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, gradocrd.getDescripcion_grado_crd(), TEXT_NORMAL_NEGRITA));// </editor-fold>
-
-    ambitocrd = neg.getAmbitoCRD(12);
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, ambitocrd.getAbre_ambito_crd(), TEXT_NORMAL_NEGRITA));
-
-    gradocrd = neg.getGradoCRD(12, hv.getR6_visita_categorizacion());
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, gradocrd.getDescripcion_grado_crd(), TEXT_NORMAL_NEGRITA));// </editor-fold>
-
-    ambitocrd = neg.getAmbitoCRD(13);
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, ambitocrd.getAbre_ambito_crd(), TEXT_NORMAL_NEGRITA));
-
-    gradocrd = neg.getGradoCRD(13, hv.getR7_visita_categorizacion());
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, gradocrd.getDescripcion_grado_crd(), TEXT_NORMAL_NEGRITA));// </editor-fold>
-
-    ambitocrd = neg.getAmbitoCRD(14);
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.lightGray);
-    tabla_cat.getDefaultCell().setPadding(2);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, ambitocrd.getAbre_ambito_crd(), TEXT_NORMAL_NEGRITA));
-
-    gradocrd = neg.getGradoCRD(14, hv.getR8_visita_categorizacion());
-    tabla_cat.getDefaultCell().setBackgroundColor(Color.white);
-    tabla_cat.getDefaultCell().setColspan(18);
-    tabla_cat.addCell(new Phrase(SPACE_NORMAL, gradocrd.getDescripcion_grado_crd(), TEXT_NORMAL_NEGRITA));// </editor-fold>
+    tabla_cat.getDefaultCell().setColspan(9);
+    if (hv.getR1_visita_categorizacion() == 1) {
+        tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Control de signos.", TEXT_NORMAL_NEGRITA));
+    }
+    if (hv.getR2_visita_categorizacion() == 1) {
+        tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Control de Hemoglucotest.", TEXT_NORMAL_NEGRITA));
+    }
+    if (hv.getR3_visita_categorizacion() == 1) {
+        tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Kinesiología motora.", TEXT_NORMAL_NEGRITA));
+    }
+    if (hv.getR4_visita_categorizacion() == 1) {
+        tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Kinesiología respiratoria.", TEXT_NORMAL_NEGRITA));
+    }
+    if (hv.getR5_visita_categorizacion() == 1) {
+        tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Fonoaudiología.", TEXT_NORMAL_NEGRITA));
+    }
+    if (hv.getR6_visita_categorizacion() == 1) {
+        tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Educación.", TEXT_NORMAL_NEGRITA));
+    }
+    if (hv.getR7_visita_categorizacion() == 1) {
+        tabla_cat.addCell(new Phrase(SPACE_NORMAL, "Tratamiento oral.", TEXT_NORMAL_NEGRITA));
+    }
 
 //AGREGO LAS TABLAS AL DOCUMENTO
     document.add(tabla_encabezado);

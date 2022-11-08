@@ -204,7 +204,7 @@
 
                             <%                         } else {
                                 // si la cama esta ocupada
-                                clas = "CRD_" + aux.getUltima_clasificacion().substring(0, 1);
+                                //clas = "CRD_" + aux.getUltima_clasificacion().substring(0, 1);
                             %>
 
                             <td align="right" valign="top" dragableBox="false" >
@@ -221,8 +221,7 @@
                                                     }
                                                 %>
                                             </b></td>
-                                        <td class="<%=clas%>" title="Ultima Categorización"><b style="color:#000"><% out.write("" + aux.getUltima_clasificacion());%></b></td>
-                                    </tr>
+                                     </tr>
                                     <tr>
                                         <td valign="top" colspan="2" class="CAMA_ACTIVA" onclick="document.forms['form_pac<%=aux.getId_duo()%>'].submit();" >
                                             <form name='form_pac<%=aux.getId_duo()%>' id='form_pac<%=aux.getId_duo()%>' action='datos/datos_paciente.jsp' method='POST' >

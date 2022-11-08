@@ -31,7 +31,7 @@
     int id_cama = duo.getCama();
 
     // out.write(obtiene_duo + "  -- " + id_cama);
-    String categorizacion = request.getParameter("txt_categorizacion").toUpperCase();
+    //   String categorizacion = request.getParameter("txt_categorizacion").toUpperCase();
     String fecha_hora_at_dma = request.getParameter("txt_fecha");
     int hora = Integer.parseInt(request.getParameter("txt_hora"));
     int minuto = Integer.parseInt(request.getParameter("txt_minuto"));
@@ -50,16 +50,15 @@
     //String observaciones = request.getParameter("observaciones").toUpperCase().replaceAll("'", "''");
     ArrayList historial_visita_enfermeria = neg.lista_historial_visita_enfermeria(obtiene_duo);
     boolean sw_mismo_dia = false;
-        int visita_mismo_dia=0;
+    int visita_mismo_dia = 0;
     Iterator it_his = historial_visita_enfermeria.iterator();
-
 
     while (it_his.hasNext()) {
         cVisita vis = (cVisita) it_his.next();
         if (fecha_hora_at_dma.replace("-", "/").equals(vis.getFecha_visita().replace("-", "/"))) {
             sw_mismo_dia = true;
-            visita_mismo_dia=vis.getId_visita_categorizacion();
-            
+            visita_mismo_dia = vis.getId_visita_categorizacion();
+
         }
     }
 
@@ -90,42 +89,138 @@
     //out.println("<hr>"+amd.format(c.getTime()));
     if (sw_mismo_dia) {
         out.write("<h2>Este paciente ya tiene una visita asignada para este dia</h2>");
-             
-        out.write("<form name='form_enf" + obtiene_duo + "' id='form_enf" + obtiene_duo + "' action='"+neg.getLocal()+"visitas/CategorizacionPDF.jsp?id_visita="+visita_mismo_dia+"' target='a_blank' method='POST' >");
-                    out.write("<input type='hidden' name='txt_manda_duo' value='" + obtiene_duo + "' >");
-                    out.write(" <img title='Visita Enfermera' src='Imagenes/Nurse_edit.png' onclick='document.forms[\"form_enf" + obtiene_duo + "\"].submit();' style='cursor:pointer'> "
-                            + "<--Ver PDF");
-                    out.write("</form>");
-        
-        
+
+        out.write("<form name='form_enf" + obtiene_duo + "' id='form_enf" + obtiene_duo + "' action='" + neg.getLocal() + "visitas/CategorizacionPDF.jsp?id_visita=" + visita_mismo_dia + "' target='a_blank' method='POST' >");
+        out.write("<input type='hidden' name='txt_manda_duo' value='" + obtiene_duo + "' >");
+        out.write(" <img title='Visita Enfermera' src='Imagenes/Nurse_edit.png' onclick='document.forms[\"form_enf" + obtiene_duo + "\"].submit();' style='cursor:pointer'> "
+                + "<--Ver PDF");
+        out.write("</form>");
+
     } else {
-     
 
-            String dia1 = fecha_hora_at_dma.substring(0, 2);
-            String mes1 = fecha_hora_at_dma.substring(3, 5);
-            String ano1 = fecha_hora_at_dma.substring(6, 10);
-            String fecha1 = dia1+ "-" + mes1+ "-" +ano1;
-            String hora1 = hora + ":" + minuto + ":00";
-            int id_categorizacion = 0;
-            int d1 = Integer.parseInt(request.getParameter("d1"));
-            int d2 = Integer.parseInt(request.getParameter("d2"));
-            int d3 = Integer.parseInt(request.getParameter("d3"));
-            int d4 = Integer.parseInt(request.getParameter("d4"));
-            int d5 = Integer.parseInt(request.getParameter("d5"));
-            int d6 = Integer.parseInt(request.getParameter("d6"));
-            int r1 = Integer.parseInt(request.getParameter("r7"));
-            int r2 = Integer.parseInt(request.getParameter("r8"));
-            int r3 = Integer.parseInt(request.getParameter("r9"));
-            int r4 = Integer.parseInt(request.getParameter("r10"));
-            int r5 = Integer.parseInt(request.getParameter("r11"));
-            int r6 = Integer.parseInt(request.getParameter("r12"));
-            int r7 = Integer.parseInt(request.getParameter("r13"));
-            int r8 = Integer.parseInt(request.getParameter("r14"));
-            String cat = categorizacion;
+        String dia1 = fecha_hora_at_dma.substring(0, 2);
+        String mes1 = fecha_hora_at_dma.substring(3, 5);
+        String ano1 = fecha_hora_at_dma.substring(6, 10);
+        String fecha1 = dia1 + "-" + mes1 + "-" + ano1;
+        String hora1 = hora + ":" + minuto + ":00";
+        int id_categorizacion = 0;
+        int d1 = 0;
+        int d2 = 0;
+        int d3 = 0;
+        int d4 = 0;
+        int d5 = 0;
+        int d6 = 0;
+        int r1 = 0;
+        int r2 = 0;
+        int r3 = 0;
+        int r4 = 0;
+        int r5 = 0;
+        int r6 = 0;
+        int r7 = 0;
+        int r8 = 0;
+        int r9 = 0;
+        int r10 = 0;
+        int r11 = 0;
+        int r12 = 0;
+        int r13 = 0;
+        if (request.getParameter("d1") != null) {
+            if (request.getParameter("d1").equals("checkbox")) {
+                d1 = 1;
+            }
+        }
+        if (request.getParameter("d2") != null) {
+            if (request.getParameter("d2").equals("checkbox")) {
+                d2 = 1;
+            }
+        }
+        if (request.getParameter("d3") != null) {
+            if (request.getParameter("d3").equals("checkbox")) {
+                d3 = 1;
+            }
+        }
+        if (request.getParameter("d4") != null) {
+            if (request.getParameter("d4").equals("checkbox")) {
+                d4 = 1;
+            }
+        }
+            if (request.getParameter("d5") != null) {
+                if (request.getParameter("d5").equals("checkbox")) {
+                    d5 =1;
+                }
+            }
+            if (request.getParameter("d6") != null) {
+                if (request.getParameter("d6").equals("checkbox")) {
+                    d6 = 1;
+                }
+            }
+            if (request.getParameter("r7") != null) {
+                if (request.getParameter("r7").equals("checkbox")) {
+                    r1 = 1;
+                }
+            }
+            if (request.getParameter("r8") != null) {
+                if (request.getParameter("r8").equals("checkbox")) {
+                    r2 = 1;
+                }
+            }
+            if (request.getParameter("r9") != null) {
+                if (request.getParameter("r9").equals("checkbox")) {
+                    r3 = 1;
+                }
+            }
+            if (request.getParameter("r10") != null) {
+                if (request.getParameter("r10").equals("checkbox")) {
+                    r4 = 1;
+                }
+            }
+            if (request.getParameter("r11") != null) {
+                if (request.getParameter("r11").equals("checkbox")) {
+                    r5 = 1;
+                }
+            }
+            if (request.getParameter("r12") != null) {
+                if (request.getParameter("r12").equals("checkbox")) {
+                    r6 = 1;
+                }
+            }
+            if (request.getParameter("r13") != null) {
+                if (request.getParameter("r13").equals("checkbox")) {
+                    r7 = 1;
+                }
+            }
+            if (request.getParameter("r14") != null) {
+                if (request.getParameter("r14").equals("checkbox")) {
+                    r8 = 1;
+                }
+            }
+            if (request.getParameter("r15") != null) {
+                if (request.getParameter("r15").equals("checkbox")) {
+                    r9 = 1;
+                }
+            }
+            if (request.getParameter("r16") != null) {
+                if (request.getParameter("r16").equals("checkbox")) {
+                    r10 =1;
+                }
+            }
+            if (request.getParameter("r17") != null) {
+                if (request.getParameter("r17").equals("checkbox")) {
+                    r11 = 1;
+                }
+            }
+            if (request.getParameter("r18") != null) {
+                if (request.getParameter("r18").equals("checkbox")) {
+                    r12 = 1;
+                }
+            }
+            if (request.getParameter("r19") != null) {
+                if (request.getParameter("r19").equals("checkbox")) {
+                    r13 = 1;
+                }
+            }
 
-            if (cat.trim().length() != 2) {
-                out.print("<h1>El campo categoria presentaba un problema antes de guardar la visita (estaba vacio o contenia más de 2 caracteres);<br> Intentelo Nuevamente</h1><br>");
-            } else {
+            String cat = "";
+
                 // out.write("paso al ingersa " + hora + " " + minuto + "  || " + hora1);
 
                 int obtiene_id_cat = neg.ingresa_categorizacion_enfermeria(d1, d2, d3, d4, d5, d6, r1, r2, r3, r4, r5, r6, r7, r8, cat.trim());
@@ -134,7 +229,7 @@
                 if (grabo > 0) {
                     out.print("<h2>La Visita Correspondiente al dia de Hoy Se ha grabado Satisfactoriamente!!</h2><br>");
 
-                    out.write("<form name='form_enf" + obtiene_duo + "' id='form_enf" + obtiene_duo + "' action='"+neg.getLocal()+"visitas/CategorizacionPDF.jsp?id_visita="+grabo+"' target='a_blank' method='POST' >");
+                    out.write("<form name='form_enf" + obtiene_duo + "' id='form_enf" + obtiene_duo + "' action='" + neg.getLocal() + "visitas/CategorizacionPDF.jsp?id_visita=" + grabo + "' target='a_blank' method='POST' >");
                     out.write("<input type='hidden' name='txt_manda_duo' value='" + obtiene_duo + "' >");
                     out.write(" <img title='Visita Enfermera' src='Imagenes/Nurse_edit.png' onclick='document.forms[\"form_enf" + obtiene_duo + "\"].submit();' style='cursor:pointer'> "
                             + "<--Ver PDF");
@@ -144,22 +239,19 @@
                     out.print("<h2>Ha ocurrido un Error al Guardar la Visita; Intentelo Nuevamente\n"
                             + "Si el Error persiste comuniqueselo al Depto. de Informatica</h2>");
                 }
+        }
 
-            }
-        
-    }
+        out.write("<form name='form_visita_enfermeria" + obtiene_duo + "' id='form_visita_enfermeria" + obtiene_duo + "' action='" + neg.getLocal() + "visita_enfermeria.jsp' method='POST' >");
+        out.write("<input type='hidden' name='txt_manda_duo' value='" + obtiene_duo + "' >");
+        out.write(" <img title='Visita' src='Imagenes/home.png' onclick='document.forms[\"form_visita_enfermeria" + obtiene_duo + "\"].submit();' style='cursor:pointer'>"
+                + "<--Volver a la página de visita enfermería");
+        out.write("</form>");
 
-    out.write("<form name='form_visita_enfermeria" + obtiene_duo + "' id='form_visita_enfermeria" + obtiene_duo + "' action='" + neg.getLocal() + "visita_enfermeria.jsp' method='POST' >");
-    out.write("<input type='hidden' name='txt_manda_duo' value='" + obtiene_duo + "' >");
-    out.write(" <img title='Visita' src='Imagenes/home.png' onclick='document.forms[\"form_visita_enfermeria" + obtiene_duo + "\"].submit();' style='cursor:pointer'>"
-            + "<--Volver a la página de visita enfermería");
-    out.write("</form>");
-
-    out.write("<form name='form_visita" + obtiene_duo + "' id='form_visita" + obtiene_duo + "' action='" + neg.getLocal() + "uh_visita.jsp' method='POST' >");
-    out.write("<input type='hidden' name='txt_manda_duo' value='" + obtiene_duo + "' >");
-    out.write(" <img title='Visita' src='Imagenes/home.png' onclick='document.forms[\"form_visita" + obtiene_duo + "\"].submit();' style='cursor:pointer'>"
-            + "<--Volver a la página de visita");
-    out.write("</form>");
+        out.write("<form name='form_visita" + obtiene_duo + "' id='form_visita" + obtiene_duo + "' action='" + neg.getLocal() + "uh_visita.jsp' method='POST' >");
+        out.write("<input type='hidden' name='txt_manda_duo' value='" + obtiene_duo + "' >");
+        out.write(" <img title='Visita' src='Imagenes/home.png' onclick='document.forms[\"form_visita" + obtiene_duo + "\"].submit();' style='cursor:pointer'>"
+                + "<--Volver a la página de visita");
+        out.write("</form>");
 
 
 %>

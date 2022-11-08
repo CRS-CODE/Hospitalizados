@@ -79,7 +79,7 @@
                 document.getElementById('div_cama_cargando').innerHTML = '';
                 document.getElementById("div_cama_seleccionada").innerHTML = obj.responseText;
                 //  $("#txt_fecha").datepicker();
-                cat();
+              //  cat();
                 lista_visita();
     <%                       if (obtiene_perfil == 12 || obtiene_perfil == 10) {
 
@@ -334,22 +334,22 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="2" onclick="asigna('d1', 3)">Control de signos vitales. </td>
+                      <td colspan="2" > <input id="d1" name="d1" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Control de signos vitales. </td>
                     </tr>
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d1', 2)">Control de Hemoglucotest.</td>
+                       <td colspan="2" > <input id="d2" name="d2" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" >Control de Hemoglucotest.</td>
                     </tr>
                     <tr>
-                        <td colspan="2" onclick="asigna('d1', 1)">Educación.</td>
+                     <td colspan="2" >  <input id="d3" name="d3" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Educación.</td>
                     </tr>
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d1', 0)" >Kinesiología Motora.</td>
+                        <td colspan="2"  > <input id="d4" name="d4" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Kinesiología Motora.</td>
                     </tr>
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d1', 0)" >Fonoaudiología.</td>
+                        <td colspan="2" > <input id="d5" name="d5" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Fonoaudiología.</td>
                     </tr>
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d1', 0)" >Terapia Ocupacional.</td>
+                        <td colspan="2" > <input id="d6" name="d6" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Terapia Ocupacional.</td>
                     </tr>
                 <thead>
                     <tr>
@@ -361,47 +361,44 @@
 
                 <tbody>
                     <tr>
-                        <td colspan="2" onclick="asigna('d2', 3)">Control de signos.</td>
+                        <td colspan="2" > <input id="r7" name="r7" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox"  > Control de signos.</td>
                     </tr>
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d2', 2)">Control de Hemoglucotest.</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" onclick="asigna('d2', 1)">Educación.</td>
+                        <td colspan="2" > <input id="r8" name="r8" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Control de Hemoglucotest.</td>
                     </tr>
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d2', 0)">Kinesiología motora.</td>
+                        <td colspan="2" > <input id="r10" name="r10" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Kinesiología motora.</td>
                     </tr>
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d2', 0)">Kinesiología respiratoria.</td>
+                        <td colspan="2" > <input id="r11" name="r11" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Kinesiología respiratoria.</td>
                     </tr>
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d2', 0)">Fonoaudiología.</td>
+                        <td colspan="2" > <input id="r12" name="r12" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Fonoaudiología.</td>
                     </tr>
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d2', 0)">Educación.</td>
+                        <td colspan="2" > <input id="r13" name="r13" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Educación.</td>
                     </tr>
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d2', 0)">Tratamiento oral.</td>
+                        <td colspan="2" > <input id="r14" name="r14" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Tratamiento oral.</td>
                     </tr>
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d2', 0)">Tratamiento subcutáneo.</td>
+                        <td colspan="2" > <input id="r15" name="r15" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Tratamiento subcutáneo.</td>
                     </tr>
 
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d2', 0)">Tratamiento endovenoso.</td>
+                        <td colspan="2" > <input id="r16" name="r16" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Tratamiento endovenoso.</td>
                     </tr>
 
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d2', 0)">Oxígeno.</td>
+                        <td colspan="2" > <input id="r17" name="r17" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Oxígeno.</td>
                     </tr>
 
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d2', 0)">Curaciones.</td>
+                        <td colspan="2" > <input id="r18" name="r18" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox" > Curaciones.</td>
                     </tr>
 
                     <tr class="odd">
-                        <td colspan="2" onclick="asigna('d2', 0)">Toma de exámenes.</td>
+                        <td colspan="2"> <input id="r19" name="r19" readonly type="checkbox" size="1" maxlength="1" style="font-size: 16px" value="checkbox"  > Toma de exámenes.</td>
                     </tr>
 
 

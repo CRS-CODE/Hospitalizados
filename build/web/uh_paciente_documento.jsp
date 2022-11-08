@@ -26,7 +26,7 @@
 <%@page import="CapaNegocio.Negocio"%>
 <%
     int obtiene_perfil = Integer.parseInt(session1.getAttribute("usuario_perfil").toString());
-    
+
     String rut_paciente = request.getParameter("user");
     Negocio controller = new Negocio();
     //  out.write("Documentos del Paciente " + rut_paciente + "<br>");
@@ -66,10 +66,17 @@
                 + " </thead><tbody>");
         while (it.hasNext()) {
             cEpicrisis not = (cEpicrisis) it.next();
+            int old = neg.IngresoOld(not.getId_duo());
             out.write("<tr valign='TOP' " + datos + " >");
             out.write("<td><center>" + not.getId_duo() + "</center><br>");
             out.write("<a href='" + neg.getLocal() + "PDF_DUO?id_duo=" + not.getId_duo() + "' target='_blank'><img src='Imagenes/doctorImp.png' width='35' height='36' alt='Ingreso Médico' title='Ingreso Médico' /></a>");
-            out.write("<a href='" + neg.getLocal() + "PDF_ingreso_enfermeria?txt_duo=" + not.getId_duo() + "' target='_blank'><img src='Imagenes/enfermeraImp.png' width='35' height='36' alt='Ingreso Enfermería' title='Ingreso Enfermería' /></a>");
+            if (old > 0) {
+                out.write("<a href='" + neg.getLocal() + "PDF_ingreso_enfermeriaOLD?txt_duo=" + not.getId_duo() + "' target='_blank'><img src='Imagenes/enfermeraImp.png' width='35' height='36' alt='Ingreso Enfermería' title='Ingreso Enfermería' /></a>");
+
+            } else {
+                out.write("<a href='" + neg.getLocal() + "PDF_ingreso_enfermeria?txt_duo=" + not.getId_duo() + "' target='_blank'><img src='Imagenes/enfermeraImp.png' width='35' height='36' alt='Ingreso Enfermería' title='Ingreso Enfermería' /></a>");
+
+            }
             out.write("</td>");
             out.write("<td>" + not.getFecha_duo() + " </td>");
             if (not.getId_epicrisis() != 0) {
@@ -86,8 +93,7 @@
             out.write("<td>Tramo " + not.getTramo() + "&nbsp;</td>");
             out.write("<td>   <font style=' font-size:   xx-small ' >" + not.getPrevision_descri().replace(" ", "<br>") + " " + not.getPrais_descri().replace(" ", "<br>") + "  </font> </td>");
 
-            
-                out.write("<td>");
+            out.write("<td>");
 
 %>
 <form  action='PDF_registro_social' id="form_documento_registro" method='POST' target='_blank' >
@@ -101,12 +107,12 @@
     <p  style=' font-size:   xx-small ' > Nutricionista  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_nutricionista?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>
     <p  style=' font-size:   xx-small ' > Fonoaudiologa  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_fono?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>     
     <p  style=' font-size:   xx-small ' > Psicòlogo/a  <img src="Imagenes/pdf.png" alt="" onclick="javascript:  window.open('/modulo_uhce/PDF_sesion_psicolo?txt_duo=<%=not.getId_duo()%>', '', 'width=600,height=450')"/></p>
-     
+
 </form>   
 <%
 
-        out.write("</td>");
-  
+    out.write("</td>");
+
     int idIngreso = controller.getIdRegisterDuoIndexBarthel(not.getId_duo(), 1);
     int idEgreso = controller.getIdRegisterDuoIndexBarthel(not.getId_duo(), 2);
     out.write("<td>");

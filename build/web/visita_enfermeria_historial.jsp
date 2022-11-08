@@ -31,7 +31,6 @@
         out.write("<th>Dia/Hora</th>");
         out.write("<th>Usuario</th>");
         out.write("<th>Duo</th>");
-        out.write("<th>Categorización</th>");
         out.write("<th>Detalle</th>");
 
         out.write("</tr>");
@@ -42,7 +41,6 @@
             out.write("<td>" + vis.getFecha_visita() + "&nbsp;" + vis.getHora_visita() + "</td>");
             out.write("<td>" + vis.getNombre_usuario() + "&nbsp;" + vis.getApellidop_usuario() + "&nbsp;" + vis.getApellidom_usuario().substring(0, 1) + ".</td>");
             out.write("<td>" + vis.getId_duo() + "</td>");
-            out.write("<td>" + vis.getCat_visita_categorizacion() + "</td>");
             out.write("<td>" + vis.getObs_visita() + "</td>");
             out.write("</tr>");
         }
@@ -52,18 +50,7 @@
         out.write("<table>");
         while (it_visita.hasNext()) {
             cVisita vis = (cVisita) it_visita.next();
-            if (vis.getCat_visita_categorizacion().substring(0, 1).equalsIgnoreCase("D")) {
-                clas = "CRD_D";
-            }
-            if (vis.getCat_visita_categorizacion().substring(0, 1).equalsIgnoreCase("C")) {
-                clas = "CRD_C";
-            }
-            if (vis.getCat_visita_categorizacion().substring(0, 1).equalsIgnoreCase("B")) {
-                clas = "CRD_B";
-            }
-            if (vis.getCat_visita_categorizacion().substring(0, 1).equalsIgnoreCase("A")) {
-                clas = "CRD_A";
-            }
+         
             int resto = contador % 10;
             if (contador == 0 || resto == 0) {
                 out.write("<tr>");

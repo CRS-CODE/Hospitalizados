@@ -20,7 +20,6 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 
-
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 
@@ -52,8 +51,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class PDF_DUO extends HttpServlet {
 
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -68,8 +69,9 @@ public class PDF_DUO extends HttpServlet {
 //        Document document = new Document(PageSize.A4, 50, 50, 50, 50);
         Document document = new Document();
 
-
-        /********************DATOS***************************/
+        /**
+         * ******************DATOS**************************
+         */
         NegocioQ neg = new NegocioQ();
         int id_duo = Integer.parseInt(request.getParameter("id_duo"));
 
@@ -83,7 +85,9 @@ public class PDF_DUO extends HttpServlet {
         Iterator it_dia = diagnosticos.iterator();
         Iterator it_tra = trazadores.iterator();
 
-        /*****************DATOS******************************/
+        /**
+         * ***************DATOS*****************************
+         */
         Locale currentLocale2 = new Locale("es", "Ch");
         java.text.DateFormat formateadorHora = java.text.DateFormat.getTimeInstance(java.text.DateFormat.DEFAULT, currentLocale2);
         NumberFormat formateadorNumero = NumberFormat.getNumberInstance(currentLocale2);
@@ -99,18 +103,14 @@ public class PDF_DUO extends HttpServlet {
         Date fecha_final = calendar.getTime();
         String actual_mas_uno = formateadorFecha.format(fecha_final).toString();
 
-
         // out.write("RUT "+das.getRut_paciente());
         // out.write("<br>"+das.getId_das());
-
-
         try {
 
             PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
             document.open();
 
-
-            String tipo_informe = "DATO UNIDAD DE OBSERVACIÓN\n  N° " + id_duo ;
+            String tipo_informe = "DATO UNIDAD DE OBSERVACIÓN\n  N° " + id_duo;
 
 //IMAGEN
             ServletContext context = this.getServletConfig().getServletContext();
@@ -123,13 +123,12 @@ public class PDF_DUO extends HttpServlet {
             img.setAbsolutePosition(60, PageSize.A4.getHeight() - img.getScaledHeight() - 40);
             document.add(img);
 //FIN IMAGEN
- FooterPiePaginaiText_pdf_duo footer = new FooterPiePaginaiText_pdf_duo();
+            FooterPiePaginaiText_pdf_duo footer = new FooterPiePaginaiText_pdf_duo();
             //Asignamos el manejador de eventos al escritor.
             writer.setPageEvent(footer);
-            
+
             document.add(new Paragraph("\n\n\n"));
             //creamos una tabla con 3 columnas
-
 
             //creamos una tabla con 3 columnas
             float[] colsWidth2 = {0.75f, 1.05f, 0.8f, 1.4f};
@@ -171,18 +170,17 @@ public class PDF_DUO extends HttpServlet {
             tabla1.addCell(celda);
 
             //fila 2
-
             //fila 3
             celda = new PdfPCell(new Paragraph(""));
             celda.setBorder(0);
             celda.setColspan(4);
             tabla1.addCell(celda);
 
-
             document.add(tabla1);
 
-
-            /****TABLA 2***********************************************************************/
+            /**
+             * **TABLA 2**********************************************************************
+             */
             float[] colsWidth = {1.15f, 1f, 0.8f, 0.9f};
             PdfPTable tabla2 = new PdfPTable(colsWidth);
             tabla2.setWidthPercentage(90);
@@ -207,8 +205,6 @@ public class PDF_DUO extends HttpServlet {
             tabla2.addCell(celda);
 
             //fila 1
-
-
             celda = new PdfPCell(new Paragraph("" + duo.getNombres_paciente() + " " + duo.getApellidop_paciente() + " " + duo.getApellidom_paciente(), ft1));
             //celda.setBorder(0);
             celda.setColspan(2);
@@ -221,9 +217,6 @@ public class PDF_DUO extends HttpServlet {
             celda = new PdfPCell(new Paragraph("" + duo.getSexo_descri(), ft1));
             //celda.setBorder(0);
             tabla2.addCell(celda);
-
-
-
 
             //OTRA FILA
             celda = new PdfPCell(new Paragraph("Edad", ft3));
@@ -243,28 +236,29 @@ public class PDF_DUO extends HttpServlet {
             //celda.setBorder(0);
             tabla2.addCell(celda);
 
-            /************/
-            try{
-            celda = new PdfPCell(new Paragraph("" + duo.getEdad(), ft1));
-            //celda.setBorder(0);
-            tabla2.addCell(celda);
-            celda = new PdfPCell(new Paragraph("" + duo.getDerivador_descripcion(), ft1));
-            //celda.setBorder(0);
-            tabla2.addCell(celda);
-            celda = new PdfPCell(new Paragraph("" + duo.getFecha_hora_ing_med().substring(0, 10), ft1));
-            //celda.setBorder(0);
-            tabla2.addCell(celda);
-            celda = new PdfPCell(new Paragraph("" + duo.getFecha_hora_ing_med().substring(duo.getFecha_hora_ing_med().length()-8,duo.getFecha_hora_ing_med().length() ), ft1));
-            //celda.setBorder(0);
-            tabla2.addCell(celda);
-               } catch (Exception ex) {
+            /**
+             * *********
+             */
+            try {
+                celda = new PdfPCell(new Paragraph("" + duo.getEdad(), ft1));
+                //celda.setBorder(0);
+                tabla2.addCell(celda);
+                celda = new PdfPCell(new Paragraph("" + duo.getDerivador_descripcion(), ft1));
+                //celda.setBorder(0);
+                tabla2.addCell(celda);
+                celda = new PdfPCell(new Paragraph("" + duo.getFecha_hora_ing_med().substring(0, 10), ft1));
+                //celda.setBorder(0);
+                tabla2.addCell(celda);
+                celda = new PdfPCell(new Paragraph("" + duo.getFecha_hora_ing_med().substring(duo.getFecha_hora_ing_med().length() - 8, duo.getFecha_hora_ing_med().length()), ft1));
+                //celda.setBorder(0);
+                tabla2.addCell(celda);
+            } catch (Exception ex) {
                 celda = new PdfPCell(new Paragraph("", ft1));
                 tabla2.addCell(celda);
                 celda = new PdfPCell(new Paragraph("", ft1));
                 tabla2.addCell(celda);
-              
-            }
 
+            }
 
             //OTRA FILA
             celda = new PdfPCell(new Paragraph("Teléfonos", ft3));
@@ -284,13 +278,12 @@ public class PDF_DUO extends HttpServlet {
             //celda.setBorder(0);
             tabla2.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("" + duo.getDireccion()+", "+duo.getComuna_descri(), ft1));
+            celda = new PdfPCell(new Paragraph("" + duo.getDireccion() + ", " + duo.getComuna_descri(), ft1));
             celda.setColspan(3);
             //celda.setBorder(0);
             tabla2.addCell(celda);
 
             // OTRA FILA
-
             //OTRA FILA
             celda = new PdfPCell(new Paragraph("Cama a la que ingreso", ft3));
             //celda.setBorder(0);
@@ -322,7 +315,9 @@ public class PDF_DUO extends HttpServlet {
 
             document.add(tabla2);
 
-            /******************tabla 3*****************/
+            /**
+             * ****************tabla 3****************
+             */
             float[] colsWidth3 = {4f};
             PdfPTable tabla3 = new PdfPTable(colsWidth3);
             tabla3.setWidthPercentage(90);
@@ -336,16 +331,17 @@ public class PDF_DUO extends HttpServlet {
             //celda.setBorder(0);
             tabla3.addCell(celda);
 
-
             document.add(tabla3);
 
-
-            /***************fin tabla 3***************/
-            /***************** tabla 4*****************/
+            /**
+             * *************fin tabla 3**************
+             */
+            /**
+             * *************** tabla 4****************
+             */
             float[] colsWidth4 = {2f, 2f};
             PdfPTable tabla4 = new PdfPTable(colsWidth4);
             tabla4.setWidthPercentage(90);
-
 
             celda = new PdfPCell(new Paragraph("Enf. Crónicas", ft3));
             //celda.setBorder(0);
@@ -367,32 +363,6 @@ public class PDF_DUO extends HttpServlet {
             celda = new PdfPCell(new Paragraph("" + enfermedad_cronica, ft1));
             //celda.setBorder(0);
             tabla4.addCell(celda);
-
-
-            // OTRA CELDA
-            celda = new PdfPCell(new Paragraph("Diagnósticos Trazadores", ft3));
-            //celda.setBorder(0);
-            celda.setBackgroundColor(myColor);
-            tabla4.addCell(celda);
-
-            /**/
-
-            String diagnostico_trazador = "";
-            while (it_tra.hasNext()) {
-                cDiagnostico dia = (cDiagnostico) it_tra.next();
-
-                diagnostico_trazador += dia.getDescripcion_diagnostico() + " -";
-            }
-            if (diagnostico_trazador.length() > 0) {
-                diagnostico_trazador = diagnostico_trazador.substring(0, diagnostico_trazador.length() - 1);
-            }
-
-            /**/
-
-            celda = new PdfPCell(new Paragraph("" + diagnostico_trazador, ft1));
-            //celda.setBorder(0);
-            tabla4.addCell(celda);
-
 
             // OTRA CELDA
             celda = new PdfPCell(new Paragraph("Diagnósticos", ft3));
@@ -417,13 +387,45 @@ public class PDF_DUO extends HttpServlet {
             celda.setColspan(2);
             tabla4.addCell(celda);
 
-
-            celda = new PdfPCell(new Paragraph("Duo "+duo.getId_duo()+" firmado en sistema por Rut "+duo.getRut_usuario_ing_med()+", el "+duo.getFecha_hora_ing_med().substring(0, 10)+" a las " +"" + duo.getFecha_hora_ing_med().substring(duo.getFecha_hora_ing_med().length()-8,duo.getFecha_hora_ing_med().length())+" "           
-                    + " \n \n                                              Dr. "+duo.getNombre_usuario_ing_med(), ft2));
+            // OTRA CELDA
+            celda = new PdfPCell(new Paragraph("Indicaciones Medicas", ft3));
+            //celda.setBorder(0);
+            celda.setBackgroundColor(myColor);
+            celda.setColspan(2);
+            tabla4.addCell(celda);
+            celda = new PdfPCell(new Paragraph("" + duo.getIndicacionesMedicas(), ft1));
             //celda.setBorder(0);
             celda.setColspan(2);
             tabla4.addCell(celda);
 
+            // OTRA CELDA
+            celda = new PdfPCell(new Paragraph("Prestaciones Trazadoras", ft3));
+            //celda.setBorder(0);
+            celda.setBackgroundColor(myColor);
+            tabla4.addCell(celda);
+             celda.setColspan(2);
+            /**/
+            String prestaciones_trazador = "";
+            while (it_tra.hasNext()) {
+                cDiagnostico dia = (cDiagnostico) it_tra.next();
+
+                prestaciones_trazador += dia.getDescripcion_diagnostico() + " -";
+            }
+            if (prestaciones_trazador.length() > 0) {
+                prestaciones_trazador = prestaciones_trazador.substring(0, prestaciones_trazador.length() - 1);
+            }
+
+            /**/
+            celda = new PdfPCell(new Paragraph("" + prestaciones_trazador, ft1));
+             celda.setColspan(2);
+            //celda.setBorder(0);
+            tabla4.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("Duo " + duo.getId_duo() + " firmado en sistema por Rut " + duo.getRut_usuario_ing_med() + ", el " + duo.getFecha_hora_ing_med().substring(0, 10) + " a las " + "" + duo.getFecha_hora_ing_med().substring(duo.getFecha_hora_ing_med().length() - 8, duo.getFecha_hora_ing_med().length()) + " "
+                    + " \n \n                                              Dr. " + duo.getNombre_usuario_ing_med(), ft2));
+            //celda.setBorder(0);
+            celda.setColspan(2);
+            tabla4.addCell(celda);
 
             celda = new PdfPCell(new Paragraph("Fecha de Impresión :" + actual, ft1));
             //celda.setBorder(0);
@@ -431,12 +433,14 @@ public class PDF_DUO extends HttpServlet {
             celda.setColspan(2);
             tabla4.addCell(celda);
 
-
             document.add(tabla4);
 
-
-            /***************fin tabla 4***************/
-            /**************************************************************************/
+            /**
+             * *************fin tabla 4**************
+             */
+            /**
+             * ***********************************************************************
+             */
             document.close();
         } catch (DocumentException ex) {
             Logger.getLogger(PDF_DUO.class.getName()).log(Level.SEVERE, null, ex);
@@ -444,12 +448,9 @@ public class PDF_DUO extends HttpServlet {
             Logger.getLogger(PDF_DUO.class.getName()).log(Level.SEVERE, null, "Ocurrio un Error" + e);
         }
 
-
-
     }
-    
-    
-        public class FooterPiePaginaiText_pdf_duo extends PdfPageEventHelper {
+
+    public class FooterPiePaginaiText_pdf_duo extends PdfPageEventHelper {
 
         @Override
         public void onCloseDocument(PdfWriter writer, Document document) {
@@ -467,8 +468,9 @@ public class PDF_DUO extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -480,8 +482,9 @@ public class PDF_DUO extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -493,8 +496,9 @@ public class PDF_DUO extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

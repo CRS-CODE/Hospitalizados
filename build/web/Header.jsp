@@ -60,6 +60,7 @@
         see_visita.add(15);
         see_visita.add(16);
         see_visita.add(17);
+        see_visita.add(20);
 
         ArrayList see_informe = new ArrayList();
         see_informe.add(10);
@@ -73,6 +74,9 @@
 
         ArrayList psicologo = new ArrayList();
         psicologo.add(18);
+
+        ArrayList odontologo = new ArrayList();
+        odontologo.add(20);
 
 
 %>
@@ -92,7 +96,7 @@
         <script src="<%=neg.getLocal()%>js/jquery/jquery.js"></script>
         <script src="<%=neg.getLocal()%>js/jquery/jquery-ui.js"></script>
         <%            // <script src="<%=neg.getLocal() ajax.js"></script>
-           %>
+        %>
 
         <jsp:include page="css/boton_html.jsp" />
 
@@ -146,7 +150,11 @@
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Terapeuta Ocupacional</span></a> 
                                     <% if (psicologo.contains(obtiene_perfil)) {%>
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Psicólogo/a</span></a>
-                                    <%}%>     
+                                    <%}%>
+
+                                    <% if (odontologo.contains(obtiene_perfil)) {%>
+                                <li><a href="<%=neg.getLocal()%>sesion.jsp"><span>Odontologo/a</span></a>
+                                    <%}%>
                                 <li> <a href="<%=neg.getLocal()%>asistencia_social/social_ingreso.jsp"><span>Trabajadora Social</span></a>
                                 <li><a href="<%=neg.getLocal()%>uh_visita.jsp"><span>Fonoaudiologa</span></a> 
 
@@ -165,10 +173,10 @@
                         <li><a href="<%=neg.getLocal()%>uh_paciente.jsp"><span>HISTORIAL</span></a>
                         </li>
 
-                       
+
                         <li><a href="<%=neg.getLocal()%>uh_informe.jsp"><span>INFORMES</span></a>
                         </li>
-                       
+
                         <%  if (see_mantencion.contains(obtiene_perfil)) {
                         %>
                         <li><a href="#"><span>MANTENCION</span></a>

@@ -67,7 +67,6 @@ public class PDF_ingreso_enfermeria extends HttpServlet {
 
         ArrayList lista_diagnostico = neg.lista_diagnostico(id_duo, "2");
         cIngresoEnfermeria eu = neg.obtiene_ingreso_enfermeria(id_duo);
-        ArrayList lista_documento = neg.lista_documento_segun_duo(id_duo);
 
         /**
          * * ***************DATOS*****************************
@@ -131,7 +130,6 @@ public class PDF_ingreso_enfermeria extends HttpServlet {
             Font ft4 = FontFactory.getFont("Verdana", 8, Font.ITALIC, BaseColor.BLACK); // PARA LA HORA DE IMPRESIOn
             Font ft2 = FontFactory.getFont("Verdana", 13, Font.BOLDITALIC, BaseColor.BLACK);
             Font ft3 = FontFactory.getFont("Verdana", 9, Font.ITALIC, BaseColor.WHITE);
-            
 
             PdfPCell celda = new PdfPCell(new Paragraph(tipo_informe, ft2));             // color
             //unimos esta celda con otras 2
@@ -301,7 +299,7 @@ public class PDF_ingreso_enfermeria extends HttpServlet {
             celda.setBackgroundColor(myColor);
             tabla4.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("" + eu.getOtro_comorbilidad_ing_enfermeria(), ft1));
+            celda = new PdfPCell(new Paragraph("" + eu.getVariable1(), ft1));
             //celda.setFixedHeight(140f);
             celda.setRowspan(5);
             tabla4.addCell(celda);
@@ -322,11 +320,11 @@ public class PDF_ingreso_enfermeria extends HttpServlet {
             PdfPTable tabla5 = new PdfPTable(colsWidth5);
             tabla5.setWidthPercentage(90);
 
-            celda = new PdfPCell(new Paragraph("TRATAMIENTOS FARMACOLÓGICOS PREVIOS", ft3));
+            celda = new PdfPCell(new Paragraph("ALERGIAS", ft3));
             celda.setBackgroundColor(myColor);
             tabla5.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("" + eu.getFarmaco_ing_enfermeria(), ft1));
+            celda = new PdfPCell(new Paragraph("" + eu.getVariable2(), ft1));
             //celda.setFixedHeight(140f);
             tabla5.addCell(celda);
 
@@ -345,19 +343,14 @@ public class PDF_ingreso_enfermeria extends HttpServlet {
             PdfPTable tabla6 = new PdfPTable(colsWidth6);
             tabla6.setWidthPercentage(90);
 
-            celda = new PdfPCell(new Paragraph("HISTORIAL ACTUAL", ft3));
+            celda = new PdfPCell(new Paragraph("PLAN DE ENFERMERIA", ft3));
             celda.setBackgroundColor(myColor);
             tabla6.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("" + eu.getObs_ing_enfermeria(), ft1));
+            celda = new PdfPCell(new Paragraph("" + eu.getVariable3(), ft1));
             //celda.setFixedHeight(140f);
-            
-            tabla6.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("", ft1));
-            celda.setBorder(0);
             tabla6.addCell(celda);
-
             document.add(tabla6);
 
             /**
@@ -366,176 +359,206 @@ public class PDF_ingreso_enfermeria extends HttpServlet {
             /**
              * *************************TABLA 8****************************
              */
-            document.newPage();
-
+            // document.newPage();
             float[] colsWidth8 = {0.4f, 0.4f, 0.3f, 0.3f, 0.3f, 0.3f};
             PdfPTable tabla8 = new PdfPTable(colsWidth8);
             tabla8.setWidthPercentage(90);
 
-            celda = new PdfPCell(new Paragraph("EXAMEN FISICO", ft3));
+            celda = new PdfPCell(new Paragraph("CONTROL DE SIGNOS VITALES", ft3));
             celda.setBackgroundColor(myColor);
             celda.setColspan(6);
             tabla8.addCell(celda);
             //otra celda
-            celda = new PdfPCell(new Paragraph("Conciencia", ft3));
+            celda = new PdfPCell(new Paragraph("PA", ft3));
             celda.setBackgroundColor(myColor);
             tabla8.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("" + eu.getConciencia_ex_fisico(), ft1));
+            celda = new PdfPCell(new Paragraph("" + eu.getPA(), ft1));
             celda.setColspan(5);
             tabla8.addCell(celda);
 
             //OTRA FILA
-            celda = new PdfPCell(new Paragraph("Cabeza", ft3));
+            celda = new PdfPCell(new Paragraph("FC", ft3));
             celda.setBackgroundColor(myColor);
             tabla8.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("" + eu.getCabeza_ex_fisico(), ft1));
+            celda = new PdfPCell(new Paragraph("" + eu.getFC(), ft1));
             celda.setColspan(5);
             tabla8.addCell(celda);
             //OTRA FILA
-            celda = new PdfPCell(new Paragraph("Mucosas", ft3));
+            celda = new PdfPCell(new Paragraph("T", ft3));
             celda.setBackgroundColor(myColor);
             tabla8.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("" + eu.getMucosa_ex_fisico(), ft1));
+            celda = new PdfPCell(new Paragraph("" + eu.getT(), ft1));
             celda.setColspan(5);
             tabla8.addCell(celda);
             //OTRA FILA
-            celda = new PdfPCell(new Paragraph("Torax", ft3));
+            celda = new PdfPCell(new Paragraph("SAT", ft3));
             celda.setBackgroundColor(myColor);
             tabla8.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("" + eu.getTorax_ex_fisico(), ft1));
+            celda = new PdfPCell(new Paragraph("" + eu.getSAT(), ft1));
             celda.setColspan(5);
             tabla8.addCell(celda);
             //OTRA FILA
-            celda = new PdfPCell(new Paragraph("Dorso lumbar", ft3));
+            celda = new PdfPCell(new Paragraph("FIO2", ft3));
             celda.setBackgroundColor(myColor);
             tabla8.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("" + eu.getDorso_lumbar_ex_fisico(), ft1));
+            celda = new PdfPCell(new Paragraph("" + eu.getFI02(), ft1));
             celda.setColspan(5);
             tabla8.addCell(celda);
             //OTRA FILA
-            celda = new PdfPCell(new Paragraph("Pie y tegumentos", ft3));
+            celda = new PdfPCell(new Paragraph("HGT", ft3));
             celda.setBackgroundColor(myColor);
             tabla8.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("" + eu.getPiel_ex_fisico(), ft1));
+            celda = new PdfPCell(new Paragraph("" + eu.getHGT(), ft1));
+            celda.setColspan(5);
+            tabla8.addCell(celda);
+            
+             //OTRA FILA
+            celda = new PdfPCell(new Paragraph("Frecuencias Respiratoria", ft3));
+            celda.setBackgroundColor(myColor);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("" + eu.getFrecuenciaRespiratoria(), ft1));
             celda.setColspan(5);
             tabla8.addCell(celda);
             //OTRA FILA
-            celda = new PdfPCell(new Paragraph("Abdomen", ft3));
+            celda = new PdfPCell(new Paragraph("EVALUACION DE ENFERMERIA", ft3));
+            celda.setBackgroundColor(myColor);
+            celda.setColspan(6);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("" + eu.getEvolucion_enfermeria(), ft1));
+            celda.setColspan(6);
+            tabla8.addCell(celda);
+            //OTRA FILA
+            celda = new PdfPCell(new Paragraph("ELEMENTO INVASIVOS", ft3));
+            celda.setColspan(6);
             celda.setBackgroundColor(myColor);
             tabla8.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("" + eu.getAbdomen_ex_fisico(), ft1));
+            //OTRA FILA
+            celda = new PdfPCell(new Paragraph("VVP", ft3));
+            celda.setBackgroundColor(myColor);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("" + eu.getVvp(), ft1));
             celda.setColspan(5);
             tabla8.addCell(celda);
             //OTRA FILA
-            celda = new PdfPCell(new Paragraph("EESS", ft3));
+            celda = new PdfPCell(new Paragraph("CUP", ft3));
             celda.setBackgroundColor(myColor);
             tabla8.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("" + eu.getEess_ex_fisico(), ft1));
+            celda = new PdfPCell(new Paragraph("" + eu.getCup(), ft1));
             celda.setColspan(5);
             tabla8.addCell(celda);
-            //OTRA FILA
-            celda = new PdfPCell(new Paragraph("EEII", ft3));
-            celda.setBackgroundColor(myColor);
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("" + eu.getEeii_ex_fisico(), ft1));
-            celda.setColspan(5);
-            tabla8.addCell(celda);
-            //OTRA FILA
-            celda = new PdfPCell(new Paragraph("Zona sacra", ft3));
-            celda.setBackgroundColor(myColor);
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("" + eu.getZ_sacra_ex_fisico(), ft1));
-            celda.setColspan(5);
-            tabla8.addCell(celda);
-            //OTRA FILA
-            celda = new PdfPCell(new Paragraph("Peso", ft3));
-            celda.setBackgroundColor(myColor);
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("" + eu.getPeso_ex_fisico(), ft1));
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("Talla", ft3));
-            celda.setBackgroundColor(myColor);
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("" + eu.getTalla_ex_fisico(), ft1));
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("Pulso", ft3));
-            celda.setBackgroundColor(myColor);
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("" + eu.getPulso_ex_fisico(), ft1));
-            tabla8.addCell(celda);
-
-            //OTRA FILA
-            celda = new PdfPCell(new Paragraph("P/A", ft3));
-            celda.setBackgroundColor(myColor);
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("" + eu.getPresion_a_ex_fisico(), ft1));
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("T°", ft3));
-            celda.setBackgroundColor(myColor);
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("" + eu.getTemp_ex_fisico(), ft1));
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("SAT.DE O2", ft3));
-            celda.setBackgroundColor(myColor);
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("" + eu.getSatura_ex_fisico(), ft1));
-            tabla8.addCell(celda);
-
-            //OTRA FILA
-            celda = new PdfPCell(new Paragraph("VVP1", ft3));
-            celda.setBackgroundColor(myColor);
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("" + eu.getVvp1_ex_fisico(), ft1));
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("VVP2", ft3));
-            celda.setBackgroundColor(myColor);
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("" + eu.getVvp2_ex_fisico(), ft1));
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("VVC", ft3));
-            celda.setBackgroundColor(myColor);
-            tabla8.addCell(celda);
-
-            celda = new PdfPCell(new Paragraph("" + eu.getVvc_ex_fisico(), ft1));
-            tabla8.addCell(celda);
-
             //OTRA FILA
             celda = new PdfPCell(new Paragraph("SNG", ft3));
             celda.setBackgroundColor(myColor);
             tabla8.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("" + eu.getSng_ex_fisico(), ft1));
+            celda = new PdfPCell(new Paragraph("" + eu.getSng(), ft1));
+            celda.setColspan(5);
             tabla8.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("S. Foley", ft3));
+            celda = new PdfPCell(new Paragraph("SNY", ft3));
             celda.setBackgroundColor(myColor);
             tabla8.addCell(celda);
 
-            celda = new PdfPCell(new Paragraph("" + eu.getS_foley_ex_fisico(), ft1));
+            celda = new PdfPCell(new Paragraph("" + eu.getSny(), ft1));
+            celda.setColspan(5);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("PICC", ft3));
+            celda.setBackgroundColor(myColor);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("" + eu.getPicc(), ft1));
+            celda.setColspan(5);
+            tabla8.addCell(celda);
+
+            //OTRA FILA
+            celda = new PdfPCell(new Paragraph("CVC", ft3));
+            celda.setBackgroundColor(myColor);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("" + eu.getCvc(), ft1));
+            celda.setColspan(5);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("TQT", ft3));
+            celda.setBackgroundColor(myColor);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("" + eu.getTqt(), ft1));
+            celda.setColspan(5);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("LPP", ft3));
+            celda.setBackgroundColor(myColor);
+            celda.setColspan(6);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("" + eu.getLpp(), ft1));
+            celda.setColspan(6);
+            tabla8.addCell(celda);
+
+            //OTRA FILA
+            celda = new PdfPCell(new Paragraph("PRESTACIONES REALIZADAS", ft3));
+            celda.setBackgroundColor(myColor);
+            celda.setColspan(6);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("" + eu.getPrestaciones_realizadas(), ft1));
+            celda.setColspan(6);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("TOMA DE EXAMENES", ft3));
+            celda.setBackgroundColor(myColor);
+            celda.setColspan(6);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("VENOSO", ft3));
+            celda.setBackgroundColor(myColor);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("" + eu.getVenoso(), ft1));
+            tabla8.addCell(celda);
+
+            //OTRA FILA
+            celda = new PdfPCell(new Paragraph("PCR", ft3));
+            celda.setBackgroundColor(myColor);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("" + eu.getPcr(), ft1));
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("ARTERIAL", ft3));
+            celda.setBackgroundColor(myColor);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("" + eu.getArterial(), ft1));
+            celda.setColspan(3);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("ECG", ft3));
+            celda.setBackgroundColor(myColor);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("" + eu.getEcg(), ft1));
+            celda.setColspan(3);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("OTRO", ft3));
+            celda.setBackgroundColor(myColor);
+            tabla8.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("" + eu.getOtro(), ft1));
             celda.setColspan(3);
             tabla8.addCell(celda);
 
@@ -557,27 +580,28 @@ public class PDF_ingreso_enfermeria extends HttpServlet {
             PdfPTable tabla9 = new PdfPTable(colsWidth9);
             tabla9.setWidthPercentage(90);
 
-            celda = new PdfPCell(new Paragraph("DOCUMENTOS Y/O EXAMENES QUE EL PACIENTE TRAE", ft3));
+            celda = new PdfPCell(new Paragraph("ENTREGA DE FARMACOS", ft3));
             celda.setBackgroundColor(myColor);
             tabla9.addCell(celda);
 
-            String cadena_documento = "";
+            celda = new PdfPCell(new Paragraph("" + eu.getFarmaco_ing_enfermeria(), ft1));
+            // celda.setFixedHeight(100f);
+            tabla9.addCell(celda);
 
-            Iterator it_doc = lista_documento.iterator();
-            while (it_doc.hasNext()) {
-                cDocumento doc = (cDocumento) it_doc.next();
-                cadena_documento += doc.getDescripcion() + " - ";
-            }
-            if (cadena_documento.length() > 0) {
-                cadena_documento = cadena_documento.substring(0, cadena_documento.length() - 2);
-            }
+            celda = new PdfPCell(new Paragraph("EDUCACION", ft3));
+            celda.setBackgroundColor(myColor);
+            tabla9.addCell(celda);
 
-            if (eu.getOtro_ex_docto_ing_enfermeria().trim().length()>0){
-            cadena_documento+="\n\nOTROS:\n"+eu.getOtro_ex_docto_ing_enfermeria();
-            }
-            
-            celda = new PdfPCell(new Paragraph(""+cadena_documento, ft1));
-           // celda.setFixedHeight(100f);
+            celda = new PdfPCell(new Paragraph("" + eu.getEducacion(), ft1));
+            // celda.setFixedHeight(100f);
+            tabla9.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("ENTREGA DE DOCUMENTOS", ft3));
+            celda.setBackgroundColor(myColor);
+            tabla9.addCell(celda);
+
+            celda = new PdfPCell(new Paragraph("" + eu.getVariable4(), ft1));
+            // celda.setFixedHeight(100f);
             tabla9.addCell(celda);
 
             document.add(tabla9);
@@ -612,6 +636,7 @@ public class PDF_ingreso_enfermeria extends HttpServlet {
     }
 
     public class FooterPiePaginaiText extends PdfPageEventHelper {
+
         @Override
         public void onCloseDocument(PdfWriter writer, Document document) {
 
@@ -624,6 +649,7 @@ public class PDF_ingreso_enfermeria extends HttpServlet {
 
         }
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

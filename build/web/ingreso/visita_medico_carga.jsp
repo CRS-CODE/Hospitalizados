@@ -12,15 +12,15 @@
 <%@page import="CapaDato.cDuo"%>
 <%@page import="CapaNegocio.NegocioQ"%>
 <%
-            NegocioQ neg = new NegocioQ();
+    NegocioQ neg = new NegocioQ();
 
-            int obtiene_duo = Integer.parseInt(request.getParameter("duo"));
-            cDuo duo = neg.obtiene_duo(obtiene_duo);
+    int obtiene_duo = Integer.parseInt(request.getParameter("duo"));
+    cDuo duo = neg.obtiene_duo(obtiene_duo);
 
+    int old = neg.IngresoOld(obtiene_duo);
 
-
-            ArrayList historial_visita_enfermeria = neg.lista_historial_visita_enfermeria(obtiene_duo);
-            Iterator it_his = historial_visita_enfermeria.iterator();
+    ArrayList historial_visita_enfermeria = neg.lista_historial_visita_enfermeria(obtiene_duo);
+    Iterator it_his = historial_visita_enfermeria.iterator();
 %>
 
 
@@ -92,37 +92,37 @@
                 <legend>Historial Visita Enfermería</legend>
 
                 <%
-                            String clas = "";
-                            int contador = 0;
+                    String clas = "";
+                    int contador = 0;
 
-                            while (it_his.hasNext()) {
-                                cVisita vis = (cVisita) it_his.next();
+                    while (it_his.hasNext()) {
+                        cVisita vis = (cVisita) it_his.next();
 
-                                int resto = contador % 3;
-                                if (contador == 0 || resto == 0) {
-                                    out.write("<tr>");
-                                }
-                                if (vis.getCat_visita_categorizacion().substring(0, 1).equalsIgnoreCase("D")) {
-                                    clas = "CRD_D";
-                                }
-                                if (vis.getCat_visita_categorizacion().substring(0, 1).equalsIgnoreCase("C")) {
-                                    clas = "CRD_C";
-                                }
-                                if (vis.getCat_visita_categorizacion().substring(0, 1).equalsIgnoreCase("B")) {
-                                    clas = "CRD_B";
-                                }
-                                if (vis.getCat_visita_categorizacion().substring(0, 1).equalsIgnoreCase("A")) {
-                                    clas = "CRD_A";
-                                }
+                        int resto = contador % 3;
+                        if (contador == 0 || resto == 0) {
+                            out.write("<tr>");
+                        }
+                        if (vis.getCat_visita_categorizacion().substring(0, 1).equalsIgnoreCase("D")) {
+                            clas = "CRD_D";
+                        }
+                        if (vis.getCat_visita_categorizacion().substring(0, 1).equalsIgnoreCase("C")) {
+                            clas = "CRD_C";
+                        }
+                        if (vis.getCat_visita_categorizacion().substring(0, 1).equalsIgnoreCase("B")) {
+                            clas = "CRD_B";
+                        }
+                        if (vis.getCat_visita_categorizacion().substring(0, 1).equalsIgnoreCase("A")) {
+                            clas = "CRD_A";
+                        }
 
                 %>
-                <td><img src="../Iconos/pdf-ico-small.gif" style="cursor: pointer" onclick="window.open('/modulo_uhce/visitas/CategorizacionPDF.jsp?id_visita='+<%=vis.getId_visita_categorizacion()%>, 'Categorizacion', 'height=800,width=800,left=100, top=100,resizable=yes,scrollbars=yes,toolbar=yes,status=yes')"></td>
-                <td class="" style="text-transform: uppercase;cursor:pointer" onclick="location.href='VerVisita.jsp?id_visita=<%=vis.getId_visita_categorizacion()%>'"><%=vis.getFecha_visita()%></td>
-                <td onclick="location.href='http://10.8.4.9:9090/modulo_uo/Visita/VerVisita.jsp?id_visita=<%=vis.getId_visita_categorizacion()%>'" class="<%=clas%>"><%=vis.getCat_visita_categorizacion()%></td>
+                <td><img src="../Iconos/pdf-ico-small.gif" style="cursor: pointer" onclick="window.open('/modulo_uhce/visitas/CategorizacionPDF.jsp?id_visita=' +<%=vis.getId_visita_categorizacion()%>, 'Categorizacion', 'height=800,width=800,left=100, top=100,resizable=yes,scrollbars=yes,toolbar=yes,status=yes')"></td>
+                <td class="" style="text-transform: uppercase;cursor:pointer" onclick="location.href = 'VerVisita.jsp?id_visita=<%=vis.getId_visita_categorizacion()%>'"><%=vis.getFecha_visita()%></td>
+                <td onclick="location.href = 'http://10.8.4.9:9090/modulo_uo/Visita/VerVisita.jsp?id_visita=<%=vis.getId_visita_categorizacion()%>'" class="<%=clas%>"><%=vis.getCat_visita_categorizacion()%></td>
 
                 <%
-                                contador++;
-                            }
+                        contador++;
+                    }
                 %>
 
             </fieldset>
@@ -133,11 +133,16 @@
             </fieldset>
             <fieldset>
                 <legend>Datos Paciente </legend>
-                 <% out.write("<a href='"+neg.getLocal()+"PDF_DUO?id_duo=" + obtiene_duo + "' target='_blank'><img src='../Imagenes/doctorImp.png' width='35' height='36' alt='Ingreso Medico'/></a>"); %>
-                 <% out.write(" &nbsp;&nbsp;"); %>
-                 <%  
-                 out.write("<a href='"+neg.getLocal()+"PDF_ingreso_enfermeria?txt_duo=" + obtiene_duo+ "' target='_blank'><img src='../Imagenes/enfermeraImp.png' width='35' height='36' alt='Ingreso Enfermeria'/></a>");    
-                  %>
+                <% out.write("<a href='" + neg.getLocal() + "PDF_DUO?id_duo=" + obtiene_duo + "' target='_blank'><img src='../Imagenes/doctorImp.png' width='35' height='36' alt='Ingreso Medico'/></a>"); %>
+                <% out.write(" &nbsp;&nbsp;"); %>
+                <%
+                    if (old > 0) {
+                        out.write("<a href='" + neg.getLocal() + "PDF_ingreso_enfermeriaOLD?txt_duo=" + obtiene_duo + "' target='_blank'><img src='Imagenes/enfermeraImp.png' width='35' height='36' alt='Ingreso Enfermería' title='Ingreso Enfermería' /></a>");
+
+                    } else {
+                        out.write("<a href='" + neg.getLocal() + "PDF_ingreso_enfermeria?txt_duo=" + obtiene_duo + "' target='_blank'><img src='Imagenes/enfermeraImp.png' width='35' height='36' alt='Ingreso Enfermería' title='Ingreso Enfermería' /></a>");
+
+                     }%>
 
 
             </fieldset>
@@ -148,7 +153,7 @@
         <h3 class="destacadorut">Responsable:<%=session.getAttribute("usuario_nombre_completo")%></h3>
         <fieldset class="buttons">
             <input type="button" id="BtnIngresar" style="" onclick="Enviar()" class="DR" value="Ingresar Paciente a Cama" >
-            <input type="button" id="BtnFicha" value="Ver Ficha" onclick="window.open('http://10.8.4.9:9090/modulo_agenda/pdf_portada_ficha.jsp?rut='+document.getElementById('paciente_rut').value+'&rut2='+document.getElementById('txtRutSinDV').value+'&dv='+document.getElementById('txtDV').value,'pop-up','width=500, height=500, scrollbars=yes, menubar=no, location=yes, status=no, resizable=yes,left = 800,top = 0')">
+            <input type="button" id="BtnFicha" value="Ver Ficha" onclick="window.open('http://10.8.4.9:9090/modulo_agenda/pdf_portada_ficha.jsp?rut=' + document.getElementById('paciente_rut').value + '&rut2=' + document.getElementById('txtRutSinDV').value + '&dv=' + document.getElementById('txtDV').value, 'pop-up', 'width=500, height=500, scrollbars=yes, menubar=no, location=yes, status=no, resizable=yes,left = 800,top = 0')">
         </fieldset>
 
     </fieldset>

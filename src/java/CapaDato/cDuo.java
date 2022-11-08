@@ -18,6 +18,8 @@ public class cDuo extends cPaciente {
     private int estado_duo;
     private String estado_duo_descripcion;
     private int cama;
+    
+    private String indicacionesMedicas;
 //    private int id_prevision;
     private String fecha_hora_ing_duo;
     private String rut_usuario;
@@ -66,6 +68,7 @@ public class cDuo extends cPaciente {
         this.fecha_duo = "";
         this.hora_duo = "";
         this.estado_duo = -1;
+        this.indicacionesMedicas="";
         this.cama = -1;
 //        this.id_prevision = -1;
         this.fecha_hora_ing_duo = "";
@@ -117,9 +120,20 @@ public class cDuo extends cPaciente {
         this.fecha = fecha;
     }
 
+    public String getIndicacionesMedicas() {
+        return indicacionesMedicas;
+    }
+
+    public void setIndicacionesMedicas(String indicacionesMedicas) {
+        this.indicacionesMedicas = indicacionesMedicas;
+    }
+    
+    
+
     public int getDias_reales_cama() {
         return dias_reales_cama;
     }
+    
 
     public void setDias_reales_cama(int dias_reales_cama) {
         this.dias_reales_cama = dias_reales_cama;
