@@ -69,7 +69,8 @@ public class nominaPorFecha extends HttpServlet {
             response.setContentType("application/vnd.ms-excel");
             response.setHeader("Content-Disposition", "attachment; filename=NominaPacientePorFecha.xls");
             WritableWorkbook workbook = jxl.Workbook.createWorkbook(response.getOutputStream());
-            WritableSheet sheet = null;
+            WritableSheet sheet;
+            sheet = workbook.createSheet("DATOS", 0);
 
             Locale currentLocale = new Locale("es", "CL");
 
@@ -168,8 +169,12 @@ public class nominaPorFecha extends HttpServlet {
             WritableCellFormat FormatoDatosFechaGeneracion = new WritableCellFormat(DatosFecha);
             FormatoDatosFechaGeneracion.setAlignment(Alignment.LEFT);
             FormatoDatosFechaGeneracion.setBackground(Colour.WHITE);
+
+            int i = 0;
+            int j = 0;
             try {
-                for (int k = 0; k < diasConsulta+1; ++k) {
+                for (int k = 0; k < diasConsulta + 1; ++k) {
+
                     Calendar c = Calendar.getInstance();
                     c.setTime(fechaInicial);
                     c.add(Calendar.DATE, k);
@@ -177,67 +182,74 @@ public class nominaPorFecha extends HttpServlet {
                     DateFormat dateFormatNew = new SimpleDateFormat("dd-MM-yyyy");
                     String strDate = dateFormatNew.format(FechaConsultando);
 
-                    sheet = workbook.createSheet("" + strDate + "", 0);
-                   
+                    if (j == 0) {
+                        j = i;
+                    } else {
+                        j = i + 5;
+                        i = i + 5;
+                    }
 
-                    Label titulo = new Label(2, 0, "NOMINA PACIENTES HOSPITALIZADOS");
+                    Label titulo = new Label(2, j, "NOMINA PACIENTES HOSPITALIZADOS : " + strDate);
                     sheet.addCell(titulo);
                     sheet.mergeCells(2, 0, 14, 2);
 
-                    Label etiqueta_num = new Label(0, 3, "Nª Cama", FormatoItem);
+                    j = j + 3;
+
+                    Label etiqueta_num = new Label(0, j, "Nª Cama", FormatoItem);
                     sheet.addCell(etiqueta_num);
                     sheet.setColumnView(0, 20);
 
-                    Label num_dau = new Label(1, 3, "Rut Paciente", FormatoItem);
+                    Label num_dau = new Label(1, j, "Rut Paciente", FormatoItem);
                     sheet.addCell(num_dau);
                     sheet.setColumnView(1, 18);
 
-                    Label num_pagare = new Label(2, 3, "Apellido Paterno", FormatoItem);
+                    Label num_pagare = new Label(2, j, "Apellido Paterno", FormatoItem);
                     sheet.addCell(num_pagare);
                     sheet.setColumnView(2, 35);
 
-                    Label rut = new Label(3, 3, "Apellido Materno", FormatoItem);
+                    Label rut = new Label(3, j, "Apellido Materno", FormatoItem);
                     sheet.addCell(rut);
                     sheet.setColumnView(3, 13);
 
-                    Label comuna = new Label(4, 3, "Nombre", FormatoItem);
+                    Label comuna = new Label(4, j, "Nombre", FormatoItem);
                     sheet.addCell(comuna);
                     sheet.setColumnView(4, 13);
 
-                    Label fecha_transaccion = new Label(5, 3, "EDAD ", FormatoItem);
+                    Label fecha_transaccion = new Label(5, j, "EDAD ", FormatoItem);
                     sheet.addCell(fecha_transaccion);
                     sheet.setColumnView(5, 8);
 
-                    Label txt_cod_prestacion = new Label(6, 3, "Fecha Ingreso", FormatoItem);
+                    Label txt_cod_prestacion = new Label(6, j, "Fecha Ingreso", FormatoItem);
                     sheet.addCell(txt_cod_prestacion);
                     sheet.setColumnView(6, 60);
 
-                    Label txt_cod_prestacionrealizada = new Label(7, 3, "Hora Ingreso", FormatoItem);
+                    Label txt_cod_prestacionrealizada = new Label(7, j, "Hora Ingreso", FormatoItem);
                     sheet.addCell(txt_cod_prestacionrealizada);
                     sheet.setColumnView(7, 60);
 
-                    Label nombre_paciente = new Label(8, 3, "Dias Hospitalizados", FormatoItem);
+                    Label nombre_paciente = new Label(8, j, "Dias Hospitalizados", FormatoItem);
                     sheet.addCell(nombre_paciente);
                     sheet.setColumnView(8, 25);
 
-                    Label apellido_p_paciente = new Label(9, 3, "Categorizacion", FormatoItem);
+                    Label apellido_p_paciente = new Label(9, j, "Categorizacion", FormatoItem);
                     sheet.addCell(apellido_p_paciente);
                     sheet.setColumnView(9, 25);
 
-                    Label num_protocolo = new Label(10, 3, "Riesgo Caida", FormatoItem);
+                    Label num_protocolo = new Label(10, j, "Riesgo Caida", FormatoItem);
                     sheet.addCell(num_protocolo);
                     sheet.setColumnView(10, 25);
 
                     /*hora de citacion y hora de recepcion*/
-                    Label hra_cita = new Label(11, 3, "Riesgo UPP", FormatoItem);
+                    Label hra_cita = new Label(11, j, "Riesgo UPP", FormatoItem);
                     sheet.addCell(hra_cita);
                     sheet.setColumnView(11, 25);
 
                     jxl.write.Number dato_numero;
                     Label dato_texto;
+                    ++j;
 
                     try {
-                        int i = 0;
+
                         for (cDuo duo : neg.lisNominaporFecha(strDate)) {
                             String horas = "";
                             String dias = "";
@@ -248,7 +260,6 @@ public class nominaPorFecha extends HttpServlet {
                                 edad = duo.getEdad() + " Años";
 
                             }
-
                             dato_texto = new Label(0, i + 4, duo.getCama_descripcion().replace("CAMA", ""), FormatoDatos);
                             sheet.addCell(dato_texto);
                             dato_texto = new Label(1, i + 4, duo.getRut_paciente(), FormatoDatos);
