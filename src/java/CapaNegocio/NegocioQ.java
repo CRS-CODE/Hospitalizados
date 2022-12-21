@@ -766,8 +766,8 @@ public class NegocioQ extends Negocio {
 
         return lista;
     }
-    
-     public ArrayList lista_sesion_odontologos(int id_duo) {
+
+    public ArrayList lista_sesion_odontologos(int id_duo) {
         ArrayList lista = new ArrayList();
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
@@ -1082,11 +1082,9 @@ public class NegocioQ extends Negocio {
                 + " union\n"
                 + "SELECT to_char(LL.fecha_hora_ing_enfermeria,'DD/MM/YYYY HH24:MI:SS') as fecha_hora_ing_enfermeria FROM schema_uhd.ing_enfermeria_uhd LL   \n"
                 + "where LL.id_duo_ing_enfermeria=AA.id_duo limit 1) as fecha_hora_ing_enf,  \n"
-                + "(SELECT   \n"
-                + " nombre_usuario||' '||apellidop_usuario||' '||apellidom_usuario as nombre_completo  \n"
-                + " FROM  schema_uhd.usuario VV JOIN schema_uhd.ing_enfermeria RR ON  \n"
-                + "(VV.rut_usuario=RR.rut_usuario_ing_enfermeria)   \n"
-                + "where RR.id_duo_ing_enfermeria=AA.id_duo limit 1) as nombre_enf,  \n"
+                + "(SELECT   nombre_completo \n"
+                + " FROM  schema_uhd.enfermera VV  \n"
+                + " where VV.id_duo_ing_enfermeria=AA.id_duo limit 1) as nombre_enf,  \n"
                 + "(SELECT   \n"
                 + "nombre_usuario||' '||apellidop_usuario||' '||apellidom_usuario as nombre_completo  \n"
                 + "FROM  schema_uhd.usuario where rut_usuario= rut_usuario_ing_med) as nombre_med,  \n"
