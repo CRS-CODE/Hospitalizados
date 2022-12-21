@@ -172,82 +172,81 @@ public class nominaPorFecha extends HttpServlet {
 
             int i = 0;
             int j = 0;
+
+            if (j == 0) {
+                j = i;
+            } else {
+                j = i + 5;
+                i = i + 5;
+            }
+
+            Label titulo = new Label(2, j, "NOMINA PACIENTES HOSPITALIZADOS : ");
+            sheet.addCell(titulo);
+            sheet.mergeCells(2, 0, 14, 2);
+
+            j = j + 3;
+
+            Label etiqueta_num = new Label(0, j, "Nª Cama", FormatoItem);
+            sheet.addCell(etiqueta_num);
+            sheet.setColumnView(0, 20);
+
+            Label num_dau = new Label(1, j, "Rut Paciente", FormatoItem);
+            sheet.addCell(num_dau);
+            sheet.setColumnView(1, 18);
+
+            Label num_pagare = new Label(2, j, "Apellido Paterno", FormatoItem);
+            sheet.addCell(num_pagare);
+            sheet.setColumnView(2, 35);
+
+            Label rut = new Label(3, j, "Apellido Materno", FormatoItem);
+            sheet.addCell(rut);
+            sheet.setColumnView(3, 13);
+
+            Label comuna = new Label(4, j, "Nombre", FormatoItem);
+            sheet.addCell(comuna);
+            sheet.setColumnView(4, 13);
+
+            Label fecha_transaccion = new Label(5, j, "EDAD ", FormatoItem);
+            sheet.addCell(fecha_transaccion);
+            sheet.setColumnView(5, 8);
+
+            Label txt_cod_prestacion = new Label(6, j, "Fecha Ingreso", FormatoItem);
+            sheet.addCell(txt_cod_prestacion);
+            sheet.setColumnView(6, 60);
+
+            Label txt_cod_prestacionrealizada = new Label(7, j, "Hora Ingreso", FormatoItem);
+            sheet.addCell(txt_cod_prestacionrealizada);
+            sheet.setColumnView(7, 60);
+
+            Label nombre_paciente = new Label(8, j, "Dias Hospitalizados", FormatoItem);
+            sheet.addCell(nombre_paciente);
+            sheet.setColumnView(8, 25);
+
+            Label apellido_p_paciente = new Label(9, j, "Categorizacion", FormatoItem);
+            sheet.addCell(apellido_p_paciente);
+            sheet.setColumnView(9, 25);
+
+            Label num_protocolo = new Label(10, j, "Riesgo Caida", FormatoItem);
+            sheet.addCell(num_protocolo);
+            sheet.setColumnView(10, 25);
+
+            /*hora de citacion y hora de recepcion*/
+            Label hra_cita = new Label(11, j, "Riesgo UPP", FormatoItem);
+            sheet.addCell(hra_cita);
+            sheet.setColumnView(11, 25);
+
+            jxl.write.Number dato_numero;
+            Label dato_texto;
+            ++j;
             try {
                 for (int k = 0; k < diasConsulta + 1; ++k) {
-
                     Calendar c = Calendar.getInstance();
                     c.setTime(fechaInicial);
                     c.add(Calendar.DATE, k);
                     Date FechaConsultando = c.getTime();
                     DateFormat dateFormatNew = new SimpleDateFormat("dd-MM-yyyy");
                     String strDate = dateFormatNew.format(FechaConsultando);
-
-                    if (j == 0) {
-                        j = i;
-                    } else {
-                        j = i + 5;
-                        i = i + 5;
-                    }
-
-                    Label titulo = new Label(2, j, "NOMINA PACIENTES HOSPITALIZADOS : " + strDate);
-                    sheet.addCell(titulo);
-                    sheet.mergeCells(2, 0, 14, 2);
-
-                    j = j + 3;
-
-                    Label etiqueta_num = new Label(0, j, "Nª Cama", FormatoItem);
-                    sheet.addCell(etiqueta_num);
-                    sheet.setColumnView(0, 20);
-
-                    Label num_dau = new Label(1, j, "Rut Paciente", FormatoItem);
-                    sheet.addCell(num_dau);
-                    sheet.setColumnView(1, 18);
-
-                    Label num_pagare = new Label(2, j, "Apellido Paterno", FormatoItem);
-                    sheet.addCell(num_pagare);
-                    sheet.setColumnView(2, 35);
-
-                    Label rut = new Label(3, j, "Apellido Materno", FormatoItem);
-                    sheet.addCell(rut);
-                    sheet.setColumnView(3, 13);
-
-                    Label comuna = new Label(4, j, "Nombre", FormatoItem);
-                    sheet.addCell(comuna);
-                    sheet.setColumnView(4, 13);
-
-                    Label fecha_transaccion = new Label(5, j, "EDAD ", FormatoItem);
-                    sheet.addCell(fecha_transaccion);
-                    sheet.setColumnView(5, 8);
-
-                    Label txt_cod_prestacion = new Label(6, j, "Fecha Ingreso", FormatoItem);
-                    sheet.addCell(txt_cod_prestacion);
-                    sheet.setColumnView(6, 60);
-
-                    Label txt_cod_prestacionrealizada = new Label(7, j, "Hora Ingreso", FormatoItem);
-                    sheet.addCell(txt_cod_prestacionrealizada);
-                    sheet.setColumnView(7, 60);
-
-                    Label nombre_paciente = new Label(8, j, "Dias Hospitalizados", FormatoItem);
-                    sheet.addCell(nombre_paciente);
-                    sheet.setColumnView(8, 25);
-
-                    Label apellido_p_paciente = new Label(9, j, "Categorizacion", FormatoItem);
-                    sheet.addCell(apellido_p_paciente);
-                    sheet.setColumnView(9, 25);
-
-                    Label num_protocolo = new Label(10, j, "Riesgo Caida", FormatoItem);
-                    sheet.addCell(num_protocolo);
-                    sheet.setColumnView(10, 25);
-
-                    /*hora de citacion y hora de recepcion*/
-                    Label hra_cita = new Label(11, j, "Riesgo UPP", FormatoItem);
-                    sheet.addCell(hra_cita);
-                    sheet.setColumnView(11, 25);
-
-                    jxl.write.Number dato_numero;
-                    Label dato_texto;
-                    ++j;
-
+                    i++;
                     try {
 
                         for (cDuo duo : neg.lisNominaporFecha(strDate)) {
