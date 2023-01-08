@@ -58,6 +58,7 @@
                                         <option value="nominaPorFecha">Nomina Pacientes por Rango de Fecha</option>
                                         <option value="XLS_InformeDas?modo=1">Nomina Das por Fecha Ingreso</option>
                                         <option value="XLS_InformeDas?modo=2">Nomina Das por Fecha Egreso</option>
+                                        <option value="nominaPorMes">Nomina por Mes</option>
                                         <option value="ClinicalData">Clinical Data</option>
                                     </select>
                                 </td>

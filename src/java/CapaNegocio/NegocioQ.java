@@ -156,6 +156,38 @@ public class NegocioQ extends Negocio {
         return vi;
     }
 
+    /*nomina por rango de menes*/
+    public Vector<cDuo> lisNominaporMes(Date fecha1, Date fecha2) {
+        Vector<cDuo> vi = new Vector<cDuo>();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT COALESCE( D.rut_paciente, '') as rut_paciente,COALESCE(lower(p.apellido_paterno),'') as  paciente_apellidop ,\n"
+                + "                 COALESCE(lower(p.apellido_moderno),'')as paciente_apellidom,COALESCE( lower(p.nombre),'') as paciente_nombres\n"
+                + "                 FROM schema_uo.duo D inner join  agenda.paciente p\n"
+                + "                 ON (p.rut=D.rut_paciente) \n"
+                + "                 where   d.estado_duo not IN( 99) \n"
+                + "                and (d.fecha_hora_alta_med_duo::date >= '" + fecha1 + "' or d.fecha_hora_alta_med_duo is null)\n"
+                + "                and d.fecha_hora_ing_duo::date <='" + fecha2 + "'\n"
+                + "              group by rut_paciente,apellido_paterno,apellido_moderno,nombre  order by rut_paciente asc");
+        this.cnn.conectar();
+        try {
+            while (cnn.getRst().next()) {
+                cDuo duo = new cDuo();
+                duo.setRut_paciente(cnn.getRst().getString("rut_paciente"));
+                duo.setNombres_paciente(cnn.getRst().getString("paciente_nombres"));
+                duo.setApellidop_paciente(cnn.getRst().getString("paciente_apellidop"));
+                duo.setApellidom_paciente(cnn.getRst().getString("paciente_apellidom"));
+                
+
+                vi.add(duo);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioQ.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.cnn.cerrarConexion();
+        return vi;
+    }
+
     public Vector<cDuo> listadelDiasector1() {
         Vector<cDuo> vi = new Vector<cDuo>();
         this.configurarConexion("");
@@ -4389,7 +4421,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var3) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
         }
-       this.cnn.cerrarConexion();
+        this.cnn.cerrarConexion();
         return lista;
     }
 
@@ -4630,7 +4662,7 @@ public class NegocioQ extends Negocio {
         } catch (SQLException var4) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var4);
         }
-       this.cnn.cerrarConexion();
+        this.cnn.cerrarConexion();
         return res;
     }
 
