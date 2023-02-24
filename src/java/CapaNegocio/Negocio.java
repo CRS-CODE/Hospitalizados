@@ -55,14 +55,14 @@ public class Negocio {
         this.cnn.setUser("uhm");
         this.cnn.setPassword("crsdb2020");
         this.cnn.setNombreBaseDatos("jdbc:postgresql://10.8.4.163:5432/crsm");
-      /* this.cnn.setUser("postgres");
+        /* this.cnn.setUser("postgres");
         this.cnn.setPassword("crsdb2008");
         this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5432/crsm1");*/
     }
 
     public String getLocal() {
-         String local = "http://10.8.4.163:8080/modulo_uhd/";
-        //String local = "http://localhost:8080/modulo_uhd/";
+        String local = "http://10.8.4.163:8080/modulo_uhd/";
+        // String local = "http://localhost:8080/modulo_uhd/";
         return local;
     }
 
@@ -143,8 +143,8 @@ public class Negocio {
 
         return sw;
     }
-    
-     public boolean ingresa_sesion_odontologos(cSesionKine ses) {
+
+    public boolean ingresa_sesion_odontologos(cSesionKine ses) {
         boolean sw = false;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
@@ -659,7 +659,7 @@ public class Negocio {
     public void modifica_duo_x_medico(cDuo duo) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("UPDATE schema_uhd.duo SET indicaciones_medicas='"+duo.getIndicacionesMedicas()+"' , estado_duo='" + duo.getEstado_duo() + "',anamnesis_duo='" + duo.getAnamnesis_duo() + "', id_categorizacion='" + duo.getCategorizacion_id() + "', rut_usuario_ing_med='" + duo.getRut_usuario_ing_med() + "',  fecha_hora_ing_med=current_timestamp, ip_ing_med='" + duo.getIp_ing_med() + "'    where id_duo='" + duo.getId_duo() + "';");
+        this.cnn.setSentenciaSQL("UPDATE schema_uhd.duo SET indicaciones_medicas='" + duo.getIndicacionesMedicas() + "' , estado_duo='" + duo.getEstado_duo() + "',anamnesis_duo='" + duo.getAnamnesis_duo() + "', id_categorizacion='" + duo.getCategorizacion_id() + "', rut_usuario_ing_med='" + duo.getRut_usuario_ing_med() + "',  fecha_hora_ing_med=current_timestamp, ip_ing_med='" + duo.getIp_ing_med() + "'    where id_duo='" + duo.getId_duo() + "';");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
@@ -686,7 +686,7 @@ public class Negocio {
                 + "            '" + ingreso.getPa() + "', '" + ingreso.getFc() + "', '" + ingreso.getT() + "', '" + ingreso.getSat() + "', '" + ingreso.getFio2() + "', "
                 + "             '" + ingreso.getHgt() + "', '" + ingreso.getEvolucion() + "', '" + ingreso.getVvp() + "', '" + ingreso.getCup() + "', '" + ingreso.getSng() + "', '" + ingreso.getSny() + "', '" + ingreso.getGtt() + "', \n"
                 + "            '" + ingreso.getPicc() + "', '" + ingreso.getCvc() + "', '" + ingreso.getTqt() + "', '" + ingreso.getLpp() + "', '" + ingreso.getPrestaciones() + "', '" + ingreso.getVenoso() + "', '" + ingreso.getArterial() + "', '" + ingreso.getOtro() + "', '" + ingreso.getPcr() + "', \n"
-                + "            '" + ingreso.getEcg() + "', '" + ingreso.getEducacion() + "', '" + ingreso.getDocumento() + "', '"+ingreso.getFrecuenciaRespiratoria()+"');";
+                + "            '" + ingreso.getEcg() + "', '" + ingreso.getEducacion() + "', '" + ingreso.getDocumento() + "', '" + ingreso.getFrecuenciaRespiratoria() + "');";
         this.cnn.setSentenciaSQL(query);
         this.cnn.conectar();
         this.cnn.cerrarConexion();
@@ -1173,6 +1173,24 @@ public class Negocio {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
         this.cnn.setSentenciaSQL("INSERT INTO   schema_uhd.fonouriologa_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
+
+        try {
+            this.cnn.conectar();
+            sw = true;
+        } catch (Exception var7) {
+            sw = false;
+        } finally {
+            this.cnn.cerrarConexion();
+        }
+
+        return sw;
+    }
+
+    public boolean ingresa_sesion_enfermera(cSesionKine ses) {
+        boolean sw = false;
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("INSERT INTO   schema_uhd.enfermera_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
 
         try {
             this.cnn.conectar();

@@ -216,6 +216,10 @@
         <servlet-name>PDF_sesion_odontologos</servlet-name>
         <servlet-class>CapaInforme.PDF_sesion_odontologos</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PDF_sesion_enfermera</servlet-name>
+        <servlet-class>CapaInforme.PDF_sesion_enfermera</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>valida_usuario</servlet-name>
         <url-pattern>/valida_usuario</url-pattern>
@@ -431,6 +435,10 @@
     <servlet-mapping>
         <servlet-name>PDF_sesion_odontologos</servlet-name>
         <url-pattern>/PDF_sesion_odontologos</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PDF_sesion_enfermera</servlet-name>
+        <url-pattern>/PDF_sesion_enfermera</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

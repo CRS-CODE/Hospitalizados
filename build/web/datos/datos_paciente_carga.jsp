@@ -279,7 +279,7 @@
 
                             </td>
                             <td valign="top"><<-Ir Psicologia</td>
-                             <td align='right' >
+                            <td align='right' >
                                 <%                                    out.write("<form name='form_sesion_odontologo" + duo.getId_duo() + "' id='form_sesion_odontologo" + duo.getId_duo() + "' action='" + neg.getLocal() + "odontologos/datos_odontologos.jsp' method='POST' >");
                                     out.write("<input type='hidden' name='txt_duo' value='" + duo.getId_duo() + "' >");
                                     out.write(" <img title='Visita Odontologos' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_sesion_odontologo" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
@@ -290,6 +290,19 @@
                             </td>
                             <td valign="top"><<-Ir Odontologo</td>
 
+                        </tr>
+                        <tr>
+
+                            <td align='right' >
+                                <%  out.write("<form name='form_sesion_enfermera" + duo.getId_duo() + "' id='form_sesion_enfermera" + duo.getId_duo() + "' action='" + neg.getLocal() + "enfermera/datos_enfermera.jsp' method='POST' >");
+                                    out.write("<input type='hidden' name='txt_manda_duo' value='" + duo.getId_duo() + "' >");
+                                    out.write(" <img title='Visita Enfermera' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_sesion_enfermera" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
+                                    out.write("</form>");
+
+                                %>
+
+                            </td>
+                            <td valign="top"><<-Ir Enfermera</td>
                         </tr>
 
                     </table>
