@@ -225,7 +225,7 @@ public class PDF_egresoMedico extends HttpServlet {
             //celda.setBorder(0);
             celda.setBackgroundColor(myColor);
             tabla2.addCell(celda);
-
+            int day = duo.getDias_reales_cama() > 0 ? duo.getDias_reales_cama() : duo.getDias_cama();
             // OTRA FILA
             try {
                 celda = new PdfPCell(new Paragraph("" + duo.getEdad(), ft1));
@@ -236,7 +236,7 @@ public class PDF_egresoMedico extends HttpServlet {
 
                 celda = new PdfPCell(new Paragraph("" + duo.getFecha_hora_ing_enf().substring(duo.getFecha_hora_ing_enf().length() - 8, duo.getFecha_hora_ing_enf().length()), ft1));
                 tabla2.addCell(celda);
-                int day = duo.getDias_reales_cama() > 0 ? duo.getDias_reales_cama() : duo.getDias_cama();
+
                 celda = new PdfPCell(new Paragraph("" + day, ft1));
                 //celda.setBorder(0);
                 tabla2.addCell(celda);
@@ -244,6 +244,9 @@ public class PDF_egresoMedico extends HttpServlet {
                 celda = new PdfPCell(new Paragraph("--", ft1));
                 tabla2.addCell(celda);
                 celda = new PdfPCell(new Paragraph("--", ft1));
+                tabla2.addCell(celda);
+                celda = new PdfPCell(new Paragraph("" + day, ft1));
+                //celda.setBorder(0);
                 tabla2.addCell(celda);
 
             }
@@ -307,7 +310,6 @@ public class PDF_egresoMedico extends HttpServlet {
 
             document.add(tabla3);
 
-           
             float[] colsWidth4 = {4f};
             PdfPTable tabla4 = new PdfPTable(colsWidth4);
             tabla4.setWidthPercentage(90);
@@ -349,7 +351,7 @@ public class PDF_egresoMedico extends HttpServlet {
             celda = new PdfPCell(new Paragraph("" + epicrisis.getExamen_epicrisis(), ft1));
             celda.setColspan(6);
             tabla8.addCell(celda);
-            
+
             celda = new PdfPCell(new Paragraph("Listado de medicamentos prescritos durante la hospitalización", ft3));
             celda.setBackgroundColor(myColor);
             tabla8.addCell(celda);
