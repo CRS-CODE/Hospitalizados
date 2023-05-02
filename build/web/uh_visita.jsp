@@ -46,7 +46,7 @@
     ArrayList salas = new ArrayList();
     salas.add("11");
     salas.add("12");
-    //salas.add("25");
+    salas.add("25");
     String nombre_sala[] = new String[9];
     String fecha_hora = neg.obtiene_fecha_hora();
     String dia = fecha_hora.substring(0, 2);
@@ -174,7 +174,7 @@
                                         if (aux.getSala() == 11 && (cantidad_camas_x_sala == 2 || cantidad_camas_x_sala == 5 || cantidad_camas_x_sala == 7 || cantidad_camas_x_sala == 13)) {
                                             out.write("<tr>");
                                         }
-                                        if (aux.getSala() == 12 && (cantidad_camas_x_sala == 5 || cantidad_camas_x_sala == 9 || cantidad_camas_x_sala == 13)) {
+                                        if (aux.getSala() == 12 && (cantidad_camas_x_sala == 5 || cantidad_camas_x_sala == 9 || cantidad_camas_x_sala == 13 || cantidad_camas_x_sala == 17 || cantidad_camas_x_sala == 21 || cantidad_camas_x_sala == 25 || cantidad_camas_x_sala == 29)) {
                                             out.write("<tr>");
                                         }
                                         if (aux.getSala() == 25 && (cantidad_camas_x_sala == 2 || cantidad_camas_x_sala == 3 || cantidad_camas_x_sala == 5 || cantidad_camas_x_sala == 9 || cantidad_camas_x_sala == 13)) {

@@ -1515,7 +1515,7 @@ public class NegocioQ extends Negocio {
                 + "                            ON (schema_uo.sala.id_sala=C.id_sala) \n"
                 + "                            left JOIN agenda.paciente  \n"
                 + "                            ON (agenda.paciente.rut=D.rut_paciente)\n"
-                + "                            where C.id_sala in (11,12) and C.estado_cama=1 order by schema_uo.sala.posicion ,c.\"posicionCama\"");
+                + "                            where C.id_sala in (11,12,25) and C.estado_cama=1 order by schema_uo.sala.posicion ,c.\"posicionCama\"");
         this.cnn.conectar();
         try {
             while (cnn.getRst().next()) {
@@ -2070,7 +2070,7 @@ public class NegocioQ extends Negocio {
                 + "                                           ON (schema_uo.sala.id_sala=C.id_sala) \n"
                 + "                                              left JOIN agenda.paciente  p  \n"
                 + "                                          ON (p.rut=D.rut_paciente) \n"
-                + "                                               where C.id_sala in (11,12) and C.estado_cama=1 order by schema_uo.sala.posicion\n"
+                + "                                               where C.id_sala in (11,12,25) and C.estado_cama=1 order by schema_uo.sala.posicion\n"
                 + "  \n"
                 + "   ");
         this.cnn.conectar();
