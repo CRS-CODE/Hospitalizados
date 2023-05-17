@@ -292,7 +292,7 @@ public class PDF_sesion_fono extends HttpServlet {
             tabla10.setWidthPercentage(95);
 
             celda = new PdfPCell(new Paragraph(" \n \n \n \n                                        "
-                    + " \n                                       UNIDAD DE MEDIA ESTADIA", ft2));
+                    + " \n                                       HOSPITALIZACION DOMICILIARIA", ft2));
             //celda.setBorder(0);
             tabla10.addCell(celda);
 

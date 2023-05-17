@@ -111,7 +111,7 @@ public class SolicitudExamenes extends HttpServlet {
         String correlativo = "F-" + rec.getId_duo();
 
         serviciot = " Metropolitano Central(SSMC)";
-        establecimientot = " Unidad de Media Estadia";
+        establecimientot = " HOSPITALIZACION DOMICILIARIA";
         especialidadt = " ";
         unidadt = " ";
 

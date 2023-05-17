@@ -68,7 +68,8 @@ public class ingresa_alta extends HttpServlet {
             epi.setMedicamentos_prescritos(medicamentos_prescritos);
             if (!obtiene_usuario.equalsIgnoreCase("null")) {
                 neg.ingresa_epicrisis(epi);
-                neg.modifica_estado_duo(id_duo, 3);
+                //neg.modifica_estado_duo(id_duo, 3);
+                 neg.modifica_estado_duo_alta_administrativa(id_duo, 4);
             } else {
                 out.write("<script>alert('No se pudo completar esta operación porque su sesion ya habia caducado')</script>");
             }

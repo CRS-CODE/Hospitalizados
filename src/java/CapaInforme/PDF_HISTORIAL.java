@@ -68,7 +68,7 @@ public class PDF_HISTORIAL extends HttpServlet {
         try {
             PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
             document.open();
-            String tipo_informe = "Unidad de Hospitalización de Media Estadia";
+            String tipo_informe = "Unidad de Hospitalización Domiciliaria";
             ServletContext context = this.getServletConfig().getServletContext();
             String path1 = context.getRealPath("/Imagenes");
             Image img = Image.getInstance(path1 + "/Logo_Gob.jpg");
@@ -186,7 +186,7 @@ public class PDF_HISTORIAL extends HttpServlet {
             float[] colsWidth10 = new float[]{4.0F};
             PdfPTable tabla10 = new PdfPTable(colsWidth10);
             tabla10.setWidthPercentage(95.0F);
-            celda = new PdfPCell(new Paragraph(" \n \n \n \n                                         \n                                       UNIDAD DE MEDIA ESTADIA", ft2));
+            celda = new PdfPCell(new Paragraph(" \n \n \n \n                                         \n                                       HOSPITALIZACION DOMICILIARIA", ft2));
             tabla10.addCell(celda);
             celda = new PdfPCell(new Paragraph("Fecha de Impresión :" + actual, ft1));
             tabla10.addCell(celda);
