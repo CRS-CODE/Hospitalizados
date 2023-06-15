@@ -190,7 +190,7 @@ public class nominaPorMes extends HttpServlet {
             sheet.setColumnView(3, 13);
 
             String ano[] = {"2023"};
-            String[] meses = {"Ene", "Feb"};
+            String[] meses = {"Ene", "Feb","Marzo","Abril","mayo"};
             jxl.write.Number dato_numero;
             Label dato_texto;
          
