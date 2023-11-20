@@ -5,6 +5,7 @@ package CapaInforme;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import CapaDato.cDiagnostico;
 import CapaDato.cDuo;
 import CapaNegocio.NegocioQ;
 import java.io.IOException;
@@ -12,9 +13,11 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -173,32 +176,48 @@ public class nominaPorMes extends HttpServlet {
 
             j = j + 3;
 
-            Label etiqueta_num = new Label(0, j, "Rut Paciente", FormatoItem);
-            sheet.addCell(etiqueta_num);
+            Label etiqueta_fecha = new Label(0, j, "FECHA INGRESO", FormatoItem);
+            sheet.addCell(etiqueta_fecha);
             sheet.setColumnView(0, 20);
 
-            Label num_dau = new Label(1, j, "Apellido Paterno", FormatoItem);
+            Label etiqueta_egreso = new Label(1, j, "FECHA EGRESO", FormatoItem);
+            sheet.addCell(etiqueta_egreso);
+            sheet.setColumnView(1, 20);
+
+            Label etiqueta_num = new Label(2, j, "Rut Paciente", FormatoItem);
+            sheet.addCell(etiqueta_num);
+            sheet.setColumnView(2, 20);
+
+            Label num_dau = new Label(3, j, "Apellido Paterno", FormatoItem);
             sheet.addCell(num_dau);
-            sheet.setColumnView(1, 18);
+            sheet.setColumnView(3, 30);
 
-            Label num_pagare = new Label(2, j, "Apellido Materno", FormatoItem);
+            Label num_pagare = new Label(4, j, "Apellido Materno", FormatoItem);
             sheet.addCell(num_pagare);
-            sheet.setColumnView(2, 35);
+            sheet.setColumnView(4, 35);
 
-            Label rut = new Label(3, j, "Nombre", FormatoItem);
+            Label rut = new Label(5, j, "Nombre", FormatoItem);
             sheet.addCell(rut);
-            sheet.setColumnView(3, 13);
+            sheet.setColumnView(5, 13);
+
+            Label edad = new Label(6, j, "Edad", FormatoItem);
+            sheet.addCell(edad);
+            sheet.setColumnView(6, 13);
+
+            Label diagnostico = new Label(7, j, "Diagnostico de Ingreso", FormatoItem);
+            sheet.addCell(diagnostico);
+            sheet.setColumnView(7, 40);
 
             String ano[] = {"2023"};
-            String[] meses = {"Ene", "Feb","Marzo","Abril","mayo"};
+            String[] meses = {"Ene", "Feb", "Marzo", "Abril", "mayo", "Junio", "Julio", "Agosto", "Septiembre"};
             jxl.write.Number dato_numero;
             Label dato_texto;
-         
+
             try {
                 for (int k = 0; k <= ano.length; ++k) {
-                    for (int m = 0; m <= meses.length; ++m) {
-                         i++;
-                        Label mes = new Label(0, i+j, meses[m] + " "+ ano[k], FormatoItem);
+                    for (int m = 7; m <= meses.length; ++m) {
+                        i++;
+                        Label mes = new Label(0, i + j, meses[m] + " " + ano[k], FormatoItem);
                         sheet.addCell(mes);
                         sheet.setColumnView(0, 20);
                         Calendar gc = new GregorianCalendar();
@@ -210,19 +229,43 @@ public class nominaPorMes extends HttpServlet {
                         gc.add(Calendar.DAY_OF_MONTH, -1);
                         Date monthEnd = gc.getTime();
                         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-                       
+
                         try {
 
                             for (cDuo duo : neg.lisNominaporMes(monthStart, monthEnd)) {
 
-                                dato_texto = new Label(0, i + 4, duo.getRut_paciente(), FormatoDatos);
-                                sheet.addCell(dato_texto);
-                                dato_texto = new Label(1, i + 4, neg.primeraMayuscula(duo.getApellidop_paciente()), FormatoDatos);
-                                sheet.addCell(dato_texto);
-                                dato_texto = new Label(2, i + 4, neg.primeraMayuscula(duo.getApellidom_paciente()), FormatoDatos);
+                                dato_texto = new Label(0, i + 4, duo.getFecha_hora_ing_duo(), FormatoDatos);
                                 sheet.addCell(dato_texto);
 
-                                dato_texto = new Label(3, i + 4, neg.primeraMayuscula(duo.getNombres_paciente()), FormatoDatos);
+                                dato_texto = new Label(1, i + 4, duo.getFecha_hora_alta_med_duo(), FormatoDatos);
+                                sheet.addCell(dato_texto);
+
+                                dato_texto = new Label(2, i + 4, duo.getRut_paciente(), FormatoDatos);
+                                sheet.addCell(dato_texto);
+
+                                dato_texto = new Label(3, i + 4, neg.primeraMayuscula(duo.getApellidop_paciente()), FormatoDatos);
+                                sheet.addCell(dato_texto);
+
+                                dato_texto = new Label(4, i + 4, neg.primeraMayuscula(duo.getApellidom_paciente()), FormatoDatos);
+                                sheet.addCell(dato_texto);
+
+                                dato_texto = new Label(5, i + 4, neg.primeraMayuscula(duo.getNombres_paciente()), FormatoDatos);
+                                sheet.addCell(dato_texto);
+
+                                dato_texto = new Label(6, i + 4, duo.getEdad(), FormatoDatos);
+                                sheet.addCell(dato_texto);
+
+                                ArrayList diagnosticos = neg.lista_diagnostico(duo.getId_duo(), " 1");
+                                String diagnosticoD = "";
+                                Iterator it_dia = diagnosticos.iterator();
+                                while (it_dia.hasNext()) {
+                                    cDiagnostico dia = (cDiagnostico) it_dia.next();
+
+                                    diagnosticoD += dia.getDescripcion_diagnostico() + " \n";
+
+                                }
+                                
+                                dato_texto = new Label(7, i + 4, diagnosticoD, FormatoDatos);
                                 sheet.addCell(dato_texto);
 
                                 /**/
