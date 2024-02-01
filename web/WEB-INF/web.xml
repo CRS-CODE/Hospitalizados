@@ -208,7 +208,7 @@
         <servlet-name>PDF_sesion_social</servlet-name>
         <servlet-class>CapaInforme.PDF_sesion_social</servlet-class>
     </servlet>
-     <servlet>
+    <servlet>
         <servlet-name>PDF_sesion</servlet-name>
         <servlet-class>CapaInforme.PDF_sesion</servlet-class>
     </servlet>
@@ -227,6 +227,10 @@
     <servlet>
         <servlet-name>ingresa_sesion</servlet-name>
         <servlet-class>CapaServlet.ingresa_sesion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>nominaPorMes</servlet-name>
+        <servlet-class>CapaInforme.nominaPorMes</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>valida_usuario</servlet-name>
@@ -455,6 +459,10 @@
     <servlet-mapping>
         <servlet-name>ingresa_sesion</servlet-name>
         <url-pattern>/ingresa_sesion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>nominaPorMes</servlet-name>
+        <url-pattern>/nominaPorMes</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

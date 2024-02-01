@@ -233,6 +233,47 @@
 
 </fieldset>
 
+                            
+                            <fieldset>
+    <legend>Nomina por Meses</legend>
+
+    <FORM id="form" name="form" action="<%=neg.getLocal()%>nominaPorMes" method="post" ONSUBMIT="return valida_vacio();">
+
+        <FIELDSET>
+            <legend> Nomina de Paciente por Meses.</legend>
+            <DIV class="FormTablas">
+                <div class="SUBTITULOS">Se generara desde el mes que eliga hasta la fecha actual, del año en curso.</div>
+                <table>
+                    <tr>
+                        <td><select name="mes" id="mes">
+                                <option value="0">Enero
+                                <option value="1">Febrero
+                                <option value="2">Marzo
+                                <option value="3">Abril
+                                <option value="4">Mayo
+                                <option value="5">Junio
+                                <option value="6">Julio
+                                <option value="7">Agosto
+                                <option value="8">Septiembre
+                                <option value="9">Octubre
+                                <option value="10">Noviembre
+                                <option value="11">Diciembre
+                            </select></td>
+                        
+                    </tr>
+                </table>
+                <div class="SUBTITULOS"> </div>
+            </DIV>
+        </FIELDSET>
+
+        <FIELDSET class="buttons">
+            <INPUT name="Grabar" class="btn btn-primary" type="submit" value="Generar Informe">
+
+
+        </FIELDSET>
+    </FORM>
+
+</fieldset>
 </body>
 <jsp:include page="Footer.jsp" />
 
