@@ -240,7 +240,7 @@ public class nominaPorFecha extends HttpServlet {
                     sheet.setColumnView(10, 25);
 
                     /*hora de citacion y hora de recepcion*/
-                    Label hra_cita = new Label(11, j, "Riesgo UPP", FormatoItem);
+                    Label hra_cita = new Label(11, j, "Riesgo LPP", FormatoItem);
                     sheet.addCell(hra_cita);
                     sheet.setColumnView(11, 25);
 

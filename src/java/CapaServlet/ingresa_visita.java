@@ -2,7 +2,6 @@
 // Source code recreated from a .class file by IntelliJ IDEA
 // (powered by Fernflower decompiler)
 //
-
 package CapaServlet;
 
 import CapaDato.cVisita;
@@ -26,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class ingresa_visita extends HttpServlet {
+
     public ingresa_visita() {
     }
 
@@ -63,12 +63,14 @@ public class ingresa_visita extends HttpServlet {
         int id_cama = Integer.parseInt(request.getParameter("id_cama"));
         int id_duo = Integer.parseInt(request.getParameter("id_duo"));
         String fecha_hora_at_dma = request.getParameter("txt_fecha");
+        
+        String observacioneAislamiento = " ";
         ArrayList historial_visita_enfermeria = neg.lista_historial_visita_enfermeria(id_duo);
         boolean sw_mismo_dia = false;
         Iterator it_his = historial_visita_enfermeria.iterator();
 
-        while(it_his.hasNext()) {
-            cVisita vis = (cVisita)it_his.next();
+        while (it_his.hasNext()) {
+            cVisita vis = (cVisita) it_his.next();
             if (fecha_hora_at_dma.replace("-", "/").equals(vis.getFecha_visita().replace("-", "/"))) {
                 sw_mismo_dia = true;
             }
@@ -92,7 +94,7 @@ public class ingresa_visita extends HttpServlet {
             Timehora2 = sdf.parse(hora22);
             Timehora3 = sdf.parse(hora33);
         } catch (ParseException var56) {
-            Logger.getLogger(ingresa_visita.class.getName()).log(Level.SEVERE, (String)null, var56);
+            Logger.getLogger(ingresa_visita.class.getName()).log(Level.SEVERE, (String) null, var56);
         }
 
         out.write(encabezado);
@@ -128,7 +130,7 @@ public class ingresa_visita extends HttpServlet {
                 out.print("<h1>El campo categoria presentaba un problema antes de guardar la visita (estaba vacio o contenia más de 2 caracteres);<br> Intentelo Nuevamente</h1><br>");
             } else {
                 int obtiene_id_cat = neg.ingresa_categorizacion_enfermeria(d1, d2, d3, d4, d5, d6, r1, r2, r3, r4, r5, r6, r7, r8, cat.trim());
-                int grabo = neg.ingresa_visita_enfermeria(observaciones, fecha1, hora1, rut_usuario, id_cama, obtiene_id_cat, 2, id_duo,-1,-1);
+                int grabo = neg.ingresa_visita_enfermeria(observaciones, fecha1, hora1, rut_usuario, id_cama, obtiene_id_cat, 2, id_duo, -1, -1,-1, observacioneAislamiento);
                 if (grabo > 0) {
                     out.print("<h2>La Visita Correspondiente al dia de Hoy Se ha grabado Satisfactoriamente!!</h2><br>");
                 } else {

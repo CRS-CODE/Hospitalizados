@@ -124,7 +124,7 @@
         text-align: center;
         max-width: 800px;
         width: 25%;
-        height: 70%;
+        height: 90%;
         padding-top: -2px 
     }
 

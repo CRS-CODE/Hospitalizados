@@ -5,6 +5,7 @@
  */
 package CapaInforme;
 
+import CapaDato.cDiagnostico;
 import CapaDato.cDuo;
 import CapaDato.cReceta;
 import CapaDato.pdfconpieyfoto;
@@ -27,7 +28,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -54,9 +57,9 @@ public class SolicitudExamenes extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, DocumentException {
-            
-             response.setHeader("charset=UTF-8", " attachment; filename=\"Informe.pdf\"");
-            NegocioQ neg = new NegocioQ();
+
+        response.setHeader("charset=UTF-8", " attachment; filename=\"Informe.pdf\"");
+        NegocioQ neg = new NegocioQ();
 
         int idindicacion = Integer.parseInt(request.getParameter("id_ind"));
         //   ArrayList lista_diagnostico = neg.lista_diagnostico_suam(id_das, "1");
@@ -107,7 +110,7 @@ public class SolicitudExamenes extends HttpServlet {
         String establecimientot = "";
         String especialidadt = "";
         String unidadt = "";
-        
+
         String correlativo = "F-" + rec.getId_duo();
 
         serviciot = " Metropolitano Central(SSMC)";
@@ -179,9 +182,9 @@ public class SolicitudExamenes extends HttpServlet {
 
         Paragraph variable3 = new Paragraph();
         variable3.add(new Phrase(SPACE_TITULO, "", TEXT_SUPERTITULONORMAL));
-        variable3.add(new Phrase(SPACE_TITULO, "N° Historia Clínica: ", TEXT_NORMAL));
+        variable3.add(new Phrase(SPACE_TITULO, "Fecha de Nacimiento: ", TEXT_SUPERTITULONORMAL));
         variable3.add(new Phrase(SPACE_TITULO, "", TEXT_SUPERTITULONORMAL));
-        variable3.add(new Phrase(SPACE_TITULO, "", TEXT_SUPERTITULONORMAL));
+        variable3.add(new Phrase(SPACE_TITULO, duo.getFecha_nac() + "                     Procedencia:  Unidad de Media estadia CRS Maipu", TEXT_SUPERTITULONORMAL));
         celda = new Cell(variable3);
         // celda.setBackgroundColor(new Color(217, 225, 242));
         celda.setBorderWidth(0);
@@ -189,8 +192,31 @@ public class SolicitudExamenes extends HttpServlet {
         celda.setHorizontalAlignment(Element.ALIGN_LEFT);
         tabla_titulo.addCell(celda);
         String d = "";
-        
 
+        ArrayList diagnosticos = neg.lista_diagnostico(rec.getId_receta_detalle(), " 1,2 ");
+        Iterator it_dia = diagnosticos.iterator();
+         String diag = "";
+            while (it_dia.hasNext()) {
+                cDiagnostico dia = (cDiagnostico) it_dia.next();
+
+                diag += dia.getDescripcion_diagnostico()!= null ? dia.getDescripcion_diagnostico() : " " + " ,";
+
+            }
+            if (diag.length() > 0) {
+                diag = diag.substring(0, diag.length() - 2);
+            }
+
+        Paragraph diagnostico = new Paragraph();
+        diagnostico.add(new Phrase(SPACE_TITULO, "", TEXT_SUPERTITULONORMAL));
+        diagnostico.add(new Phrase(SPACE_TITULO, "Diagnostico(s): ", TEXT_NORMAL));
+        diagnostico.add(new Phrase(SPACE_TITULO, "", TEXT_SUPERTITULONORMAL));
+        diagnostico.add(new Phrase(SPACE_TITULO, diag, TEXT_SUPERTITULONORMAL));
+        celda = new Cell(diagnostico);
+        // celda.setBackgroundColor(new Color(217, 225, 242));
+        celda.setBorderWidth(0);
+        celda.setColspan(3);
+        celda.setHorizontalAlignment(Element.ALIGN_LEFT);
+        tabla_titulo.addCell(celda);
 
         /*Datos de la atencion*/
         celda = new Cell(new Phrase(SPACE_TITULO, "\n", TEXT_TITULO));
@@ -213,12 +239,11 @@ public class SolicitudExamenes extends HttpServlet {
         celda.setColspan(3);
         celda.setHorizontalAlignment(Element.ALIGN_LEFT);
         tabla_titulo.addCell(celda);
-         Vector<String> recetas = neg.buscarSolicitudExamenesdeIndicaciones(idindicacion);
-            String mens = "";
-            for (int i = 0; i < recetas.size(); i++) {
-                mens = mens + neg.upperCaseFirst(recetas.get(i)) + "  \n";
-            }
-
+        Vector<String> recetas = neg.buscarSolicitudExamenesdeIndicaciones(idindicacion);
+        String mens = "";
+        for (int i = 0; i < recetas.size(); i++) {
+            mens = mens + neg.upperCaseFirst(recetas.get(i)) + "  \n";
+        }
 
         Paragraph variable5 = new Paragraph();
         variable5.add(new Phrase(SPACE_TITULO, "Examenes: \n", TEXT_SUPERTITULONORMAL));
@@ -263,15 +288,13 @@ public class SolicitudExamenes extends HttpServlet {
         nombredoctor.add(new Phrase(SPACE_NORMAL2, "", TEXT_SUPERTITULONORMAL));
         nombredoctor.add(new Phrase(SPACE_TITULO, "Nombre Médico: ", TEXT_NORMAL));
         nombredoctor.add(new Phrase(SPACE_NORMAL2, "", TEXT_SUPERTITULONORMAL));
-        nombredoctor.add(new Phrase(SPACE_TITULO, rec.getNombre_usuario(), TEXT_SUPERTITULONORMAL));
+        nombredoctor.add(new Phrase(SPACE_TITULO, rec.getNombre_usuario()+"                    RUT Medico:"+rec.getRut_usuario(), TEXT_SUPERTITULONORMAL));
         celda = new Cell(nombredoctor);
         // celda.setBackgroundColor(new Color(217, 225, 242));
         celda.setBorderWidth(0);
         celda.setColspan(3);
         celda.setHorizontalAlignment(Element.ALIGN_LEFT);
         tabla_titulo.addCell(celda);
-
-       
 
         celda = new Cell(new Phrase(SPACE_TITULO, "\n", TEXT_TITULO));
         celda.setBorderWidth(0);

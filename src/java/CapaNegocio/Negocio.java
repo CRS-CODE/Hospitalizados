@@ -65,17 +65,23 @@ public class Negocio {
         this.cnn = new Conexion();
         this.cnn.setDriver("org.postgresql.Driver");
         this.cnn.setNombreTabla(tabla);
-        this.cnn.setUser("hospitalizados");
+        //servidor viejo 
+        /* this.cnn.setUser("hospitalizados");
         this.cnn.setPassword("crsdb2020");
-        this.cnn.setNombreBaseDatos("jdbc:postgresql://10.8.4.163:5432/crsm");
-       /* this.cnn.setUser("postgres");
-        this.cnn.setPassword("crsdb2008");
-        this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5432/crsm1");*/
+        this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5432/crsm");*/
+        //servidor nuevo 
+         this.cnn.setUser("hospitalizados");
+        this.cnn.setPassword("crsdb2020");
+        this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5433/crsm");
+        /*this.cnn.setUser("postgres");
+        this.cnn.setPassword("crsdb2020");
+        this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5432/crsm");*/
     }
 
     public String getLocal() {
-        String local = "http://10.8.4.163:8080/modulo_uhceTest/";
-        //String local = "http://localhost:8080/modulo_uhce/";
+        String local = "http://10.8.4.225:8080/modulo_uhce/";
+       // String local = "http://10.8.4.163:8080/modulo_uhce/";
+       // String local = "http://localhost:8084/modulo_uhce/";
         return local;
     }
 
@@ -170,26 +176,199 @@ public class Negocio {
     }
 
     public cPaciente consumirWsFonasa(int rut, String dgv, String rutcompleto) throws ParseException {
-       cPaciente p = new cPaciente();
-        try{
-        CertificadorPrevisionalSoapProxy cf = new CertificadorPrevisionalSoapProxy();
-        QueryCertificadorPrevisionalTO query = new QueryCertificadorPrevisionalTO();
-        query.setCanal(canal);
-        query.setClaveEntidad(claveEntidad);
-        query.setDgvBeneficiario(dgv);
-        query.setEntidad(entidad);
-        query.setRutBeneficiario(rut);
-        QueryTO qto = new QueryTO();
-        qto.setTipoEmisor(tipoEmisor);
-        qto.setTipoUsuario(tipoUsuario);
-        query.setQueryTO(qto);
-        ReplyCertificadorPrevisionalTO respuesta = new ReplyCertificadorPrevisionalTO();
+        cPaciente p = new cPaciente();
         try {
+            CertificadorPrevisionalSoapProxy cf = new CertificadorPrevisionalSoapProxy();
+            QueryCertificadorPrevisionalTO query = new QueryCertificadorPrevisionalTO();
+            query.setCanal(canal);
+            query.setClaveEntidad(claveEntidad);
+            query.setDgvBeneficiario(dgv);
+            query.setEntidad(entidad);
+            query.setRutBeneficiario(rut);
+            QueryTO qto = new QueryTO();
+            qto.setTipoEmisor(tipoEmisor);
+            qto.setTipoUsuario(tipoUsuario);
+            query.setQueryTO(qto);
+            ReplyCertificadorPrevisionalTO respuesta = new ReplyCertificadorPrevisionalTO();
             try {
-                respuesta = cf.getCertificadoPrevisional(query);
+                try {
+                    respuesta = cf.getCertificadoPrevisional(query);
 
-            } catch (RemoteException e) {
-                respuesta = null;
+                } catch (RemoteException e) {
+                    respuesta = null;
+                    e.printStackTrace();
+                    boolean exi = buscarpaciente(rutcompleto);
+                    if (exi == true) {
+                        p = buscarpacienteporrut(rutcompleto);
+
+                    }
+                }
+                if (respuesta.getReplyTO() != null) {
+                    String error = respuesta.getReplyTO().getErrorM();
+                    if (error.equals("")) {
+                        int estado = respuesta.getReplyTO().getEstado();
+                        String fecha = respuesta.getReplyTO().getFecha();
+                        int ruttr = respuesta.getAfiliadoTO().getRutafili();
+                        int rutb = respuesta.getBeneficiarioTO().getRutbenef();
+                        int busco = rut;
+                        CargasTO[] losValores = new CargasTO[respuesta.getNumeroCarga()];
+                        String ap1 = "";
+                        String ap2 = "";
+                        String nombre = "";
+                        String tramo = "";
+                        String fechanacimiento = "";
+                        String genero = "";
+
+                        String isapre = respuesta.getDesIsapre();
+                        String codigoisapre = respuesta.getCdgIsapre();
+
+                        String codigobloqueo = respuesta.getCodcybl();
+                        String descripcionbloqueo = respuesta.getCoddesc();
+
+                        String descripprais = respuesta.getDescprais();
+                        String codigoprais = respuesta.getCodigoprais();
+                        int previcion = 0;
+
+                        String descrip = respuesta.getBeneficiarioTO().getDesNacionalidad();
+                        String telefono = respuesta.getBeneficiarioTO().getTelefono();
+
+                        String direccion = respuesta.getBeneficiarioTO().getDireccion();
+                        int rutc = 0;
+                        respuesta.getListCargas();
+                        if (busco == ruttr) {
+
+                            ap1 = respuesta.getAfiliadoTO().getApell1();
+                            ap2 = respuesta.getAfiliadoTO().getApell2();
+                            nombre = respuesta.getAfiliadoTO().getNombres();
+                            tramo = respuesta.getAfiliadoTO().getTramo();
+                            fechanacimiento = respuesta.getAfiliadoTO().getFecnac();
+                            genero = respuesta.getAfiliadoTO().getGenero();
+
+                        } else if (busco == rutb) {
+
+                            ap1 = respuesta.getBeneficiarioTO().getApell1();
+                            ap2 = respuesta.getBeneficiarioTO().getApell2();
+                            nombre = respuesta.getBeneficiarioTO().getNombres();
+                            tramo = respuesta.getAfiliadoTO().getTramo();
+                            genero = respuesta.getBeneficiarioTO().getGenero();
+                            fechanacimiento = respuesta.getBeneficiarioTO().getFechaNacimiento();
+                        } else {
+
+                            for (int i = 0; i < losValores.length; i++) {
+                                rutc = losValores[i].getRutcarga();
+                                if (busco == rutc) {
+                                    ap1 = losValores[i].getApell1();
+                                    ap2 = losValores[i].getApell2();
+                                    nombre = losValores[i].getNombres();
+                                    tramo = respuesta.getAfiliadoTO().getTramo();
+                                    genero = losValores[i].getGenero();
+                                    fechanacimiento = losValores[i].getFecnac();
+                                }
+                            }
+                        }
+
+                        boolean vacio2 = false;
+                        for (int k = 0; k < codigoprais.length(); k++) {
+                            if (codigoprais.charAt(k) == '1') {
+                                vacio2 = true;
+                            }
+                        }
+
+                        boolean vacio = false;
+                        for (int i = 0; i < tramo.length(); i++) {
+                            if (tramo.charAt(i) != ' ') {
+                                vacio = true;
+                            }
+                        }
+                        boolean vacio1 = false;
+                        for (int k = 0; k < codigoisapre.length(); k++) {
+                            if (codigoisapre.charAt(k) != ' ') {
+                                vacio1 = true;
+                            }
+                        }
+
+                        if (vacio2 == true) {
+                            previcion = 3;
+
+                        } else if (vacio1 == true) {
+                            previcion = 2;
+
+                        } else if (vacio == true) {
+                            previcion = 1;
+
+                        } else {
+                            previcion = 4;
+
+                        }
+
+                        if (error.equalsIgnoreCase("")) {
+                            String FEC_NAC_ano = fechanacimiento.substring(0, 4);
+                            String FEC_NAC_mes = fechanacimiento.substring(5, 7);
+                            String FEC_NAC_dia = fechanacimiento.substring(8, 10);
+                            fecha = FEC_NAC_dia + "/" + FEC_NAC_mes + "/" + FEC_NAC_ano;
+                            Date fecha1 = new Date(Integer.parseInt(fecha.substring(6, 10)) - 1900, Integer.parseInt(fecha.substring(3, 5)) - 1, Integer.parseInt(fecha.substring(0, 2)), 0, 0, 0);
+                            p.setRut_paciente(rutcompleto);
+                            p.setNombres_paciente(nombre);
+                            p.setApellidop_paciente(ap1);
+                            p.setApellidom_paciente(ap2);
+                            p.setFechanacimiento(fecha1);
+                            p.setPrevision_verificada(previcion);
+                            int t = 0;
+                            if (previcion == 1) {
+                                if (tramo.equalsIgnoreCase(tramo)) {
+                                    if (tramo.equalsIgnoreCase("A")) {
+                                        t = 1;
+                                    } else if (tramo.equalsIgnoreCase("B")) {
+                                        t = 2;
+                                    } else if (tramo.equalsIgnoreCase("C")) {
+                                        t = 3;
+                                    } else if (tramo.equalsIgnoreCase("D")) {
+                                        t = 4;
+                                    }
+                                }
+                            } else {
+                                t = 0;
+                            }
+                            int generoe = 0;
+                            if (genero.equalsIgnoreCase("F")) {
+                                generoe = 1;
+                            } else {
+                                generoe = 2;
+                            }
+                            p.setTramo(t);
+                            p.setSexo(generoe);
+                            p.setTelefono1(telefono);
+                            p.setEstado_usuario(2);
+                            boolean exi = buscarpaciente(rutcompleto);
+                            cPaciente otro = new cPaciente();
+                            if (exi == true) {
+                                otro = buscarpacienteporrut(rutcompleto);
+                                p.setDireccion(otro.getDireccion());
+                                p.setTelefono1(otro.getTelefono1());
+                                p.setTelefono2(otro.getTelefono2());
+                                p.setProcedencia(otro.getProcedencia());
+
+                                p.setMail(otro.getMail());
+
+                            } else {
+                                p.setDireccion("");
+                                p.setTelefono1("");
+                                p.setTelefono2("");
+                                p.setMail("");
+                                p.setNacion(213);
+                            }
+
+                        }
+                    }
+                } else {
+                    boolean exi = buscarpaciente(rutcompleto);
+                    if (exi == true) {
+                        p = buscarpacienteporrut(rutcompleto);
+
+                    }
+                }
+
+            } catch (Exception e) {
                 e.printStackTrace();
                 boolean exi = buscarpaciente(rutcompleto);
                 if (exi == true) {
@@ -197,171 +376,7 @@ public class Negocio {
 
                 }
             }
-            if (respuesta.getReplyTO() != null) {
-                String error = respuesta.getReplyTO().getErrorM();
-                if (error.equals("")) {
-                    int estado = respuesta.getReplyTO().getEstado();
-                    String fecha = respuesta.getReplyTO().getFecha();
-                    int ruttr = respuesta.getAfiliadoTO().getRutafili();
-                    int rutb = respuesta.getBeneficiarioTO().getRutbenef();
-                    int busco = rut;
-                    CargasTO[] losValores = new CargasTO[respuesta.getNumeroCarga()];
-                    String ap1 = "";
-                    String ap2 = "";
-                    String nombre = "";
-                    String tramo = "";
-                    String fechanacimiento = "";
-                    String genero = "";
-
-                    String isapre = respuesta.getDesIsapre();
-                    String codigoisapre = respuesta.getCdgIsapre();
-
-                    String codigobloqueo = respuesta.getCodcybl();
-                    String descripcionbloqueo = respuesta.getCoddesc();
-
-                    String descripprais = respuesta.getDescprais();
-                    String codigoprais = respuesta.getCodigoprais();
-                    int previcion = 0;
-
-                    String descrip = respuesta.getBeneficiarioTO().getDesNacionalidad();
-                    String telefono = respuesta.getBeneficiarioTO().getTelefono();
-
-                    String direccion = respuesta.getBeneficiarioTO().getDireccion();
-                    int rutc = 0;
-                    respuesta.getListCargas();
-                    if (busco == ruttr) {
-
-                        ap1 = respuesta.getAfiliadoTO().getApell1();
-                        ap2 = respuesta.getAfiliadoTO().getApell2();
-                        nombre = respuesta.getAfiliadoTO().getNombres();
-                        tramo = respuesta.getAfiliadoTO().getTramo();
-                        fechanacimiento = respuesta.getAfiliadoTO().getFecnac();
-                        genero = respuesta.getAfiliadoTO().getGenero();
-
-                    } else if (busco == rutb) {
-
-                        ap1 = respuesta.getBeneficiarioTO().getApell1();
-                        ap2 = respuesta.getBeneficiarioTO().getApell2();
-                        nombre = respuesta.getBeneficiarioTO().getNombres();
-                        tramo = respuesta.getAfiliadoTO().getTramo();
-                        genero = respuesta.getBeneficiarioTO().getGenero();
-                        fechanacimiento = respuesta.getBeneficiarioTO().getFechaNacimiento();
-                    } else {
-
-                        for (int i = 0; i < losValores.length; i++) {
-                            rutc = losValores[i].getRutcarga();
-                            if (busco == rutc) {
-                                ap1 = losValores[i].getApell1();
-                                ap2 = losValores[i].getApell2();
-                                nombre = losValores[i].getNombres();
-                                tramo = respuesta.getAfiliadoTO().getTramo();
-                                genero = losValores[i].getGenero();
-                                fechanacimiento = losValores[i].getFecnac();
-                            }
-                        }
-                    }
-
-                    boolean vacio2 = false;
-                    for (int k = 0; k < codigoprais.length(); k++) {
-                        if (codigoprais.charAt(k) == '1') {
-                            vacio2 = true;
-                        }
-                    }
-
-                    boolean vacio = false;
-                    for (int i = 0; i < tramo.length(); i++) {
-                        if (tramo.charAt(i) != ' ') {
-                            vacio = true;
-                        }
-                    }
-                    boolean vacio1 = false;
-                    for (int k = 0; k < codigoisapre.length(); k++) {
-                        if (codigoisapre.charAt(k) != ' ') {
-                            vacio1 = true;
-                        }
-                    }
-
-                    if (vacio2 == true) {
-                        previcion = 3;
-
-                    } else if (vacio1 == true) {
-                        previcion = 2;
-
-                    } else if (vacio == true) {
-                        previcion = 1;
-
-                    } else {
-                        previcion = 4;
-
-                    }
-
-                    if (error.equalsIgnoreCase("")) {
-                        String FEC_NAC_ano = fechanacimiento.substring(0, 4);
-                        String FEC_NAC_mes = fechanacimiento.substring(5, 7);
-                        String FEC_NAC_dia = fechanacimiento.substring(8, 10);
-                        fecha = FEC_NAC_dia + "/" + FEC_NAC_mes + "/" + FEC_NAC_ano;
-                        Date fecha1 = new Date(Integer.parseInt(fecha.substring(6, 10)) - 1900, Integer.parseInt(fecha.substring(3, 5)) - 1, Integer.parseInt(fecha.substring(0, 2)), 0, 0, 0);
-                        p.setRut_paciente(rutcompleto);
-                        p.setNombres_paciente(nombre);
-                        p.setApellidop_paciente(ap1);
-                        p.setApellidom_paciente(ap2);
-                        p.setFechanacimiento(fecha1);
-                        p.setPrevision_verificada(previcion);
-                        int t = 0;
-                        if (previcion == 1) {
-                            if (tramo.equalsIgnoreCase(tramo)) {
-                                if (tramo.equalsIgnoreCase("A")) {
-                                    t = 1;
-                                } else if (tramo.equalsIgnoreCase("B")) {
-                                    t = 2;
-                                } else if (tramo.equalsIgnoreCase("C")) {
-                                    t = 3;
-                                } else if (tramo.equalsIgnoreCase("D")) {
-                                    t = 4;
-                                }
-                            }
-                        } else {
-                            t = 0;
-                        }
-                        int generoe = 0;
-                        if (genero.equalsIgnoreCase("F")) {
-                            generoe = 1;
-                        } else {
-                            generoe = 2;
-                        }
-                        p.setTramo(t);
-                        p.setSexo(generoe);
-                        p.setTelefono1(telefono);
-                        p.setEstado_usuario(2);
-                        boolean exi = buscarpaciente(rutcompleto);
-                        cPaciente otro = new cPaciente();
-                        if (exi == true) {
-                            otro = buscarpacienteporrut(rutcompleto);
-                            p.setDireccion(otro.getDireccion());
-                            p.setTelefono1(otro.getTelefono1());
-                            p.setTelefono2(otro.getTelefono2());
-                            p.setProcedencia(otro.getProcedencia());
-
-                            p.setMail(otro.getMail());
-
-                        } else {
-                            p.setDireccion("");
-                            p.setTelefono1("");
-                            p.setTelefono2("");
-                            p.setMail("");
-                            p.setNacion(213);
-                        }
-
-                    }
-                }
-            } else {
-                boolean exi = buscarpaciente(rutcompleto);
-                if (exi == true) {
-                    p = buscarpacienteporrut(rutcompleto);
-
-                }
-            }
-
+            return p;
         } catch (Exception e) {
             e.printStackTrace();
             boolean exi = buscarpaciente(rutcompleto);
@@ -371,15 +386,6 @@ public class Negocio {
             }
         }
         return p;
-       } catch(Exception e){
-           e.printStackTrace();
-            boolean exi = buscarpaciente(rutcompleto);
-            if (exi == true) {
-                p = buscarpacienteporrut(rutcompleto);
-
-            } 
-       }
-       return p;
     }
 
 
@@ -388,9 +394,14 @@ public class Negocio {
         HistorialVisita h = null;
         this.configurarConexion("");
         this.cnn.setEsSelect(true);
-        this.cnn.setSentenciaSQL("select *, upp.descripcion as riesgo_upp,CA.descripcion as riesgo_caida from schema_uo.visita V, schema_uo.visita_categorizacion VC,\n" +
-              "   schema_uo.cama C,schema_uo.usuario U , schema_uo.riesgo_upp UPP , schema_uo.riesgo_caida CA where  V.rut_usuario=U.rut_usuario and V.id_cama=C.id_cama and \n" +
-              "   V.id_visita_categorizacion=VC.id_visita_categorizacion and UPP.id_riesgo = V.id_riesgo_upp and CA.id_riesgo = V.id_riesgo_caida and V.id_visita=" + id_visita + "");
+        this.cnn.setSentenciaSQL("select *, upp.descripcion as riesgo_upp,CA.descripcion as riesgo_caida ,observacion_aislamiento, a.descripcion as aislamiento\n"
+                + "                   from schema_uo.visita V, schema_uo.visita_categorizacion VC,\n"
+                + "                   schema_uo.cama C,schema_uo.usuario U , schema_uo.riesgo_upp UPP , schema_uo.riesgo_caida CA ,\n"
+                + "                   schema_uo.aislamiento a \n"
+                + "                   where  V.rut_usuario=U.rut_usuario and V.id_cama=C.id_cama and \n"
+                + "                 V.id_visita_categorizacion=VC.id_visita_categorizacion and \n"
+                + "                 UPP.id_riesgo = V.id_riesgo_upp and CA.id_riesgo = V.id_riesgo_caida  \n"
+                + "                 and  a.id = V.id_aislamiento and V.id_visita= " + id_visita + "");
 
         this.cnn.conectar();
 
@@ -425,6 +436,8 @@ public class Negocio {
                 h.setApellidop_usuario(this.cnn.getRst().getString("apellidop_usuario"));
                 h.setDescription_upp(this.cnn.getRst().getString("riesgo_upp"));
                 h.setDescription_caida(this.cnn.getRst().getString("riesgo_caida"));
+                h.setAislamientoString(this.cnn.getRst().getString("aislamiento"));
+                h.setObservacionAislamiento(this.cnn.getRst().getString("observacion_aislamiento"));
 
             }
         } catch (SQLException var7) {
@@ -442,6 +455,25 @@ public class Negocio {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
         this.cnn.setSentenciaSQL("INSERT INTO   schema_uo.psicolo_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
+
+        try {
+            this.cnn.conectar();
+            sw = true;
+        } catch (Exception var7) {
+            sw = false;
+        } finally {
+            this.cnn.cerrarConexion();
+        }
+
+        return sw;
+    }
+
+    /*quimico*/
+    public boolean ingresa_sesion_quimico(cSesionKine ses) {
+        boolean sw = false;
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("INSERT INTO   schema_uo.quimico_sesion ( ses_estado, ses_usuario,\n  ses_fecha_ingreso, ses_fecha_hora, ses_detalle,ses_duo ) \nVALUES ( '1', '" + ses.getRut_usuario() + "',\n  CURRENT_TIMESTAMP, '" + ses.getFecha_hora() + "', '" + ses.getDetalle() + "', '" + ses.getId_duo() + "' );");
 
         try {
             this.cnn.conectar();
@@ -487,8 +519,8 @@ public class Negocio {
         this.cnn.conectar();
         this.cnn.cerrarConexion();
     }
-    
-        public void ingresa_sesion(cVisita vis) {
+
+    public void ingresa_sesion(cVisita vis) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
         this.cnn.setSentenciaSQL("INSERT INTO  schema_uo.sesion ( vis_usuario, vis_fecha_ingreso, vis_duo,   vis_fecha, vis_evolucion, vis_estado )  VALUES (   '" + vis.getRut_usuario() + "', CURRENT_TIMESTAMP,  '" + vis.getId_duo() + "' ,   '" + vis.getFecha_visita() + "', '" + vis.getObs_visita() + "', '" + 1 + "'  ); ");
@@ -819,7 +851,7 @@ public class Negocio {
         this.cnn.setSentenciaSQL("INSERT INTO "
                 + "  agenda.paciente "
                 + "VALUES ("
-                + "  '" + p.getRut_paciente().toUpperCase()+ "',"
+                + "  '" + p.getRut_paciente().toUpperCase() + "',"
                 + "  '" + p.getNombres_paciente() + "',"
                 + "  '" + p.getApellidop_paciente() + "',"
                 + "  '" + p.getApellidom_paciente() + "',"
@@ -1181,6 +1213,16 @@ public class Negocio {
         this.cnn.cerrarConexion();
     }
 
+    public void actualizarDiagnostico(int id_diagnostico, String descripcion) {
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("UPDATE schema_uo.diagnostico_duo\n"
+                + "SET descripcion_diagnostico_duo = '"+descripcion+"'\n"
+                + "WHERE id_diagnostico_duo = "+id_diagnostico+" ");
+        this.cnn.conectar();
+        this.cnn.cerrarConexion();
+    }
+
     public void modifica_cama_duo(int duo_id, int cama_nueva) {
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
@@ -1203,7 +1245,7 @@ public class Negocio {
                 + "  procedencia = '" + pac.getConsultorio() + "', "
                 + "  email = '" + pac.getMail() + "',  "
                 + "  id_nacionalidad = '" + pac.getNacion() + "' "
-                + "  WHERE  upper(rut)=upper('" +  pac.getRut_paciente() + "') ;");
+                + "  WHERE  upper(rut)=upper('" + pac.getRut_paciente() + "') ;");
         cnn.conectar();
         cnn.cerrarConexion();
     }
@@ -1306,11 +1348,12 @@ public class Negocio {
         return id_categorizacion;
     }
 
-    public int ingresa_visita_enfermeria(String obs, String fecha, String hora, String rut_usu, int id_cama, int id_cat, int tipo, int id_duo , int riesgo_caida, int riesgo_upp) {
+    public int ingresa_visita_enfermeria(String obs, String fecha, String hora, String rut_usu, int id_cama, int id_cat, int tipo, int id_duo, int riesgo_caida, int riesgo_upp, int idAislamiento, String observacionAislamiento) {
         int id_visita = 0;
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("insert into schema_uo.visita (obs_visita,fecha_visita,hora_visita,rut_usuario,id_cama,id_visita_categorizacion,tipo_visita,id_duo, id_riesgo_caida, id_riesgo_upp) values('" + obs + "','" + fecha + "','" + hora + "','" + rut_usu + "'," + id_cama + "," + id_cat + "," + tipo + "," + id_duo + ", "+riesgo_caida+" , "+riesgo_upp+")");
+        this.cnn.setSentenciaSQL("insert into schema_uo.visita (obs_visita,fecha_visita,hora_visita,rut_usuario,id_cama,id_visita_categorizacion,tipo_visita,id_duo, id_riesgo_caida, id_riesgo_upp, id_aislamiento, observacion_aislamiento) "
+                + "values('" + obs + "','" + fecha + "','" + hora + "','" + rut_usu + "'," + id_cama + "," + id_cat + "," + tipo + "," + id_duo + ", " + riesgo_caida + " , " + riesgo_upp + ", " + idAislamiento + ", '" + observacionAislamiento + "')");
         this.cnn.conectar();
         this.cnn.cerrarConexion();
         this.cnn.setEsSelect(true);

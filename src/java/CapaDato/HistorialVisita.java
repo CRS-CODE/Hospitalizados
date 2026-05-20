@@ -43,10 +43,39 @@ public class HistorialVisita {
     private int riesgo_caida;
     private String description_upp;
     private String description_caida;
+    private int aislamiento;
+    private String aislamientoString;
+    private String observacionAislamiento;
 
     public int getRiesgo_upp() {
         return riesgo_upp;
     }
+
+    public int getAislamiento() {
+        return aislamiento;
+    }
+
+    public void setAislamiento(int aislamiento) {
+        this.aislamiento = aislamiento;
+    }
+
+    public String getAislamientoString() {
+        return aislamientoString;
+    }
+
+    public void setAislamientoString(String aislamientoString) {
+        this.aislamientoString = aislamientoString;
+    }
+
+    public String getObservacionAislamiento() {
+        return observacionAislamiento;
+    }
+
+    public void setObservacionAislamiento(String observacionAislamiento) {
+        this.observacionAislamiento = observacionAislamiento;
+    }
+    
+    
 
     public String getDescription_upp() {
         return description_upp;

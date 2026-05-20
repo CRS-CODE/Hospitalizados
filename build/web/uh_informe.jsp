@@ -259,6 +259,20 @@
                                 <option value="10">Noviembre
                                 <option value="11">Diciembre
                             </select></td>
+                            <td>
+                                   <select name="ano" id="ano">
+                                <%
+
+                                    Date dn = new Date();
+                                    GregorianCalendar bbn = new GregorianCalendar();
+                                    bbn.setTime(dn);
+                                    int annn = bbn.get(Calendar.YEAR);
+                                    for (int k = annn; k > 2008; k--) {
+                                        out.write("<option value='" + k + "'>" + k);
+                                    }
+                                %>
+                            </select>
+                            </td>
                         
                     </tr>
                 </table>

@@ -13,22 +13,22 @@
 
 /*  visita enfermeria */
 TD.DEPENDENCIA{
-PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-SIZE: 9px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px; BACKGROUND-COLOR: #0000BB; text-align: center; COLOR: #FFF;
+    PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-SIZE: 9px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px; BACKGROUND-COLOR: #0000BB; text-align: center; COLOR: #FFF;
 }
 TD.RIESGO{
-PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-SIZE: 9px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px; BACKGROUND-COLOR: #660000; text-align: center; COLOR: #FFF;
+    PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-SIZE: 9px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px; BACKGROUND-COLOR: #660000; text-align: center; COLOR: #FFF;
 }
 TD.CRD_TOTAL{
-PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-SIZE: 9px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px; BACKGROUND-COLOR: #AAAAAA; text-align: center; COLOR: #000;
+    PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-SIZE: 9px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px; BACKGROUND-COLOR: #AAAAAA; text-align: center; COLOR: #000;
 }
 /*  fin visita enfermeria */
 
 TH.ESTADISTICA {
-	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; FONT-SIZE: 11px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px; FONT-WEIGHT: bold; BACKGROUND-COLOR: #ccc; text-align: left;
+    PADDING-RIGHT: 3px; PADDING-LEFT: 3px; FONT-SIZE: 11px; PADDING-BOTTOM: 4px; PADDING-TOP: 4px; FONT-WEIGHT: bold; BACKGROUND-COLOR: #ccc; text-align: left;
 }
 
 .FIELDSET_SALA {
-	BORDER-RIGHT: #ccc 3px solid; PADDING-RIGHT: 3px; BORDER-TOP: #ccc 3px solid; PADDING-LEFT: 3px; MARGIN-BOTTOM: 8px; PADDING-BOTTOM: 8px; BORDER-LEFT: #ccc 3px solid; PADDING-TOP: 3px; BORDER-BOTTOM: #ccc 3px solid; BACKGROUND-COLOR: #fff;
+    BORDER-RIGHT: #ccc 3px solid; PADDING-RIGHT: 3px; BORDER-TOP: #ccc 3px solid; PADDING-LEFT: 3px; MARGIN-BOTTOM: 8px; PADDING-BOTTOM: 8px; BORDER-LEFT: #ccc 3px solid; PADDING-TOP: 3px; BORDER-BOTTOM: #ccc 3px solid; BACKGROUND-COLOR: #fff;
 }
 TD.CAMA_ACTIVA {
     background-image: url('../Imagenes/cama_2chica.gif');
@@ -96,55 +96,118 @@ TD.CAMA_SINCAT {
 
 }
 /* 00-02 */
+.AIS {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 7px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    font-variant: normal;
+    color: black;
+    BACKGROUND-COLOR:#0088ff;
+
+}
 
 .CRD_P {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	font-style: normal;
-	line-height: normal;
-	font-weight: bold;
-	font-variant: normal;
-	color: black;
-        BACKGROUND-COLOR: #AAAAAA;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    font-variant: normal;
+    color: black;
+    BACKGROUND-COLOR: #AAAAAA;
 }
 
 .CRD_D {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	font-style: normal;
-	line-height: normal;
-	font-weight: bold;
-	font-variant: normal;
-	color: black;
-        BACKGROUND-COLOR: #FFFF00;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    font-variant: normal;
+    color: black;
+    BACKGROUND-COLOR: #FFFF00;
 }
 .CRD_C {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	font-style: normal;
-	line-height: normal;
-	font-weight: bold;
-	font-variant: normal;
-	color: black;
-        BACKGROUND-COLOR: #FF99CC;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    font-variant: normal;
+    color: black;
+    BACKGROUND-COLOR: #FF99CC;
 }
 .CRD_B {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	font-style: normal;
-	line-height: normal;
-	font-weight: bold;
-	font-variant: normal;
-	color: black;
-        BACKGROUND-COLOR: #3366CC;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    font-variant: normal;
+    color: black;
+    BACKGROUND-COLOR: #3366CC;
 }
 .CRD_A {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	font-style: normal;
-	line-height: normal;
-	font-weight: bold;
-	font-variant: normal;
-	color: black;
-        BACKGROUND-COLOR: #FF0000;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    font-variant: normal;
+    color: black;
+    BACKGROUND-COLOR: #FF0000;
 }
+
+.P_A_C{
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 7px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    font-variant: normal;
+    color: black;
+    BACKGROUND-COLOR:#b88fc2;
+}
+.P_A_G{
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 7px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    font-variant: normal;
+    color: black;
+    BACKGROUND-COLOR:#a0e8d7;
+}
+.P_A_C_G{
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 7px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    font-variant: normal;
+    color: black;
+    BACKGROUND-COLOR:#f7cb94;
+}
+.P_A_R{
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 7px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    font-variant: normal;
+    color: black;
+    BACKGROUND-COLOR:#9acded;
+}
+.P_A_P{
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 7px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    font-variant: normal;
+    color: black;
+    BACKGROUND-COLOR:#0088ff;
+}
+

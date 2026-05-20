@@ -207,79 +207,108 @@ public class nominaPorMes extends HttpServlet {
             Label diagnostico = new Label(7, j, "Diagnostico de Ingreso", FormatoItem);
             sheet.addCell(diagnostico);
             sheet.setColumnView(7, 40);
+            
+            Label riesgoCaida = new Label(8, j, "Riesgo Caida", FormatoItem);
+            sheet.addCell(riesgoCaida);
+            sheet.setColumnView(8, 40);
+            
+            Label riesgolPP = new Label(9, j, "Riesgo LPP", FormatoItem);
+            sheet.addCell(riesgolPP);
+            sheet.setColumnView(9, 40);
+            
 
             Date d = new Date();
             GregorianCalendar bb = new GregorianCalendar();
             bb.setTime(d);
-            int ann = 2013;
+            Calendar c1 = Calendar.getInstance();
+            int ann = c1.get(Calendar.YEAR);
+
             int mesActual = 12;
             String mesLlega = request.getParameter("mes");
+            int ano = Integer.parseInt(request.getParameter("ano"));
+
+          //  GregorianCalendar calendarioEspecifico = new GregorianCalendar(Integer.parseInt(ano), Calendar.MONTH, 1);
+
+            // Obtener el año del calendario
+            //int año = 2025;
+
             String[] meses = {"Ene", "Feb", "Marzo", "Abril", "mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
             jxl.write.Number dato_numero;
             Label dato_texto;
+            int mesPedido = Integer.parseInt(mesLlega);
+            if(mesPedido > mesActual){
+                //pasa en el mes de diciembre.
+                mesActual = mesPedido;
+            }
 
             try {
-                
-                    for (int m = Integer.parseInt(mesLlega); m <= mesActual; ++m) {
-                        i++;
-                        Label mes = new Label(0, i + j, meses[m] + " " + ann, FormatoItem);
-                        sheet.addCell(mes);
-                        sheet.setColumnView(0, 20);
-                        Calendar gc = new GregorianCalendar();
-                        gc.set(Calendar.MONTH, m);
-                        gc.set(Calendar.YEAR, ann);
-                        gc.set(Calendar.DAY_OF_MONTH, 1);
-                        Date monthStart = gc.getTime();
-                        gc.add(Calendar.MONTH, 1);
-                        gc.add(Calendar.DAY_OF_MONTH, -1);
-                        Date monthEnd = gc.getTime();
-                        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 
-                        try {
+                for (int m = mesPedido; m <= mesActual; ++m) {
+                    i++;
+                    Label mes = new Label(0, i + j, meses[m] + " ", FormatoItem);
+                    sheet.addCell(mes);
+                    sheet.setColumnView(0, 20);
+                    Calendar gc = new GregorianCalendar();
+                    gc.set(Calendar.MONTH, m);
+                    gc.set(Calendar.YEAR, ano);
+                    gc.set(Calendar.DAY_OF_MONTH, 1);
+                    Date monthStart = gc.getTime();
+                    gc.add(Calendar.MONTH, 1);
+                    gc.add(Calendar.DAY_OF_MONTH, -1);
+                    Date monthEnd = gc.getTime();
+                    SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 
-                            for (cDuo duo : neg.lisNominaporMes(monthStart, monthEnd)) {
+                    try {
 
-                                dato_texto = new Label(0, i + 4, duo.getFecha_hora_ing_duo(), FormatoDatos);
-                                sheet.addCell(dato_texto);
+                        for (cDuo duo : neg.lisNominaporMes(monthStart, monthEnd)) {
 
-                                dato_texto = new Label(1, i + 4, duo.getFecha_hora_alta_med_duo(), FormatoDatos);
-                                sheet.addCell(dato_texto);
+                            dato_texto = new Label(0, i + 4, duo.getFecha_hora_ing_duo(), FormatoDatos);
+                            sheet.addCell(dato_texto);
 
-                                dato_texto = new Label(2, i + 4, duo.getRut_paciente(), FormatoDatos);
-                                sheet.addCell(dato_texto);
+                            dato_texto = new Label(1, i + 4, duo.getFecha_hora_alta_med_duo(), FormatoDatos);
+                            sheet.addCell(dato_texto);
 
-                                dato_texto = new Label(3, i + 4, neg.primeraMayuscula(duo.getApellidop_paciente()), FormatoDatos);
-                                sheet.addCell(dato_texto);
+                            dato_texto = new Label(2, i + 4, duo.getRut_paciente(), FormatoDatos);
+                            sheet.addCell(dato_texto);
 
-                                dato_texto = new Label(4, i + 4, neg.primeraMayuscula(duo.getApellidom_paciente()), FormatoDatos);
-                                sheet.addCell(dato_texto);
+                            dato_texto = new Label(3, i + 4, neg.primeraMayuscula(duo.getApellidop_paciente()), FormatoDatos);
+                            sheet.addCell(dato_texto);
 
-                                dato_texto = new Label(5, i + 4, neg.primeraMayuscula(duo.getNombres_paciente()), FormatoDatos);
-                                sheet.addCell(dato_texto);
+                            dato_texto = new Label(4, i + 4, neg.primeraMayuscula(duo.getApellidom_paciente()), FormatoDatos);
+                            sheet.addCell(dato_texto);
 
-                                dato_texto = new Label(6, i + 4, duo.getEdad(), FormatoDatos);
-                                sheet.addCell(dato_texto);
+                            dato_texto = new Label(5, i + 4, neg.primeraMayuscula(duo.getNombres_paciente()), FormatoDatos);
+                            sheet.addCell(dato_texto);
 
-                                ArrayList diagnosticos = neg.lista_diagnostico(duo.getId_duo(), " 1");
-                                String diagnosticoD = "";
-                                Iterator it_dia = diagnosticos.iterator();
-                                while (it_dia.hasNext()) {
-                                    cDiagnostico dia = (cDiagnostico) it_dia.next();
+                            dato_texto = new Label(6, i + 4, duo.getEdad(), FormatoDatos);
+                            sheet.addCell(dato_texto);
 
-                                    diagnosticoD += dia.getDescripcion_diagnostico() + " \n";
+                            ArrayList diagnosticos = neg.lista_diagnostico(duo.getId_duo(), " 1");
+                            String diagnosticoD = "";
+                            Iterator it_dia = diagnosticos.iterator();
+                            while (it_dia.hasNext()) {
+                                cDiagnostico dia = (cDiagnostico) it_dia.next();
 
-                                }
-
-                                dato_texto = new Label(7, i + 4, diagnosticoD, FormatoDatos);
-                                sheet.addCell(dato_texto);
-
-                                /**/
-                                i++;
+                                diagnosticoD += dia.getDescripcion_diagnostico() + " \n";
 
                             }
-                        } catch (Exception ex) {
+
+                            dato_texto = new Label(7, i + 4, diagnosticoD, FormatoDatos);
+                            sheet.addCell(dato_texto);
+                            
+                             dato_texto = new Label(8, i + 4,duo.getCategorizacion_descripcion() , FormatoDatos);
+                            sheet.addCell(dato_texto);
+                            
+                             dato_texto = new Label(9, i + 4,duo.getVariable() , FormatoDatos);
+                            sheet.addCell(dato_texto);
+
+                            /**/
+                            i++;
+
                         }
-                    
+                    } catch (Exception ex) {
+                    }
+
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

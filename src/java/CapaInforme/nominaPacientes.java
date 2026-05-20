@@ -233,7 +233,7 @@ public class nominaPacientes extends HttpServlet {
             cell = row.createCell((short) 11); //crea la celda tipo
             
             cell = row.createCell((short) 11); //crea la celda tipo
-            cell.setCellValue("Riesgo UPP");
+            cell.setCellValue("Riesgo LPP");
             cell.setCellStyle(style_Destacado);
             cell = row.createCell((short) 12); //crea la celda tipo
 

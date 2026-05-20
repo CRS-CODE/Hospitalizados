@@ -195,7 +195,13 @@
     tabla_encabezado.getDefaultCell().setMinimumHeight(10);
     tabla_encabezado.getDefaultCell().setColspan(5);
     tabla_encabezado.getDefaultCell().setColspan(8);
-    tabla_encabezado.addCell(new Phrase(SPACE_NORMAL, "Riesgo Caida: " + hv.getDescription_caida()+ "   " +  " Riesgo UPP: " + hv.getDescription_upp(), TEXT_NORMAL));
+    tabla_encabezado.addCell(new Phrase(SPACE_NORMAL, "Riesgo Caida: " + hv.getDescription_caida()+ "   " +  " Riesgo LPP: " + hv.getDescription_upp(), TEXT_NORMAL));
+
+    
+     tabla_encabezado.getDefaultCell().setMinimumHeight(10);
+    tabla_encabezado.getDefaultCell().setColspan(5);
+    tabla_encabezado.getDefaultCell().setColspan(8);
+    tabla_encabezado.addCell(new Phrase(SPACE_NORMAL, "Aislamiento: " + hv.getAislamientoString()+ "   " +  " Observacion del Aislamiento: " + hv.getObservacionAislamiento(), TEXT_NORMAL));
 
     
     /**/

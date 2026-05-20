@@ -61,6 +61,8 @@ public class cDuo extends cPaciente {
     private boolean tengoEgreso;
     private String riesgo_caida;
     private String riesgo_up;
+    private String aislamiento;
+    private String observacionAislamiento;
 
     public cDuo() {
         this.id_duo = -1;
@@ -68,6 +70,8 @@ public class cDuo extends cPaciente {
         this.hora_duo = "";
         this.estado_duo = -1;
         this.cama = -1;
+        this.aislamiento = "";
+        this.observacionAislamiento = "";
 //        this.id_prevision = -1;
         this.fecha_hora_ing_duo = "";
         this.rut_usuario = "";
@@ -110,6 +114,24 @@ public class cDuo extends cPaciente {
         dif_dd_enf = -1;
     }
 
+    public String getObservacionAislamiento() {
+        return observacionAislamiento;
+    }
+
+    public void setObservacionAislamiento(String observacionAislamiento) {
+        this.observacionAislamiento = observacionAislamiento;
+    }
+    
+    
+
+    public String getAislamiento() {
+        return aislamiento;
+    }
+
+    public void setAislamiento(String aislamiento) {
+        this.aislamiento = aislamiento;
+    }
+
     public Date getFecha() {
         return fecha;
     }
@@ -129,8 +151,6 @@ public class cDuo extends cPaciente {
     public void setRiesgo_up(String riesgo_up) {
         this.riesgo_up = riesgo_up;
     }
-    
-    
 
     public boolean isTengoEgreso() {
         return tengoEgreso;

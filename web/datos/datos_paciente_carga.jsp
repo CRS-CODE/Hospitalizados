@@ -57,6 +57,7 @@
     see_visita.add(16);
     see_visita.add(17);
     see_visita.add(18);
+      see_visita.add(19);
 
     // see_visita.add(12);
     ArrayList see_alta_medica = new ArrayList();
@@ -291,6 +292,20 @@
 
                         </tr>
 
+                         <tr>
+                            <td align='right' >
+                                <%                                    out.write("<form name='form_sesion_quimico" + duo.getId_duo() + "' id='form_sesion_quimico" + duo.getId_duo() + "' action='" + neg.getLocal() + "quimico/datos_quimico.jsp' method='POST' >");
+                                    out.write("<input type='hidden' name='txt_duo' value='" + duo.getId_duo() + "' >");
+                                    out.write(" <img title='Visita Quimico' width='30' height='30'   src='../Imagenes/visita.png' onclick='document.forms[\"form_sesion_quimico" + duo.getId_duo() + "\"].submit();' style='cursor:pointer'>");
+                                    out.write("</form>");
+
+                                %>
+
+                            </td>
+                            <td valign="top"><<-Ir Quimico Farmaceutico</td>
+                
+
+                        </tr>
 
                     </table>
                 </td>

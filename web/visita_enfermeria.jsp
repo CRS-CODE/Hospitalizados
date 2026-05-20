@@ -291,7 +291,7 @@
          border-left: #6699CC 1px solid; border-bottom: #6699CC 1px solid;
          scrollbar-arrow-color : #999999; scrollbar-face-color : #666666;
          scrollbar-track-color :#3333333 ;
-         height:80px; left: 100; top: 20; width: 95%"
+         height:80px; left: 100; top: 20; width: 100%"
          > </div>
     <div id="content">
         <div id="column-left">
@@ -810,18 +810,12 @@
                         }
 
                         #column-left {
-                            background-color: #EBE9EA;
+                            background-color: #ffffff;
                             border: 1px solid #D2D2D2;
-                            border-radius: 4px 4px 4px 4px;
+                            border-radius: 8px 8px 8px 8px;
                             float: left;
-                            position: fixed;
-                            min-height: 225px;
                             margin-bottom: 10px;
-                            margin-right: 10px;
-                            overflow: hidden;
-                            text-align: center;
-                            width: 25%;
-                            
+                            width: 30%;
                         }
 
                         #central {

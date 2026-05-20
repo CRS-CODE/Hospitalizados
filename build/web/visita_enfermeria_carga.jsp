@@ -123,13 +123,13 @@
         </div>
     </div>
     <div class="fila">
-        <div class="col_titulo" style="" ><b>Riesgo UPP:</b></div> 
+        <div class="col_titulo" style="" ><b>Riesgo LPP:</b></div> 
     </div>
-      <div>
-        <select name="riesgo_upp" id="riesgo_upp"   >
+    <div>
+        <select name="riesgo_upp" id="riesgo_upp" style="width: 40% "   >
             <option value="-1">Seleccione...</option>
             <%    //
-               for (cDato dato : neg.getRiesgoUpp()) {
+                for (cDato dato : neg.getRiesgoUpp()) {
 
                     out.write("<option value='" + dato.getId() + "' >" + dato.getDescription() + "</option>");
 
@@ -143,10 +143,10 @@
         <div class="col_titulo" style="" ><b>Riesgo de Caida:</b></div> 
     </div>
     <div>
-        <select name="riesgo_caida" id="riesgo_caida"   >
+        <select name="riesgo_caida" id="riesgo_caida"  style="width: 40% " >
             <option value="-1">Seleccione...</option>
             <%    //
-               for (cDato dato : neg.getRiesgoCaida()) {
+                for (cDato dato : neg.getRiesgoCaida()) {
 
                     out.write("<option value='" + dato.getId() + "' >" + dato.getDescription() + "</option>");
 
@@ -155,6 +155,29 @@
 
         </select>
     </div>
+
+    <div class="fila">
+        <div class="col_titulo" style="" ><b>Aislamiento:</b></div> 
+    </div>
+    <div>
+        <select name="aislamiento" id="aislamiento"  style="width: 40% " >
+            <option value="-1">Seleccione...</option>
+            <%    //
+                for (cDato dato : neg.getAislamiento()) {
+
+                    out.write("<option value='" + dato.getId() + "' >" + dato.getDescription() + "</option>");
+
+                }
+            %>
+
+        </select>
+        <div class="fila">
+            <div class="col_titulo" style="" ><b>Ingrese Observación Aislamiento :</b></div> 
+        </div>
+        <textarea name="observacion" id="observacion" cols="40" rows="2"  ></textarea>
+    </div>
+
+
 
     <div class="fila">
         <div class="col_titulo" style="" ><b>Ingrese fecha:</b></div>

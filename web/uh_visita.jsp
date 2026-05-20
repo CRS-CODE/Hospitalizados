@@ -222,7 +222,7 @@
                                 <table border="0" width="85px" style="FONT-FAMILY: Arial, Helvetica, sans-serif; FONT-SIZE: 12px;" >
                                     <tr>
                                         <td bgcolor="#0088ff" width="60px" ><b style="color:#fff">
-                                                <%                                            if (aux.getEstado_duo() == 3) {
+                                                <% if (aux.getEstado_duo() == 3) {
                                                         // hitos de la epiciris
                                                         out.write("<a style=\"color:white;text-decoration:none; \" href='" + neg.getLocal() + "hito_paciente.jsp?rut=" + aux.getRut_paciente() + "' target='_blank' onClick=\"window.open(this.href, this.target, 'width=900,height=450'); return false;\" "
                                                                 + " onmouseover=\"Tip('Rut del Paciente:" + aux.getRut_paciente() + "<br><br>(Haga click para abrir ventana de Hitos)', SHADOW, true, TITLE, 'Hitos del Paciente', PADDING, 9)\" >"
@@ -233,9 +233,10 @@
                                                 %>
                                             </b></td>
                                         <td class="<%=clas%>" title="Ultima Categorización"><b style="color:#000"><% out.write("" + aux.getUltima_clasificacion());%></b></td>
+                                        <td class="<%=aux.getAislamiento().replace('.', '_').replace('+', '_')%>" title="<%=aux.getObservacionAislamiento()%>"><b style="color:#000"><% out.write("" + aux.getAislamiento());%></b></td>
                                     </tr>
                                     <tr>
-                                        <td valign="top" colspan="2" class="CAMA_ACTIVA" onclick="document.forms['form_pac<%=aux.getId_duo()%>'].submit();" >
+                                        <td valign="top" colspan="3" class="CAMA_ACTIVA" onclick="document.forms['form_pac<%=aux.getId_duo()%>'].submit();" >
                                             <form name='form_pac<%=aux.getId_duo()%>' id='form_pac<%=aux.getId_duo()%>' action='datos/datos_paciente.jsp' method='POST' >
                                                 <input type='hidden' name='txt_manda_duo' value='<%=aux.getId_duo()%>' >
                                             </form>

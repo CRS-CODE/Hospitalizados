@@ -29,7 +29,7 @@ public class cDiagnostico extends cUsuario {
 
     public cDiagnostico() {
         this.id_diagnostico = -1;
-        this.descripcion_diagnostico = "";
+        this.descripcion_diagnostico = " ";
         this.tipo_diagnostico = -1;
         this.id_duo = -1;
 

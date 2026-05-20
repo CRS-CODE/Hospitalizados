@@ -29,13 +29,14 @@
         Enfermedades_cronicas += " " + enf.getDescripcion() + " -";
     }
     Enfermedades_cronicas = Enfermedades_cronicas.substring(0, Enfermedades_cronicas.length() - 1);
-    ArrayList diagnosticos = neg.lista_diagnostico(id_duo, " 1,2 ");
-    Iterator it_dia = diagnosticos.iterator();
+    ArrayList diagnosticosList = neg.lista_diagnostico(id_duo, " 1,2 ");
+    request.setAttribute("listaDiagnosticos", diagnosticosList);
+    /* Iterator it_dia = diagnosticos.iterator();
     String diagnostico = "";
     while (it_dia.hasNext()) {
         cDiagnostico dia = (cDiagnostico) it_dia.next();
         diagnostico += dia.getDescripcion_diagnostico() + " \n";
-    }
+    }*/
 %>
 
 
@@ -66,13 +67,7 @@
                             <input style=" width: 150px;  " name="fecha_epi" id="fecha_epi" type="text" size="22" value="<% out.write("" + obtiene_fecha_hora_servidor);%>" readonly="readonly" >[Hora del Servidor]
 
                         </td>
-                    </tr>
-                    <tr>
-                        <th class="Datos"> Diagnostico de Ingreso
 
-                        </th>
-                        <td class="destacado" colspan="3"><% out.write("" + diagnostico);%></td>
-                    </tr>
                 </table>
                 <div id="Resultado" style=" overflow:auto;
                      padding-right: 15px; padding-top: 2px; padding-left: 15px; padding-bottom: 15px;
@@ -84,40 +79,65 @@
                     <!-- Este DIV contendra la respuesta enviada por el Servlet -->
                     <table>
                         <tr>
-                            <th class="Datos" colspan="2">Resumen Breve de Hospitalización</th>
+                            <th class="Datos" colspan="2">Resumen Breve de Hospitalización (No usar abreviaturas)</th>
                         </tr>
                         <tr>
                             <td class="Datos" colspan="2"><textarea id="resumen" name="resumen" cols="77" rows="4"></textarea></td>
                         </tr>
-                         <tr>
+                        <tr>
                             <th class="Datos" colspan="2"> Exámenes realizados</th>
                         </tr>
                         <tr>
                             <td class="Datos" colspan="2"><textarea id="examenes" name="examenes" cols="77" rows="4"></textarea></td>
                         </tr>
-                         <tr>
-                            <th class="Datos" colspan="2"> Listado de medicamentos prescritos durante la hospitalización
+                        <tr>
+                            <th class="Datos" colspan="2"> Listado de medicamentos prescritos durante la hospitalización (No usar abreviaturas)
 
                             </th>
                         </tr>
                         <tr>
                             <td class="Datos" colspan="2"><textarea id="medicamentos_prescritos" name="medicamentos_prescritos" cols="77" rows="4"></textarea></td>
                         </tr>
-                       
+
+                        </tr>
+                        <th class="Datos" colspan="2">Diagnósticos Ingresos (No usar abreviaturas)</th>
+                            <%
+
+                                Iterator it = diagnosticosList.iterator();
+
+                                while (it.hasNext()) {
+                                    cDiagnostico dia = (cDiagnostico) it.next();
+                            %>
+
                         <tr>
-                            <th class="Datos" colspan="2">Diagnósticos Egreso</th>
+
+                            <td class="Datos" colspan="2">
+                                <input type="hidden" name="idDiagnostico" value="<%= dia.getId_diagnostico()%>"/>
+
+                                <textarea name="descripcionDiagnostico" cols="77" rows="1">
+                                    <%= dia.getDescripcion_diagnostico()%>
+                                </textarea>
+                            </td>
+                        </tr>
+
+                        <%
+                            }
+                        %>
+
+                        <tr>
+                            <th class="Datos" colspan="2">Diagnósticos Egreso (No usar abreviaturas)</th>
                         </tr>
                         <tr>
                             <td class="Datos" colspan="2"><textarea id="diagnosticos"  name="diagnosticos" cols="77" rows="4"></textarea></td>
                         </tr>
-                       
+
                         <tr>
-                            <th class="Datos" colspan="2">Indicaciones al Alta</th>
+                            <th class="Datos" colspan="2">Indicaciones al Alta (No usar abreviaturas)</th>
                         </tr>
                         <tr>
                             <td class="Datos" colspan="2"><textarea id="indicaciones" name="indicaciones" cols="77" rows="4"></textarea></td>
                         </tr>
-                       
+
                     </table>
                 </div>
             </fieldset>
