@@ -48,6 +48,9 @@ import ws.cl.gov.fonasa.certificadorprevisional.CertificadorPrevisionalSoapProxy
 import ws.cl.gov.fonasa.certificadorprevisional.QueryCertificadorPrevisionalTO;
 import ws.cl.gov.fonasa.certificadorprevisional.QueryTO;
 import ws.cl.gov.fonasa.certificadorprevisional.ReplyCertificadorPrevisionalTO;
+import CapaDato.cPrescripcion;
+import CapaDato.cInfusion;
+import CapaDato.cInfusionDetalle;
 
 public class Negocio {
 
@@ -72,16 +75,16 @@ public class Negocio {
         //servidor nuevo 
          this.cnn.setUser("hospitalizados");
         this.cnn.setPassword("crsdb2020");
-        this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5433/crsm");
+        this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5432/crsm");
         /*this.cnn.setUser("postgres");
         this.cnn.setPassword("crsdb2020");
         this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5432/crsm");*/
     }
 
     public String getLocal() {
-        String local = "http://10.8.4.225:8080/modulo_uhce/";
-       // String local = "http://10.8.4.163:8080/modulo_uhce/";
-       // String local = "http://localhost:8084/modulo_uhce/";
+        //String local = "http://10.8.4.225:8080/modulo_uhce/";
+        String local = "http://10.8.4.18:8080/modulo_uhce/";
+       //String local = "http://localhost:8084/modulo_uhce/";
         return local;
     }
 
@@ -1914,5 +1917,105 @@ public class Negocio {
         }
 
         return sw;
+    }
+
+    public void ingresarPrescripcion(cPrescripcion p) {
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("INSERT INTO schema_uo.prescripcion_medicamento "
+                + "(id_duo, id_insumo, medicamento_desc, dosis, unidad_desc, id_via, via_desc, frecuencia, observacion, estado, fecha_registro, usuario_registro) "
+                + "VALUES (" + p.getId_duo() + ", " + p.getId_insumo() + ", '" + p.getMedicamento_desc() + "', '" + p.getDosis() + "', '"
+                + p.getUnidad_desc() + "', " + p.getId_via() + ", '" + p.getVia_desc() + "', '" + p.getFrecuencia() + "', '"
+                + p.getObservacion() + "', 1, CURRENT_TIMESTAMP, '" + p.getUsuario_registro() + "');");
+        this.cnn.conectar();
+        this.cnn.cerrarConexion();
+    }
+
+    public void modificarPrescripcion(cPrescripcion p) {
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("UPDATE schema_uo.prescripcion_medicamento SET "
+                + "id_insumo=" + p.getId_insumo() + ", medicamento_desc='" + p.getMedicamento_desc() + "', dosis='" + p.getDosis() + "', "
+                + "unidad_desc='" + p.getUnidad_desc() + "', id_via=" + p.getId_via() + ", via_desc='" + p.getVia_desc() + "', "
+                + "frecuencia='" + p.getFrecuencia() + "', observacion='" + p.getObservacion() + "' "
+                + "WHERE id_pm=" + p.getId_pm() + ";");
+        this.cnn.conectar();
+        this.cnn.cerrarConexion();
+    }
+
+    public void eliminarPrescripcion(int id_pm) {
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("UPDATE schema_uo.prescripcion_medicamento SET estado=0 WHERE id_pm=" + id_pm + ";");
+        this.cnn.conectar();
+        this.cnn.cerrarConexion();
+    }
+
+    public int ingresarInfusion(cInfusion inf) {
+        int id_pi = 0;
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("INSERT INTO schema_uo.prescripcion_infusion "
+                + "(id_duo, suero_desc, velocidad_inf, unidad_velocidad, observacion, estado, fecha_registro, usuario_registro) "
+                + "VALUES (" + inf.getId_duo() + ", '" + inf.getSuero_desc() + "', " + inf.getVelocidad_inf() + ", '"
+                + inf.getUnidad_velocidad() + "', '" + inf.getObservacion() + "', 1, CURRENT_TIMESTAMP, '" + inf.getUsuario_registro() + "');");
+        try {
+            this.cnn.conectar();
+        } catch (Exception ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            this.cnn.cerrarConexion();
+        }
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT id_pi FROM schema_uo.prescripcion_infusion "
+                + "WHERE id_duo=" + inf.getId_duo() + " AND usuario_registro='" + inf.getUsuario_registro() + "' AND estado=1 "
+                + "ORDER BY id_pi DESC LIMIT 1;");
+        this.cnn.conectar();
+        try {
+            if (this.cnn.getRst().next()) {
+                id_pi = this.cnn.getRst().getInt("id_pi");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            this.cnn.cerrarConexion();
+        }
+        return id_pi;
+    }
+
+    public void ingresarInfusionDetalle(cInfusionDetalle det) {
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("INSERT INTO schema_uo.prescripcion_infusion_detalle "
+                + "(id_pi, orden, id_insumo, medicamento_desc, dosis, unidad_desc) "
+                + "VALUES (" + det.getId_pi() + ", " + det.getOrden() + ", " + det.getId_insumo() + ", '"
+                + det.getMedicamento_desc() + "', '" + det.getDosis() + "', '" + det.getUnidad_desc() + "');");
+        this.cnn.conectar();
+        this.cnn.cerrarConexion();
+    }
+
+    public void modificarInfusion(cInfusion inf) {
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("UPDATE schema_uo.prescripcion_infusion SET "
+                + "suero_desc='" + inf.getSuero_desc() + "', velocidad_inf=" + inf.getVelocidad_inf() + ", "
+                + "unidad_velocidad='" + inf.getUnidad_velocidad() + "', observacion='" + inf.getObservacion() + "' "
+                + "WHERE id_pi=" + inf.getId_pi() + ";");
+        this.cnn.conectar();
+        this.cnn.cerrarConexion();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("DELETE FROM schema_uo.prescripcion_infusion_detalle WHERE id_pi=" + inf.getId_pi() + ";");
+        this.cnn.conectar();
+        this.cnn.cerrarConexion();
+    }
+
+    public void eliminarInfusion(int id_pi) {
+        this.configurarConexion("");
+        this.cnn.setEsSelect(false);
+        this.cnn.setSentenciaSQL("UPDATE schema_uo.prescripcion_infusion SET estado=0 WHERE id_pi=" + id_pi + ";");
+        this.cnn.conectar();
+        this.cnn.cerrarConexion();
     }
 }

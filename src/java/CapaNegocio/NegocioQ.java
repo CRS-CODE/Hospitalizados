@@ -57,6 +57,9 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import CapaDato.cPrescripcion;
+import CapaDato.cInfusion;
+import CapaDato.cInfusionDetalle;
 
 public class NegocioQ extends Negocio {
 
@@ -5005,5 +5008,129 @@ public class NegocioQ extends Negocio {
 
         this.cnn.cerrarConexion();
         return rec;
+    }
+
+    public ArrayList lista_medicamento_completa() {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT i.ins_id, i.ins_descripcion, COALESCE(u.uni_descripcion,'') AS uni_abreviacion "
+                + "FROM schema_abastecimiento.insumo i "
+                + "LEFT JOIN schema_abastecimiento.unidad_medida u ON (i.ins_unidad_medida = u.uni_id) "
+                + "WHERE i.ins_tipo_clinico='1' AND i.ins_estado='1' "
+                + "ORDER BY i.ins_descripcion;");
+        this.cnn.conectar();
+        try {
+            while (this.cnn.getRst().next()) {
+                cInsumo med = new cInsumo();
+                med.setId_insumo(this.cnn.getRst().getInt("ins_id"));
+                med.setInsumo_desc(this.cnn.getRst().getString("ins_descripcion"));
+                med.setUnidad_medida_desc(this.cnn.getRst().getString("uni_abreviacion"));
+                lista.add(med);
+            }
+        } catch (SQLException var3) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
+        }
+        this.cnn.cerrarConexion();
+        return lista;
+    }
+
+    public ArrayList lista_prescripciones_por_duo(int id_duo) {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT id_pm, id_insumo, medicamento_desc, dosis, unidad_desc, id_via, via_desc, "
+                + "frecuencia, observacion, TO_CHAR(fecha_registro,'DD/MM/YYYY HH24:MI') AS fecha_registro "
+                + "FROM schema_uo.prescripcion_medicamento "
+                + "WHERE id_duo=" + id_duo + " AND estado=1 "
+                + "ORDER BY id_pm ASC;");
+        this.cnn.conectar();
+        try {
+            while (this.cnn.getRst().next()) {
+                cPrescripcion p = new cPrescripcion();
+                p.setId_pm(this.cnn.getRst().getInt("id_pm"));
+                p.setId_insumo(this.cnn.getRst().getInt("id_insumo"));
+                p.setMedicamento_desc(this.cnn.getRst().getString("medicamento_desc"));
+                p.setDosis(this.cnn.getRst().getString("dosis"));
+                p.setUnidad_desc(this.cnn.getRst().getString("unidad_desc"));
+                p.setId_via(this.cnn.getRst().getInt("id_via"));
+                p.setVia_desc(this.cnn.getRst().getString("via_desc"));
+                p.setFrecuencia(this.cnn.getRst().getString("frecuencia"));
+                p.setObservacion(this.cnn.getRst().getString("observacion"));
+                p.setFecha_registro(this.cnn.getRst().getString("fecha_registro"));
+                lista.add(p);
+            }
+        } catch (SQLException var3) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
+        }
+        this.cnn.cerrarConexion();
+        return lista;
+    }
+
+    public ArrayList lista_infusion_detalles(int id_pi) {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT id_pid, id_pi, orden, id_insumo, medicamento_desc, dosis, unidad_desc "
+                + "FROM schema_uo.prescripcion_infusion_detalle "
+                + "WHERE id_pi=" + id_pi + " ORDER BY orden ASC;");
+        this.cnn.conectar();
+        try {
+            while (this.cnn.getRst().next()) {
+                cInfusionDetalle det = new cInfusionDetalle();
+                det.setId_pid(this.cnn.getRst().getInt("id_pid"));
+                det.setId_pi(this.cnn.getRst().getInt("id_pi"));
+                det.setOrden(this.cnn.getRst().getInt("orden"));
+                det.setId_insumo(this.cnn.getRst().getInt("id_insumo"));
+                det.setMedicamento_desc(this.cnn.getRst().getString("medicamento_desc"));
+                det.setDosis(this.cnn.getRst().getString("dosis"));
+                det.setUnidad_desc(this.cnn.getRst().getString("unidad_desc"));
+                lista.add(det);
+            }
+        } catch (SQLException var3) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
+        }
+        this.cnn.cerrarConexion();
+        return lista;
+    }
+
+    public ArrayList lista_infusiones_por_duo(int id_duo) {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT id_pi, suero_desc, velocidad_inf, unidad_velocidad, observacion, "
+                + "TO_CHAR(fecha_registro,'DD/MM/YYYY HH24:MI') AS fecha_registro "
+                + "FROM schema_uo.prescripcion_infusion "
+                + "WHERE id_duo=" + id_duo + " AND estado=1 "
+                + "ORDER BY id_pi ASC;");
+        this.cnn.conectar();
+        try {
+            while (this.cnn.getRst().next()) {
+                cInfusion inf = new cInfusion();
+                inf.setId_pi(this.cnn.getRst().getInt("id_pi"));
+                inf.setSuero_desc(this.cnn.getRst().getString("suero_desc"));
+                inf.setVelocidad_inf(this.cnn.getRst().getDouble("velocidad_inf"));
+                inf.setUnidad_velocidad(this.cnn.getRst().getString("unidad_velocidad"));
+                inf.setObservacion(this.cnn.getRst().getString("observacion"));
+                inf.setFecha_registro(this.cnn.getRst().getString("fecha_registro"));
+                lista.add(inf);
+            }
+        } catch (SQLException var3) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
+        }
+        this.cnn.cerrarConexion();
+        for (Object obj : lista) {
+            cInfusion inf = (cInfusion) obj;
+            ArrayList detalles = lista_infusion_detalles(inf.getId_pi());
+            inf.setDetalles(detalles);
+            StringBuilder sb = new StringBuilder();
+            for (Object detObj : detalles) {
+                cInfusionDetalle det = (cInfusionDetalle) detObj;
+                if (sb.length() > 0) sb.append(" + ");
+                sb.append(det.getMedicamento_desc()).append(" ").append(det.getDosis()).append(" ").append(det.getUnidad_desc());
+            }
+            inf.setMeds_display(sb.toString());
+        }
+        return lista;
     }
 }

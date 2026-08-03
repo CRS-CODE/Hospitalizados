@@ -236,6 +236,14 @@
         <servlet-name>PDF_sesion_quimico</servlet-name>
         <servlet-class>CapaInforme.PDF_sesion_quimico</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>gestion_prescripcion</servlet-name>
+        <servlet-class>CapaServlet.gestion_prescripcion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PDF_prescripcion</servlet-name>
+        <servlet-class>CapaInforme.PDF_prescripcion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>valida_usuario</servlet-name>
         <url-pattern>/valida_usuario</url-pattern>
@@ -471,6 +479,14 @@
     <servlet-mapping>
         <servlet-name>PDF_sesion_quimico</servlet-name>
         <url-pattern>/PDF_sesion_quimico</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>gestion_prescripcion</servlet-name>
+        <url-pattern>/gestion_prescripcion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PDF_prescripcion</servlet-name>
+        <url-pattern>/PDF_prescripcion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
