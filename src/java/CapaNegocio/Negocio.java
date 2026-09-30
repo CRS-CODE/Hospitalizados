@@ -72,16 +72,16 @@ public class Negocio {
         //servidor nuevo 
          this.cnn.setUser("hospitalizados");
         this.cnn.setPassword("crsdb2020");
-        this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5433/crsm");
+        this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5432/crsm");
         /*this.cnn.setUser("postgres");
         this.cnn.setPassword("crsdb2020");
         this.cnn.setNombreBaseDatos("jdbc:postgresql://localhost:5432/crsm");*/
     }
 
     public String getLocal() {
-        String local = "http://10.8.4.225:8080/modulo_uhce/";
-       // String local = "http://10.8.4.163:8080/modulo_uhce/";
-       // String local = "http://localhost:8084/modulo_uhce/";
+      // String local = "http://localhost:8084/modulo_uhce/";
+        String local = "http://10.8.4.18:8080/modulo_uhce/";
+       //String local = "http://localhost:8084/modulo_uhce/";
         return local;
     }
 
@@ -848,9 +848,21 @@ public class Negocio {
         String mensaje = "";
         this.configurarConexion("");
         this.cnn.setEsSelect(false);
-        this.cnn.setSentenciaSQL("INSERT INTO "
-                + "  agenda.paciente "
-                + "VALUES ("
+        /* 27-08-2026: se cambio de INSERT posicional (VALUES sin lista de columnas) a
+         * INSERT con lista de columnas explicita, para poder agregar de forma segura
+         * los nuevos campos UME (Bioestadistica) sin arriesgar el orden posicional
+         * de las columnas ya existentes. Tambien se corrige nombresocial, que se
+         * estaba grabando fijo en blanco (' ') en vez de con el valor del formulario. */
+        this.cnn.setSentenciaSQL("INSERT INTO agenda.paciente ("
+                + "  rut, nombre, apellido_paterno, apellido_moderno, fecha_nacimiento,"
+                + "  direccion, email, contacto1, contacto2, estatus, genero, fecha_registro,"
+                + "  id_comuna, provision, tramo, procedencia, ipusuario, usuario,"
+                + "  id_region, id_provincia, id_nacionalidad, nombresocial, id_puebloorigen,"
+                + "  id_categoria_ocupacional, id_nivel_instruccion, id_ley_previsional,"
+                + "  id_pueblo_afrodescendiente, id_identidad_genero, id_tipo_via,"
+                + "  id_ocupacion_declarada, id_pueblo_originario_gate, pais_origen,"
+                + "  id_procedencia_servicio, establecimiento_procedencia"
+                + ") VALUES ("
                 + "  '" + p.getRut_paciente().toUpperCase() + "',"
                 + "  '" + p.getNombres_paciente() + "',"
                 + "  '" + p.getApellidop_paciente() + "',"
@@ -872,8 +884,19 @@ public class Negocio {
                 + "  -1, "
                 + "  -1,"
                 + "  " + p.getNacion() + ", "
-                + "  ' ' ,"
-                + "" + p.getPueblo() + ""
+                + "  '" + p.getNombresocial() + "' ,"
+                + "  " + p.getPueblo() + ", "
+                + "  " + p.getCategoria_ocupacional() + ", "
+                + "  " + p.getNivel_instruccion() + ", "
+                + "  " + p.getLey_previsional() + ", "
+                + "  " + p.getPueblo_afrodescendiente() + ", "
+                + "  " + p.getIdentidad_genero() + ", "
+                + "  " + p.getTipo_via() + ", "
+                + "  " + p.getId_ocupacion_declarada() + ", "
+                + "  " + p.getId_pueblo_originario_gate() + ", "
+                + "  '" + p.getPais_origen().replace("'", "''") + "' ,"
+                + "  " + p.getId_procedencia_servicio() + ", "
+                + "  '" + p.getEstablecimiento_procedencia().replace("'", "''") + "'"
                 + ");");
         this.cnn.conectar();
         if (this.cnn.getResultadoSQL() == 1) {
@@ -1244,7 +1267,19 @@ public class Negocio {
                 + "  id_puebloorigen = '" + pac.getPueblo() + "', "
                 + "  procedencia = '" + pac.getConsultorio() + "', "
                 + "  email = '" + pac.getMail() + "',  "
-                + "  id_nacionalidad = '" + pac.getNacion() + "' "
+                + "  id_nacionalidad = '" + pac.getNacion() + "', "
+                + "  nombresocial = '" + pac.getNombresocial() + "', "
+                + "  id_categoria_ocupacional = " + pac.getCategoria_ocupacional() + ", "
+                + "  id_nivel_instruccion = " + pac.getNivel_instruccion() + ", "
+                + "  id_ley_previsional = " + pac.getLey_previsional() + ", "
+                + "  id_pueblo_afrodescendiente = " + pac.getPueblo_afrodescendiente() + ", "
+                + "  id_identidad_genero = " + pac.getIdentidad_genero() + ", "
+                + "  id_tipo_via = " + pac.getTipo_via() + ", "
+                + "  id_ocupacion_declarada = " + pac.getId_ocupacion_declarada() + ", "
+                + "  id_pueblo_originario_gate = " + pac.getId_pueblo_originario_gate() + ", "
+                + "  pais_origen = '" + pac.getPais_origen().replace("'", "''") + "', "
+                + "  id_procedencia_servicio = " + pac.getId_procedencia_servicio() + ", "
+                + "  establecimiento_procedencia = '" + pac.getEstablecimiento_procedencia().replace("'", "''") + "' "
                 + "  WHERE  upper(rut)=upper('" + pac.getRut_paciente() + "') ;");
         cnn.conectar();
         cnn.cerrarConexion();

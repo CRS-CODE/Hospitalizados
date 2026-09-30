@@ -75,6 +75,19 @@ public class ingreso_uh extends HttpServlet {
                 int consultorio_pertenencia = Integer.parseInt(request.getParameter("id_consultorio_pertenencia").toString());
                 int nacion = Integer.parseInt(request.getParameter("paciente_nacion"));
                  int pueblo_originario = Integer.parseInt(request.getParameter("id_pueblo").toString());
+                /* Campos UME - Egreso Hospitalario (Bioestadistica) */
+                String nombre_social = request.getParameter("nombresocial") == null ? "" : request.getParameter("nombresocial").trim();
+                int categoria_ocupacional = request.getParameter("id_categoria_ocupacional") == null || request.getParameter("id_categoria_ocupacional").trim().isEmpty() ? -1 : Integer.parseInt(request.getParameter("id_categoria_ocupacional"));
+                int nivel_instruccion = request.getParameter("id_nivel_instruccion") == null || request.getParameter("id_nivel_instruccion").trim().isEmpty() ? -1 : Integer.parseInt(request.getParameter("id_nivel_instruccion"));
+                int ley_previsional = request.getParameter("id_ley_previsional") == null || request.getParameter("id_ley_previsional").trim().isEmpty() ? -1 : Integer.parseInt(request.getParameter("id_ley_previsional"));
+                int pueblo_afrodescendiente = request.getParameter("id_pueblo_afrodescendiente") == null || request.getParameter("id_pueblo_afrodescendiente").trim().isEmpty() ? -1 : Integer.parseInt(request.getParameter("id_pueblo_afrodescendiente"));
+                int identidad_genero = request.getParameter("id_identidad_genero") == null || request.getParameter("id_identidad_genero").trim().isEmpty() ? -1 : Integer.parseInt(request.getParameter("id_identidad_genero"));
+                int tipo_via = request.getParameter("id_tipo_via") == null || request.getParameter("id_tipo_via").trim().isEmpty() ? -1 : Integer.parseInt(request.getParameter("id_tipo_via"));
+                int ocupacion_declarada = request.getParameter("id_ocupacion_declarada") == null || request.getParameter("id_ocupacion_declarada").trim().isEmpty() ? -1 : Integer.parseInt(request.getParameter("id_ocupacion_declarada"));
+                int pueblo_originario_gate = request.getParameter("id_pueblo_originario_gate") == null || request.getParameter("id_pueblo_originario_gate").trim().isEmpty() ? -1 : Integer.parseInt(request.getParameter("id_pueblo_originario_gate"));
+                String pais_origen = request.getParameter("pais_origen") == null ? "" : request.getParameter("pais_origen").trim();
+                int procedencia_servicio = request.getParameter("id_procedencia_servicio") == null || request.getParameter("id_procedencia_servicio").trim().isEmpty() ? -1 : Integer.parseInt(request.getParameter("id_procedencia_servicio"));
+                String establecimiento_procedencia = request.getParameter("establecimiento_procedencia") == null ? "" : request.getParameter("establecimiento_procedencia").trim();
                 
                 String dia1 = "";
                 String mes1 = "";
@@ -153,6 +166,18 @@ public class ingreso_uh extends HttpServlet {
                 // pac.setPrais(prais);
                 pac.setNacion(nacion);
                 pac.setMail(mail);
+                pac.setNombresocial(nombre_social);
+                pac.setCategoria_ocupacional(categoria_ocupacional);
+                pac.setNivel_instruccion(nivel_instruccion);
+                pac.setLey_previsional(ley_previsional);
+                pac.setPueblo_afrodescendiente(pueblo_afrodescendiente);
+                pac.setIdentidad_genero(identidad_genero);
+                pac.setTipo_via(tipo_via);
+                pac.setId_ocupacion_declarada(ocupacion_declarada);
+                pac.setId_pueblo_originario_gate(pueblo_originario_gate);
+                pac.setPais_origen(pais_origen);
+                pac.setId_procedencia_servicio(procedencia_servicio);
+                pac.setEstablecimiento_procedencia(establecimiento_procedencia);
 
                 out.write("RUT " + pac.getRut_paciente() + "<br>");
                 out.write("NOMBRES " + pac.getNombres_paciente() + "<br>");

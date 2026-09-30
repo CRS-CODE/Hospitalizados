@@ -10,6 +10,7 @@ import CapaDato.cAlta_Administrativa;
 import CapaDato.cAlta_Das;
 import CapaDato.cCama;
 import CapaDato.cCatRiesgoDependencia;
+import CapaDato.cCategoriaOcupacional;
 import CapaDato.cCategorizacion;
 import CapaDato.cComuna;
 import CapaDato.cConsultorio;
@@ -28,18 +29,26 @@ import CapaDato.cEvaTraumatologia;
 import CapaDato.cExamen;
 import CapaDato.cHistorial_Consultorio;
 import CapaDato.cHito;
+import CapaDato.cIdentidadGenero;
 import CapaDato.cIngresoEnfermeria;
 import CapaDato.cIngreso_Medico;
 import CapaDato.cInsumo;
+import CapaDato.cLeyPrevisional;
 import CapaDato.cNacion;
+import CapaDato.cNivelInstruccion;
 import CapaDato.cObservacion;
+import CapaDato.cOcupacionDeclarada;
 import CapaDato.cPaciente;
 import CapaDato.cPerfil;
+import CapaDato.cProcedenciaPaciente;
 import CapaDato.cPueblo;
+import CapaDato.cPuebloAfrodescendiente;
+import CapaDato.cPuebloOriginarioGate;
 import CapaDato.cReceta;
 import CapaDato.cRegistroSeguimiento;
 import CapaDato.cRegistroSocial;
 import CapaDato.cSesionKine;
+import CapaDato.cTipoVia;
 import CapaDato.cUnidadMedida;
 import CapaDato.cUsuario;
 import CapaDato.cVisita;
@@ -2346,7 +2355,19 @@ public class NegocioQ extends Negocio {
                 + "  ipusuario,\n"
                 + "  usuario,\n"
                 + "  id_region,\n"
-                + "  id_provincia, id_nacionalidad, COALESCE(nombresocial,' ') AS nombresocial FROM  agenda.paciente p\n"
+                + "  id_provincia, id_nacionalidad, COALESCE(nombresocial,' ') AS nombresocial,\n"
+                + "  COALESCE(id_categoria_ocupacional,-1) AS id_categoria_ocupacional,\n"
+                + "  COALESCE(id_nivel_instruccion,-1) AS id_nivel_instruccion,\n"
+                + "  COALESCE(id_ley_previsional,-1) AS id_ley_previsional,\n"
+                + "  COALESCE(id_pueblo_afrodescendiente,-1) AS id_pueblo_afrodescendiente,\n"
+                + "  COALESCE(id_identidad_genero,-1) AS id_identidad_genero,\n"
+                + "  COALESCE(id_tipo_via,-1) AS id_tipo_via,\n"
+                + "  COALESCE(id_ocupacion_declarada,-1) AS id_ocupacion_declarada,\n"
+                + "  COALESCE(id_pueblo_originario_gate,-1) AS id_pueblo_originario_gate,\n"
+                + "  COALESCE(pais_origen,'') AS pais_origen,\n"
+                + "  COALESCE(id_procedencia_servicio,-1) AS id_procedencia_servicio,\n"
+                + "  COALESCE(establecimiento_procedencia,'') AS establecimiento_procedencia\n"
+                + "  FROM  agenda.paciente p\n"
                 + "  inner join agenda.tramo t on t.id = p.tramo \n"
                 + "  where upper(rut)=upper('" + rut + "') and estatus = 1;  ");
         this.cnn.conectar();
@@ -2379,6 +2400,18 @@ public class NegocioQ extends Negocio {
 
                 p.setVariable(this.cnn.getRst().getString("prevension"));
                 p.setNacion(this.cnn.getRst().getInt("id_nacionalidad"));
+                p.setNombresocial(this.cnn.getRst().getString("nombresocial"));
+                p.setCategoria_ocupacional(this.cnn.getRst().getInt("id_categoria_ocupacional"));
+                p.setNivel_instruccion(this.cnn.getRst().getInt("id_nivel_instruccion"));
+                p.setLey_previsional(this.cnn.getRst().getInt("id_ley_previsional"));
+                p.setPueblo_afrodescendiente(this.cnn.getRst().getInt("id_pueblo_afrodescendiente"));
+                p.setIdentidad_genero(this.cnn.getRst().getInt("id_identidad_genero"));
+                p.setTipo_via(this.cnn.getRst().getInt("id_tipo_via"));
+                p.setId_ocupacion_declarada(this.cnn.getRst().getInt("id_ocupacion_declarada"));
+                p.setId_pueblo_originario_gate(this.cnn.getRst().getInt("id_pueblo_originario_gate"));
+                p.setPais_origen(this.cnn.getRst().getString("pais_origen"));
+                p.setId_procedencia_servicio(this.cnn.getRst().getInt("id_procedencia_servicio"));
+                p.setEstablecimiento_procedencia(this.cnn.getRst().getString("establecimiento_procedencia"));
 
             }
         } catch (SQLException ex) {
@@ -2883,6 +2916,215 @@ public class NegocioQ extends Negocio {
                 nac.setId_nac(this.cnn.getRst().getInt("nac_id"));
                 nac.setEstado_nac(this.cnn.getRst().getInt("nac_estado"));
                 lista.add(nac);
+            }
+        } catch (SQLException var3) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
+        }
+
+        this.cnn.cerrarConexion();
+        return lista;
+    }
+
+    /* ===== Catalogos UME - Egreso Hospitalario (Bioestadistica) ===== */
+
+    public ArrayList lista_categoria_ocupacional() {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT cat_ocu_id,cat_ocu_descripcion,cat_ocu_estado FROM schemaoirs.categoria_ocupacional where cat_ocu_estado='1' order by cat_ocu_id ;");
+        this.cnn.conectar();
+
+        try {
+            while (this.cnn.getRst().next()) {
+                cCategoriaOcupacional aux = new cCategoriaOcupacional();
+                aux.setId_categoria_ocupacional(this.cnn.getRst().getInt("cat_ocu_id"));
+                aux.setDescripcion_categoria_ocupacional(this.cnn.getRst().getString("cat_ocu_descripcion"));
+                aux.setEstado_categoria_ocupacional(this.cnn.getRst().getInt("cat_ocu_estado"));
+                lista.add(aux);
+            }
+        } catch (SQLException var3) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
+        }
+
+        this.cnn.cerrarConexion();
+        return lista;
+    }
+
+    public ArrayList lista_nivel_instruccion() {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT niv_ins_id,niv_ins_descripcion,niv_ins_estado FROM schemaoirs.nivel_instruccion where niv_ins_estado='1' order by niv_ins_id ;");
+        this.cnn.conectar();
+
+        try {
+            while (this.cnn.getRst().next()) {
+                cNivelInstruccion aux = new cNivelInstruccion();
+                aux.setId_nivel_instruccion(this.cnn.getRst().getInt("niv_ins_id"));
+                aux.setDescripcion_nivel_instruccion(this.cnn.getRst().getString("niv_ins_descripcion"));
+                aux.setEstado_nivel_instruccion(this.cnn.getRst().getInt("niv_ins_estado"));
+                lista.add(aux);
+            }
+        } catch (SQLException var3) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
+        }
+
+        this.cnn.cerrarConexion();
+        return lista;
+    }
+
+    public ArrayList lista_leyes_previsionales() {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT ley_prev_id,ley_prev_descripcion,ley_prev_estado FROM schemaoirs.leyes_previsionales where ley_prev_estado='1' order by ley_prev_id ;");
+        this.cnn.conectar();
+
+        try {
+            while (this.cnn.getRst().next()) {
+                cLeyPrevisional aux = new cLeyPrevisional();
+                aux.setId_ley_previsional(this.cnn.getRst().getInt("ley_prev_id"));
+                aux.setDescripcion_ley_previsional(this.cnn.getRst().getString("ley_prev_descripcion"));
+                aux.setEstado_ley_previsional(this.cnn.getRst().getInt("ley_prev_estado"));
+                lista.add(aux);
+            }
+        } catch (SQLException var3) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
+        }
+
+        this.cnn.cerrarConexion();
+        return lista;
+    }
+
+    public ArrayList lista_pueblo_afrodescendiente() {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT afro_id,afro_descripcion,afro_estado FROM schemaoirs.pueblo_afrodescendiente where afro_estado='1' order by afro_id ;");
+        this.cnn.conectar();
+
+        try {
+            while (this.cnn.getRst().next()) {
+                cPuebloAfrodescendiente aux = new cPuebloAfrodescendiente();
+                aux.setId_pueblo_afro(this.cnn.getRst().getInt("afro_id"));
+                aux.setDescripcion_pueblo_afro(this.cnn.getRst().getString("afro_descripcion"));
+                aux.setEstado_pueblo_afro(this.cnn.getRst().getInt("afro_estado"));
+                lista.add(aux);
+            }
+        } catch (SQLException var3) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
+        }
+
+        this.cnn.cerrarConexion();
+        return lista;
+    }
+
+    public ArrayList lista_identidad_genero() {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT gen_id,gen_descripcion,gen_estado FROM schemaoirs.identidad_genero where gen_estado='1' order by gen_id ;");
+        this.cnn.conectar();
+
+        try {
+            while (this.cnn.getRst().next()) {
+                cIdentidadGenero aux = new cIdentidadGenero();
+                aux.setId_identidad_genero(this.cnn.getRst().getInt("gen_id"));
+                aux.setDescripcion_identidad_genero(this.cnn.getRst().getString("gen_descripcion"));
+                aux.setEstado_identidad_genero(this.cnn.getRst().getInt("gen_estado"));
+                lista.add(aux);
+            }
+        } catch (SQLException var3) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
+        }
+
+        this.cnn.cerrarConexion();
+        return lista;
+    }
+
+    public ArrayList lista_tipo_via() {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT via_id,via_descripcion,via_estado FROM schemaoirs.tipo_via where via_estado='1' order by via_id ;");
+        this.cnn.conectar();
+
+        try {
+            while (this.cnn.getRst().next()) {
+                cTipoVia aux = new cTipoVia();
+                aux.setId_tipo_via(this.cnn.getRst().getInt("via_id"));
+                aux.setDescripcion_tipo_via(this.cnn.getRst().getString("via_descripcion"));
+                aux.setEstado_tipo_via(this.cnn.getRst().getInt("via_estado"));
+                lista.add(aux);
+            }
+        } catch (SQLException var3) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
+        }
+
+        this.cnn.cerrarConexion();
+        return lista;
+    }
+
+    public ArrayList lista_ocupacion_declarada() {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT ocu_dec_id,ocu_dec_descripcion,ocu_dec_estado FROM schemaoirs.ocupacion_declarada where ocu_dec_estado='1' order by ocu_dec_id ;");
+        this.cnn.conectar();
+
+        try {
+            while (this.cnn.getRst().next()) {
+                cOcupacionDeclarada aux = new cOcupacionDeclarada();
+                aux.setId_ocupacion_declarada(this.cnn.getRst().getInt("ocu_dec_id"));
+                aux.setDescripcion_ocupacion_declarada(this.cnn.getRst().getString("ocu_dec_descripcion"));
+                aux.setEstado_ocupacion_declarada(this.cnn.getRst().getInt("ocu_dec_estado"));
+                lista.add(aux);
+            }
+        } catch (SQLException var3) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
+        }
+
+        this.cnn.cerrarConexion();
+        return lista;
+    }
+
+    public ArrayList lista_pueblo_originario_gate() {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT gate_id,gate_descripcion,gate_estado FROM schemaoirs.pueblo_originario_gate where gate_estado='1' order by gate_id ;");
+        this.cnn.conectar();
+
+        try {
+            while (this.cnn.getRst().next()) {
+                cPuebloOriginarioGate aux = new cPuebloOriginarioGate();
+                aux.setId_gate(this.cnn.getRst().getInt("gate_id"));
+                aux.setDescripcion_gate(this.cnn.getRst().getString("gate_descripcion"));
+                aux.setEstado_gate(this.cnn.getRst().getInt("gate_estado"));
+                lista.add(aux);
+            }
+        } catch (SQLException var3) {
+            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);
+        }
+
+        this.cnn.cerrarConexion();
+        return lista;
+    }
+
+    public ArrayList lista_procedencia_paciente() {
+        ArrayList lista = new ArrayList();
+        this.configurarConexion("");
+        this.cnn.setEsSelect(true);
+        this.cnn.setSentenciaSQL("SELECT proc_id,proc_descripcion,proc_estado FROM schemaoirs.procedencia_paciente where proc_estado='1' order by proc_id ;");
+        this.cnn.conectar();
+
+        try {
+            while (this.cnn.getRst().next()) {
+                cProcedenciaPaciente aux = new cProcedenciaPaciente();
+                aux.setId_procedencia(this.cnn.getRst().getInt("proc_id"));
+                aux.setDescripcion_procedencia(this.cnn.getRst().getString("proc_descripcion"));
+                aux.setEstado_procedencia(this.cnn.getRst().getInt("proc_estado"));
+                lista.add(aux);
             }
         } catch (SQLException var3) {
             Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, (String) null, var3);

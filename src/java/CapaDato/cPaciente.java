@@ -56,6 +56,20 @@ public class cPaciente extends cUsuario {
 
     private int nacion;
     private String nacion_descripcion;
+
+    /* Campos UME - Egreso Hospitalario (Bioestadistica) */
+    private String nombresocial;
+    private int categoria_ocupacional;
+    private int nivel_instruccion;
+    private int ley_previsional;
+    private int pueblo_afrodescendiente;
+    private int identidad_genero;
+    private int tipo_via;
+    private int id_ocupacion_declarada;
+    private int id_pueblo_originario_gate;
+    private String pais_origen;
+    private int id_procedencia_servicio;
+    private String establecimiento_procedencia;
     private String paciente_descripcion;
 
     private String parentesco_desc;
@@ -78,6 +92,18 @@ public class cPaciente extends cUsuario {
         this.comuna_codigo = -1;
         this.fecha_creacion = "";
         this.procedencia = -1;
+        this.nombresocial = "";
+        this.categoria_ocupacional = -1;
+        this.nivel_instruccion = -1;
+        this.ley_previsional = -1;
+        this.pueblo_afrodescendiente = -1;
+        this.identidad_genero = -1;
+        this.tipo_via = -1;
+        this.id_ocupacion_declarada = -1;
+        this.id_pueblo_originario_gate = -1;
+        this.pais_origen = "";
+        this.id_procedencia_servicio = -1;
+        this.establecimiento_procedencia = "";
         this.consultorio = -1;
         this.pueblo = -1;
         this.sexo_descri = "";
@@ -693,6 +719,144 @@ public class cPaciente extends cUsuario {
      */
     public void setIp_contacto(String ip_contacto) {
         this.ip_contacto = ip_contacto;
+    }
+
+    /* ===== Campos UME - Egreso Hospitalario (Bioestadistica) ===== */
+
+    /**
+     * Campo 52: Nombre Social
+     */
+    public String getNombresocial() {
+        return nombresocial;
+    }
+
+    public void setNombresocial(String nombresocial) {
+        this.nombresocial = nombresocial;
+    }
+
+    /**
+     * Campo 12: Categoria Ocupacional
+     */
+    public int getCategoria_ocupacional() {
+        return categoria_ocupacional;
+    }
+
+    public void setCategoria_ocupacional(int categoria_ocupacional) {
+        this.categoria_ocupacional = categoria_ocupacional;
+    }
+
+    /**
+     * Campo 13: Nivel de Instruccion
+     */
+    public int getNivel_instruccion() {
+        return nivel_instruccion;
+    }
+
+    public void setNivel_instruccion(int nivel_instruccion) {
+        this.nivel_instruccion = nivel_instruccion;
+    }
+
+    /**
+     * Campo 21: Leyes Previsionales
+     */
+    public int getLey_previsional() {
+        return ley_previsional;
+    }
+
+    public void setLey_previsional(int ley_previsional) {
+        this.ley_previsional = ley_previsional;
+    }
+
+    /**
+     * Campo 53: Pueblo Afrodescendiente Chileno
+     */
+    public int getPueblo_afrodescendiente() {
+        return pueblo_afrodescendiente;
+    }
+
+    public void setPueblo_afrodescendiente(int pueblo_afrodescendiente) {
+        this.pueblo_afrodescendiente = pueblo_afrodescendiente;
+    }
+
+    /**
+     * Campo 54: Identidad de Genero
+     */
+    public int getIdentidad_genero() {
+        return identidad_genero;
+    }
+
+    public void setIdentidad_genero(int identidad_genero) {
+        this.identidad_genero = identidad_genero;
+    }
+
+    /**
+     * Tipo de Via de la direccion (Calle, Avenida, Pasaje, etc)
+     */
+    public int getTipo_via() {
+        return tipo_via;
+    }
+
+    public void setTipo_via(int tipo_via) {
+        this.tipo_via = tipo_via;
+    }
+
+    /**
+     * Campo 12 (2do nivel): Ocupacion Declarada. Solo aplica si
+     * categoria_ocupacional = Activos.
+     */
+    public int getId_ocupacion_declarada() {
+        return id_ocupacion_declarada;
+    }
+
+    public void setId_ocupacion_declarada(int id_ocupacion_declarada) {
+        this.id_ocupacion_declarada = id_ocupacion_declarada;
+    }
+
+    /**
+     * Campo 55: Se considera perteneciente a algun pueblo indigena u
+     * originario? (SI/NO). Si es SI se completa ademas "pueblo" (campo 10).
+     */
+    public int getId_pueblo_originario_gate() {
+        return id_pueblo_originario_gate;
+    }
+
+    public void setId_pueblo_originario_gate(int id_pueblo_originario_gate) {
+        this.id_pueblo_originario_gate = id_pueblo_originario_gate;
+    }
+
+    /**
+     * Campo 11: Pais de Origen del paciente (texto libre, distinto de
+     * Nacionalidad).
+     */
+    public String getPais_origen() {
+        return pais_origen;
+    }
+
+    public void setPais_origen(String pais_origen) {
+        this.pais_origen = pais_origen;
+    }
+
+    /**
+     * Campo 22: Procedencia del paciente segun clasificacion oficial
+     * (distinta de "procedencia"/id_derivado ya existente).
+     */
+    public int getId_procedencia_servicio() {
+        return id_procedencia_servicio;
+    }
+
+    public void setId_procedencia_servicio(int id_procedencia_servicio) {
+        this.id_procedencia_servicio = id_procedencia_servicio;
+    }
+
+    /**
+     * Campo 23: Establecimiento de Procedencia (solo si campo 22 = 4 o 7).
+     */
+    public String getEstablecimiento_procedencia() {
+        return establecimiento_procedencia;
+    }
+
+    public void setEstablecimiento_procedencia(String establecimiento_procedencia) {
+        this.establecimiento_procedencia = establecimiento_procedencia;
     }
 
 }
