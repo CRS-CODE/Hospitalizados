@@ -266,7 +266,7 @@
             alert('Debe seleccionar Procedencia del Paciente (Clasificacion Oficial IEEH)');
             return false;
         } else if ((document.getElementById('id_procedencia_servicio').value == '4' || document.getElementById('id_procedencia_servicio').value == '7') && document.getElementById('establecimiento_procedencia').value.length == 0) {
-            alert('Debe ingresar el Establecimiento de Procedencia');
+            alert('Debe ingresar la Unidad de Procedencia');
             return false;
         } else if (document.getElementById('id_cama').value == -2) {
             alert('Debe seleccionar Cama');
@@ -596,15 +596,7 @@
             <tr>
                 <td>Procedencia del Paciente (Clasificacion Oficial IEEH):</td>
                 <td>
-                    <select name="id_procedencia_servicio" id="id_procedencia_servicio" onchange="javascript:
-                                    var procv = document.forms['form1']['id_procedencia_servicio'].value;
-                            if (procv == '4' || procv == '7') {
-                                document.getElementById('establecimiento_procedencia_wrapper').style.display = 'inline';
-                            } else {
-                                document.getElementById('establecimiento_procedencia_wrapper').style.display = 'none';
-                                document.getElementById('establecimiento_procedencia').value = '';
-                            }
-                            ">
+                    <select name="id_procedencia_servicio" id="id_procedencia_servicio">
                         <option value="-1" >Seleccione...</option>
                         <%
                             while (it_proc.hasNext()) {
@@ -618,11 +610,9 @@
                         %>
                     </select>
                 </td>
-                <td>Establecimiento de Procedencia:<br><small>(Solo si Procedencia = Otro Establecimiento u Hospital comunitario/baja complejidad)</small></td>
+                <td>Unidad de Procedencia:<br><small>Texto libre (ej: HEC-UTI, HEC Urgencia). Obligatorio solo si Procedencia = Otro Establecimiento u Hospital comunitario/baja complejidad.</small></td>
                 <td>
-                    <span id="establecimiento_procedencia_wrapper" style="<%=((a_procedencia_servicio == 4 || a_procedencia_servicio == 7) ? "display:inline" : "display:none")%>">
                     <input type="text" size="25" id="establecimiento_procedencia" name="establecimiento_procedencia" value="<%=a_establecimiento_procedencia%>">
-                    </span>
                 </td>
             </tr>
 
