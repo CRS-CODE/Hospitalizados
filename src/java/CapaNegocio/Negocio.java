@@ -843,6 +843,16 @@ public class Negocio {
 
     }
 
+    /* 31-10-2026: convierte el sentinel -1 (usado en el formulario y el servlet para
+     * "no aplica / no seleccionado") en NULL de SQL. Sin esto, guardar o editar un
+     * paciente que no tiene seleccionado id_ocupacion_declarada, id_pueblo_originario_gate
+     * o id_procedencia_servicio viola la llave foranea correspondiente, porque esas tablas
+     * no tienen una fila con id=-1 (a diferencia de otros catalogos que si tienen un codigo
+     * "Ignorado"). */
+    private String sqlIntOrNull(int valor) {
+        return valor == -1 ? "NULL" : String.valueOf(valor);
+    }
+
     /*new code*/
     public String guardarPaciente(cPaciente p) throws UnknownHostException {
         String mensaje = "";
@@ -892,10 +902,10 @@ public class Negocio {
                 + "  " + p.getPueblo_afrodescendiente() + ", "
                 + "  " + p.getIdentidad_genero() + ", "
                 + "  " + p.getTipo_via() + ", "
-                + "  " + p.getId_ocupacion_declarada() + ", "
-                + "  " + p.getId_pueblo_originario_gate() + ", "
+                + "  " + sqlIntOrNull(p.getId_ocupacion_declarada()) + ", "
+                + "  " + sqlIntOrNull(p.getId_pueblo_originario_gate()) + ", "
                 + "  '" + p.getPais_origen().replace("'", "''") + "' ,"
-                + "  " + p.getId_procedencia_servicio() + ", "
+                + "  " + sqlIntOrNull(p.getId_procedencia_servicio()) + ", "
                 + "  '" + p.getEstablecimiento_procedencia().replace("'", "''") + "'"
                 + ");");
         this.cnn.conectar();
@@ -1275,10 +1285,10 @@ public class Negocio {
                 + "  id_pueblo_afrodescendiente = " + pac.getPueblo_afrodescendiente() + ", "
                 + "  id_identidad_genero = " + pac.getIdentidad_genero() + ", "
                 + "  id_tipo_via = " + pac.getTipo_via() + ", "
-                + "  id_ocupacion_declarada = " + pac.getId_ocupacion_declarada() + ", "
-                + "  id_pueblo_originario_gate = " + pac.getId_pueblo_originario_gate() + ", "
+                + "  id_ocupacion_declarada = " + sqlIntOrNull(pac.getId_ocupacion_declarada()) + ", "
+                + "  id_pueblo_originario_gate = " + sqlIntOrNull(pac.getId_pueblo_originario_gate()) + ", "
                 + "  pais_origen = '" + pac.getPais_origen().replace("'", "''") + "', "
-                + "  id_procedencia_servicio = " + pac.getId_procedencia_servicio() + ", "
+                + "  id_procedencia_servicio = " + sqlIntOrNull(pac.getId_procedencia_servicio()) + ", "
                 + "  establecimiento_procedencia = '" + pac.getEstablecimiento_procedencia().replace("'", "''") + "' "
                 + "  WHERE  upper(rut)=upper('" + pac.getRut_paciente() + "') ;");
         cnn.conectar();

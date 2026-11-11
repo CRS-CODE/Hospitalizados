@@ -43,7 +43,7 @@
             var hora = $("#cbo_hora").val() + ":" + $("#cbo_minuto").val() + ":00";
             var usuario = $("#txt_usuario").val();
 
-            misdatos = "ingresa=" + ingreso + "&id_duo=" + id_duo + "&fecha=" + fecha + "&hora=" + hora + "&detalle=" + detalle + "&usuario=" + usuario;
+            misdatos = "ingresa=" + encodeURIComponent(ingreso) + "&id_duo=" + encodeURIComponent(id_duo) + "&fecha=" + encodeURIComponent(fecha) + "&hora=" + encodeURIComponent(hora) + "&detalle=" + encodeURIComponent(detalle) + "&usuario=" + encodeURIComponent(usuario);
 
             if (fecha == "") {
                 alert('Debe ingresar fecha de registro');
@@ -68,17 +68,13 @@
                 return false;
             }
         } else {
-            misdatos = "ingresa=0" + "&id_duo=" + id_duo;
+            misdatos = "ingresa=0" + "&id_duo=" + encodeURIComponent(id_duo);
         }
 
         //Preparar el envio  con Open
         obj.open("POST", "sesion_quimico_carga.jsp", true);
         //Enviar cabeceras para que acepte POST:
         obj.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
-        obj.setRequestHeader("Content-length", misdatos.length);
-        obj.setRequestHeader("Connection", "close");
-        obj.send(misdatos); //pasar datos como parámetro
-
 
         obj.onreadystatechange = function () {
             if (obj.readyState == 4 && (obj.status == 200 || window.location.href.indexOf("http") == -1)) {
@@ -96,6 +92,8 @@
                 document.getElementById('div_seguimiento').innerHTML = '&nbsp;&nbsp; <img src="../Imagenes/loading.gif" width="16" height="16" alt="loading"/>Cargando...';
             }
         };
+
+        obj.send(misdatos); //pasar datos como parámetro
     }
 
     $(function () {
